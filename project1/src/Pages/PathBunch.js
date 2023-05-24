@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
-import Homepge from './Homepge'
+import Homepge from './Homepge/Homepge'
 
 
 export default function PathBunch() {

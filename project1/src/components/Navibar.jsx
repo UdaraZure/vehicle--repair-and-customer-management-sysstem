@@ -4,7 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function CollapsibleExample() {
+function Navigationbar() {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
@@ -38,5 +38,5 @@ function CollapsibleExample() {
   );
 }
 
-export default CollapsibleExample;
+export default Navigationbar;
 

@@ -1,12 +1,12 @@
 import './App.css';
-import CollapsibleExample from './components/Navibar';
+import Navigationbar from './components/Navibar';
 import PathBunch from './Pages/PathBunch';
 
 function App() {
   return (
     <>
     <div className="App">
-      <CollapsibleExample/>
+      <Navigationbar/>
     </div>
     <div>
       <PathBunch/>
