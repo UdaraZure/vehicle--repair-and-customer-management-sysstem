@@ -9,7 +9,7 @@ export default function Homepge() {
   return (
     <div style={{padding:'20px 80px'}} className="homepage">
 
-      <Carousel fade interval={2000}>
+      <Carousel fade interval={2000} style={{marginTop:"10vh"}}>
 
       <Carousel.Item>
       <img

@@ -3,13 +3,12 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Navibaar.css';
 
 function Navigationbar() {
   return (
     <>
     <div>
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" fixed='top' >
       <Container>
         
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -31,7 +30,7 @@ function Navigationbar() {
           </Nav>
           <Nav>
             <Nav.Link href="#login" className="Login-button">Login</Nav.Link>
-            <Nav.Link eventKey={2} href="/signup" className="Signup-button">
+            <Nav.Link eventKey={2} href="/signup" className="Signup-button" variant="pills">
               Sign Up
             </Nav.Link>
           </Nav>
