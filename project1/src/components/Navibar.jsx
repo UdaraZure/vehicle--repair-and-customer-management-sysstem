@@ -30,9 +30,7 @@ function Navigationbar() {
           </Nav>
           <Nav>
             <Nav.Link href="/login" className="Login-button">Login</Nav.Link>
-            <Nav.Link eventKey={2} href="/signup" className="Signup-button">
-              Sign Up
-            </Nav.Link>
+            <Nav.Link eventKey={2} href="/signup" className="Signup-button">Sign Up</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
