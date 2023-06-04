@@ -7,7 +7,7 @@ export const Header = () => {
     <div style={{marginTop:"8vh"}}>
         <nav class="bg-dark navbar-dark navbar">
             <div className="row col-12 d-flex justify-content-center text-white" style={{textAlign:"center"}}>
-              <h3>Registration</h3>
+              <h3>Sign Up</h3>
             </div>
         </nav>
 

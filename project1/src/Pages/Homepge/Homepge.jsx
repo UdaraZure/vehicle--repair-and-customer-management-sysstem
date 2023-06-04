@@ -7,8 +7,9 @@ import './HomepageStyle.css';
 
 export default function Homepge() {
   return (
+    <>
     <div style={{padding:'20px 80px'}} className="homepage">
-
+      <hr size="20" color="white" width="100%"/>
       <Carousel fade interval={2000} style={{marginTop:"10vh"}}>
 
       <Carousel.Item>
@@ -51,5 +52,6 @@ export default function Homepge() {
       
       </Carousel>
     </div> 
+    </>
   )
 }
