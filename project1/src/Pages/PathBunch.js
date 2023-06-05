@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
 import Homepge from './Homepge/Homepge'
-import Header from './Signup/signUp'
+import Signup from './Signup/signUp'
 import Login from './Login/Login'
 
 export default function PathBunch() {
@@ -11,7 +11,7 @@ export default function PathBunch() {
         <Router>
             <Routes>
                 <Route exact path = "/" element={<Homepge/>}></Route>
-                <Route path = "/signup" element={<Header/>}></Route>
+                <Route path = "/signup" element={<Signup/>}></Route>
                 <Route path = "/login" element={<Login/>}></Route>
             </Routes>
         </Router>

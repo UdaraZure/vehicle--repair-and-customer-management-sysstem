@@ -4,16 +4,9 @@ import './signupPge.css'
 export const Header = () => {
   return (
     <>
-    <div style={{marginTop:"8vh"}}>
-        <nav class="bg-dark navbar-dark navbar">
-            <div className="row col-12 d-flex justify-content-center text-white" style={{textAlign:"center"}}>
-              <h3>Sign Up</h3>
-            </div>
-        </nav>
-
-    </div>
-    <div className='form'>
+    <div className='form' style={{marginTop:"25vh"}}>
     <div className="form-body">
+        <h4 style={{textAlign: 'center', fontWeight:'1000'}}> Sign Up </h4>
               <div className="username">
                   <label className="form__label" for="firstName">First Name </label>
                   <input className="form__input" type="text" id="firstName" placeholder="First Name"/>
@@ -36,7 +29,7 @@ export const Header = () => {
               </div>
           </div>
           <div class="footer">
-              <button type="submit" class="btn">Register</button>
+              <button type="submit" class="btn">Submit</button>
           </div>
     </div>
     </>
