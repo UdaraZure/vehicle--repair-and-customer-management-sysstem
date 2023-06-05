@@ -14,18 +14,19 @@ body{
 .form-body{
     text-align: left;
     padding: 10px 10px;
+    padding-top: 20px;
 }
 
 .form-body > *{
-    padding: 8px;
+    padding: 3px;
 }
 
 .form__label{
-    width: 40%;
+    width: 60%;
 }
 
 .form_input{
-    width: 60%;
+    width: 40%;
 }
 
 .footer{
@@ -41,6 +42,19 @@ body{
     background-color: rgb(45, 107, 241);
     color: white;
 }
+
+.setFirstNameError{
+    color: #fe0505;
+}
+
+.form_question{
+    width: 200px;
+}
+
+.table{
+    padding-left: 40px;
+}
+
 
 
 

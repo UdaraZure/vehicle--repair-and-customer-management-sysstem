@@ -4,67 +4,215 @@ import './signupPge.css';
 export const SignUp = () => {
   const [firstName, setFirstName] = useState('');
   const [firstNameError, setFirstNameError] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPasswordError, setConfirmPasswordError] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (firstName.trim() === '') {
-      setFirstNameError('The first name shouldn\'t be null');
+      setFirstNameError('The first name should not be null');
       return;
     }
 
-    // Proceed with form submission if validation passes
-    // TODO: Handle form submission logic here
+    if (lastName.trim() === '') {
+      setLastNameError('The last name should not be null');
+      return;
+    }
+
+    if (email.trim() === '') {
+      setEmailError('The email should not be null');
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid email');
+      return;
+    }
+
+    if (phoneNumber.trim() === '') {
+      setPhoneNumberError('The phone number should not be null');
+      return;
+    }
+
+    const phoneNumberRegex = /^[0-9]{10}$/;
+    if (!phoneNumberRegex.test(phoneNumber)) {
+      setPhoneNumberError('Please enter a valid 10-digit phone number');
+      return;
+    }
+
+    if (password.trim() === '') {
+      setPasswordError('The password should not be null');
+      return;
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setPasswordError(
+        'Please enter a valid password. It should be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one special character, and one digit.'
+      );
+      return;
+    }
+
+    if (confirmPassword.trim() === '') {
+      setConfirmPasswordError('The confirm password should not be null');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setConfirmPasswordError('The confirm password should match the password');
+      return;
+    }
+
+    console.log('Form submitted successfully');
   };
 
   return (
     <>
-      <div className='form' style={{ marginTop: '25vh' }}>
-      <form onSubmit={handleSubmit}>
+      <div className='form' style={{ marginTop: '20vh' }}>
         <div className="form-body">
           <h4 style={{ textAlign: 'center', fontWeight: '1000' }}> Sign Up </h4>
-          
-            <div className="username">
-              <label className="form__label" htmlFor="firstName">First Name </label>
-              <input
-                className="form__input"
-                type="text"
-                id="firstName"
-                placeholder="First Name"
-                value={firstName}
-                onChange={(e) => {
-                  setFirstName(e.target.value);
-                  setFirstNameError('');
-                }}
-              />
-              {firstNameError && <p className="error-message">{firstNameError}</p>}
-            </div>
-              <div className="lastname"> 
-                  <label className="form__label" for="lastName">Last Name </label>
-                  <input  type="text" name="" id="lastName"  className="form__input"placeholder="LastName"/>
-              </div>
-              <div className="email">
-                  <label className="form__label" for="email">Email </label>
-                  <input  type="email" id="email" className="form__input" placeholder="Email"/>
-              </div>
-              <div className="mobileNum">
-                  <label className="form__label" for="mobileNum">Mobile Number </label>
-                  <input  type='number' id="mobileNum" className="form__input" placeholder="mobile Number"/>
-              </div>
-              <div className="password">
-                  <label className="form__label" for="password">Password </label>
-                  <input className="form__input" type="password"  id="password" placeholder="Password"/>
-              </div>
-              <div className="confirm-password">
-                  <label className="form__label" for="confirmPassword">Confirm Password </label>
-                  <input className="form__input" type="password" id="confirmPassword" placeholder="Confirm Password"/>
-              </div>
-              <div className="footer">
+          <div className="table">
+            <table>
+              <tr>
+                <div className="firstName">
+                  <td className="form_question"><label className="form__label" htmlFor="firstName">First Name </label></td>
+                  <td>
+                    <input
+                      className="form__input"
+                      type="text"
+                      id="firstName"
+                      placeholder="First Name"
+                      value={firstName}
+                      onChange={(e) => {
+                        setFirstName(e.target.value);
+                        setFirstNameError('');
+                      }}
+                    />
+                    {firstNameError && <p className="error-message">{firstNameError}</p>}
+                  </td>
+                </div>
+              </tr>
+              <tr>
+                <div className="lastname">
+                  <td className="form_question">
+                    <label className="form__label" htmlFor="lastName">Last Name </label>
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      id="lastName"
+                      className="form__input"
+                      placeholder="Last Name"
+                      value={lastName}
+                      onChange={(e) => {
+                        setLastName(e.target.value);
+                        setLastNameError('');
+                      }}
+                    />
+                    {lastNameError && <p className="error-message">{lastNameError}</p>}
+                  </td>
+                </div>
+              </tr>
+              <tr>
+                <div className="email">
+                  <td className="form_question">
+                    <label className="form__label" htmlFor="email">Email </label>
+                  </td>
+                  <td>
+                    <input
+                      type="email"
+                      id="email"
+                      className="form__input"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        setEmailError('');
+                      }}
+                    />
+                    {emailError && <p className="error-message">{emailError}</p>}
+                  </td>
+                </div>
+              </tr>
+              <tr>
+                <div className="mobileNum">
+                  <td className="form_question"><label className="form__label" htmlFor="mobileNum">Mobile Number </label></td>
+                  <td>
+                    <input
+                      type="text"
+                      id="mobileNum"
+                      className="form__input"
+                      placeholder="Mobile Number"
+                      value={phoneNumber}
+                      onChange={(e) => {
+                        setPhoneNumber(e.target.value);
+                        setPhoneNumberError('');
+                      }}
+                    />
+                    {phoneNumberError && <p className="error-message">{phoneNumberError}</p>}
+                  </td>
+                </div>
+              </tr>
+              <tr>
+                <div className="password">
+                  <td className="form_question">
+                    <label className="form__label" htmlFor="password">Password </label>
+                  </td>
+                  <td>
+                    <input
+                      className="form__input"
+                      type="password"
+                      id="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setPasswordError('');
+                      }}
+                    />
+                    {passwordError && <p className="error-message">{passwordError}</p>}
+                  </td>
+                </div>
+              </tr>
+              <tr>
+                <div className="confirm-password">
+                  <td className="form_question">
+                    <label className="form__label" htmlFor="confirmPassword">Confirm Password </label>
+                  </td>
+                  <td>
+                    <input
+                      className="form__input"
+                      type="password"
+                      id="confirmPassword"
+                      placeholder="Confirm Password"
+                      value={confirmPassword}
+                      onChange={(e) => {
+                        setConfirmPassword(e.target.value);
+                        setConfirmPasswordError('');
+                      }}
+                    />
+                    {confirmPasswordError && <p className="error-message">{confirmPasswordError}</p>}
+                  </td>
+                </div>
+              </tr>
+            </table>
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="footer">
               <button type="submit" className="btn">Submit</button>
             </div>
-          
+          </form>
         </div>
-        </form>
       </div>
     </>
   );
