@@ -36,10 +36,18 @@ body{
     text-align: center;
 }
 
+.btn{
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
 .btn:hover{
     background-color: rgb(45, 107, 241);
-    text-decoration-color: aliceblue;
+    color: white;
 }
+
+
+
 
 
 
