@@ -9,6 +9,7 @@ body{
     width: 550px;
     margin: 20px auto;
     border-radius: 15px;
+    padding-bottom: 20px;
     
     
 }
@@ -16,10 +17,11 @@ body{
 .form-body{
     text-align: left;
     padding: 20px 10px;
+    padding-bottom: 40px;
 }
 
 .form-body > *{
-    padding: 5px;
+    padding: 8px;
 }
 
 .form__label{
@@ -33,3 +35,11 @@ body{
 .footer{
     text-align: center;
 }
+
+.btn:hover{
+    background-color: rgb(45, 107, 241);
+    text-decoration-color: aliceblue;
+}
+
+
+

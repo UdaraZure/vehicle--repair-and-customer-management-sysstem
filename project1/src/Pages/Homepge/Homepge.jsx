@@ -51,6 +51,17 @@ export default function Homepge() {
       </Carousel.Item>
       
       </Carousel>
+    </div>
+    <div className="homepage">
+      <p>giuhrgurhgurgrggr
+        rgggrg
+        rgrrrg
+        rgrgrgrg
+
+        rgrgrgrgrgrgrgr
+        rgrgrgrgrrgrgrg
+        
+      </p>
     </div> 
     </>
   )

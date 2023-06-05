@@ -34,4 +34,9 @@
     font-weight: 600;
     color: rgb(34, 34, 34);
   }
+
+  .btn{
+    background-color: rgb(20, 122, 195);
+    color: white;
+  }
   

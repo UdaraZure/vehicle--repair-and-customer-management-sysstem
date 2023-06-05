@@ -20,9 +20,11 @@ function Navigationbar() {
               width = "120"
               />
             </Nav.Link>
+            
             <Nav.Link href="/services">Services</Nav.Link>
             <Nav.Link href="/Offers">Offers</Nav.Link>
             <Nav.Link href="/ContactUs">Contact Us</Nav.Link>
+
           </Nav>
           <Nav>
             <Nav.Link href="/login" className="Login-button">Login</Nav.Link>
@@ -33,6 +35,7 @@ function Navigationbar() {
     </Navbar>
     <hr size="2" color= "fff" width="50%"/>
     </div>
+
     </>
   )
 }
