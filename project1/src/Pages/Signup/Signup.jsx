@@ -14,6 +14,7 @@ export const SignUp = () => {
   const [passwordError, setPasswordError] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -73,7 +74,19 @@ export const SignUp = () => {
       return;
     }
 
-    console.log('Form submitted successfully');
+    // Resetting all form fields
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPhoneNumber('');
+    setPassword('');
+    setConfirmPassword('');
+
+    // Display success message for 3 seconds
+    setFormSubmitted(true);
+    setTimeout(() => {
+      setFormSubmitted(false);
+    }, 3000);
   };
 
   return (
@@ -206,12 +219,15 @@ export const SignUp = () => {
                 </div>
               </tr>
             </table>
-          </div>
+            </div>
           <form onSubmit={handleSubmit}>
             <div className="footer">
               <button type="submit" className="btn">Submit</button>
             </div>
           </form>
+          {formSubmitted && (
+            <p className="notification-message">User account created successfully!</p>
+          )}
         </div>
       </div>
     </>

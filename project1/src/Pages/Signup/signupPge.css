@@ -55,7 +55,9 @@ body{
     padding-left: 40px;
 }
 
-
+.notification-message{
+    text-align: center;
+}
 
 
 

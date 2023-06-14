@@ -53,15 +53,6 @@ export default function Homepge() {
       </Carousel>
     </div>
     <div className="homepage">
-      <p>giuhrgurhgurgrggr
-        rgggrg
-        rgrrrg
-        rgrgrgrg
-
-        rgrgrgrgrgrgrgr
-        rgrgrgrgrrgrgrg
-        
-      </p>
     </div> 
     </>
   )
