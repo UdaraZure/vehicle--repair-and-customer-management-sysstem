@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './signupPge.css';
+import axios from 'axios';
 
 export const SignUp = () => {
   const [firstName, setFirstName] = useState('');
@@ -15,7 +16,8 @@ export const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [formSubmitted, setFormSubmitted] = useState(false);
-
+  const [newPassword, setNewPassword] = useState('');
+  
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -72,7 +74,11 @@ export const SignUp = () => {
     if (password !== confirmPassword) {
       setConfirmPasswordError('The confirm password should match the password');
       return;
-    }
+    }else{
+      setNewPassword(password);
+    } 
+
+    onSubmit();
 
     // Resetting all form fields
     setFirstName('');
@@ -86,7 +92,36 @@ export const SignUp = () => {
     setFormSubmitted(true);
     setTimeout(() => {
       setFormSubmitted(false);
+
+
     }, 3000);
+  };
+
+  const onSubmit = (event) => {
+
+    const Data = {
+      
+  
+      firstName: firstName,
+      lastName: lastName,
+      Email: email,
+      mobileNumber: phoneNumber,
+      Password: newPassword
+  }
+   
+    axios
+      .post("http://localhost:3001/customers", Data)
+      .then((response) => {
+        //setSubmissionStatus("success");
+        // resetForm();
+      })
+      .then((response) => {
+        alert("hariiii");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Error: ");
+      });
   };
 
   return (
