@@ -1,7 +1,5 @@
 body{
-    background: #bdc3c7;  
-    background: -webkit-linear-gradient(to right, #6a0202, #bdc3c7); 
-    background: linear-gradient(to right, #000000, #bdc3c7); 
+    background-color: rgb(0, 0, 0);
 }
 
 .form{
