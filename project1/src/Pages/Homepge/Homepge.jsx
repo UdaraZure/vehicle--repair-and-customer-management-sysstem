@@ -59,6 +59,7 @@ export default function Homepge() {
       <tr className='Raw'>
         <td className='Servies'>
           <p className='Heading'>SERVICES</p>
+          <hr className='hr'/>
         </td>
       </tr>
       <tr className='middleRaw'>
