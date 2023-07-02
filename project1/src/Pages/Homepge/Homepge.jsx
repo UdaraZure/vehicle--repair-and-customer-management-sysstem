@@ -10,8 +10,10 @@ export default function Homepge() {
     <>
     <div className="header" style={{padding:'20px 80px'}} >
     <table>
+    <center>  
+    {/* Carousel */}
       <tr>
-        <td>
+        <td colSpan={5}>
           <div className="homepage">
             <hr size="20" color="white" width="100%"/>
             <Carousel fade interval={2000} style={{marginTop:"10vh"}}>
@@ -55,31 +57,129 @@ export default function Homepge() {
             </Carousel>
           </div>
         </td>
-      </tr>
-      <tr className='Raw'>
-        <td className='Servies'>
+ </tr>
+  {/* Services */}
+      <tr className='Row'>
+        <td className='Servies' colSpan={5}>
           <p className='Heading'>SERVICES</p>
-          <hr className='hr'/>
         </td>
       </tr>
-      <tr className='middleRaw'>
+      <tr className='middleRow'>
         <td>
         <div class="card">
-      <p class="card-title">Product Name</p>
-      <p class="small-desc">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat
-        veritatis nobis saepe itaque rerum nostrum aliquid obcaecati odio
-        officia deleniti. Expedita iste et illum, quaerat pariatur consequatur
-        eum nihil itaque!
-      </p>
-      <div class="go-corner">
-        <div class="go-arrow">→</div>
-      </div>
-    </div>
+          <p class="card-title">Product Name</p>
+          <p class="small-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat
+            veritatis nobis saepe itaque rerum nostrum aliquid obcaecati odio
+            officia deleniti. Expedita iste et illum, quaerat pariatur consequatur
+            eum nihil itaque!
+          </p>
+          <div class="go-corner">
+            <div class="go-arrow">→</div>
+          </div>
+        </div>
+        </td>
+        <td>
+        <div class="card">
+          <p class="card-title">Product Name</p>
+          <p class="small-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat
+            veritatis nobis saepe itaque rerum nostrum aliquid obcaecati odio
+            officia deleniti. Expedita iste et illum, quaerat pariatur consequatur
+            eum nihil itaque!
+          </p>
+          <div class="go-corner">
+            <div class="go-arrow">→</div>
+          </div>
+        </div>
+        </td>
+        <td>
+        <div class="card">
+          <p class="card-title">Product Name</p>
+          <p class="small-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat
+            veritatis nobis saepe itaque rerum nostrum aliquid obcaecati odio
+            officia deleniti. Expedita iste et illum, quaerat pariatur consequatur
+            eum nihil itaque!
+          </p>
+          <div class="go-corner">
+            <div class="go-arrow">→</div>
+          </div>
+        </div>
         </td>
       </tr>
+      <tr className='middleRow'> 
+        <td>
+        <div class="card">
+          <p class="card-title">Product Name</p>
+          <p class="small-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat
+            veritatis nobis saepe itaque rerum nostrum aliquid obcaecati odio
+            officia deleniti. Expedita iste et illum, quaerat pariatur consequatur
+            eum nihil itaque!
+          </p>
+          <div class="go-corner">
+            <div class="go-arrow">→</div>
+          </div>
+        </div>
+        </td>
+        <td>
+        <div class="card">
+          <p class="card-title">Product Name</p>
+          <p class="small-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat
+            veritatis nobis saepe itaque rerum nostrum aliquid obcaecati odio
+            officia deleniti. Expedita iste et illum, quaerat pariatur consequatur
+            eum nihil itaque!
+          </p>
+          <div class="go-corner">
+            <div class="go-arrow">→</div>
+          </div>
+        </div>
+        </td>
+        <td>
+        <div class="card">
+          <p class="card-title">Product Name</p>
+          <p class="small-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat
+            veritatis nobis saepe itaque rerum nostrum aliquid obcaecati odio
+            officia deleniti. Expedita iste et illum, quaerat pariatur consequatur
+            eum nihil itaque!
+          </p>
+          <div class="go-corner">
+            <div class="go-arrow">→</div>
+          </div>
+        </div>
+        </td>
+      </tr>     
+      <tr className='Row'>
+        <td colSpan={5}>
+          <p className='Heading'>OFFERS</p>
+        </td>
+      </tr>
+      <tr className='middleRow'>
+        <td colSpan={5}>
+          <div class="card-container1">
+          <div class="card1">
+          <div class="front-content1">
+            <p>Hover me</p>
+          </div>
+          <div class="content1">
+            <p class="heading1">Card Hover</p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipii
+              voluptas ten mollitia pariatur odit, ab
+              minus ratione adipisci accusamus vel est excepturi laboriosam magnam
+              necessitatibus dignissimos molestias.
+            </p>
+          </div>
+        </div>
+        </div>
+        </td>
+      </tr>
+      </center> 
     </table>
     </div>
     </>
-  )
+  ) 
 }
