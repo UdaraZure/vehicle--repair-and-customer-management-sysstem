@@ -6,10 +6,13 @@ function App() {
   return (
     <>
     <div className="App">
+      
       <Navigationbar/>
     </div>
     <div>
+      <center>
       <PathBunch/>
+      </center>
     </div>
     </>
 

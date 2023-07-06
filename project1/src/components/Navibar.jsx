@@ -27,8 +27,8 @@ function Navigationbar() {
 
           </Nav>
           <Nav>
-            <Nav.Link href="/login" className="Login-button">Login</Nav.Link>
-            <Nav.Link href="/signup" className="Signup-button">Sign Up</Nav.Link>
+            <Nav.Link href="/Login" className="Login-button">Login</Nav.Link>
+            <Nav.Link href="/Register" className="Register-button">Register</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

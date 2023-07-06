@@ -1,0 +1,50 @@
+.userButton {
+  width: 20em;
+  position: relative;
+  height: 10em;
+  border: 3px ridge #ea1414;
+  outline: none;
+  background-color: transparent;
+  color: white;
+  transition: 1s;
+  border-radius: 0.3em;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.userButton::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 3%;
+  width: 95%;
+  height: 40%;
+  background-color: #000000;
+  transition: 0.7s;
+  transform-origin: center;
+}
+
+.userButton::before {
+  content: "";
+  transform-origin: center;
+  position: absolute;
+  top: 80%;
+  left: 3%;
+  width: 95%;
+  height: 40%;
+  background-color: #000000;
+  transition: 0.7s;
+}
+
+.userButton:hover::before, .userButton:hover::after {
+  transform: scale(0)
+}
+
+.userButton:hover {
+  box-shadow: inset 0px 0px 25px #ea1414;
+}
+
+.td{
+  align-content: center;
+  padding: 60px;
+}
