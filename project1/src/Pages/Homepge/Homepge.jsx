@@ -4,6 +4,7 @@ import garage1 from './garage1.jpg'
 import garage2 from './garage2.jpg'
 import garage3 from './garage3.jpg'
 import './HomepageStyle.css';
+import OfferCard from '../../components/OfferCard';
 
 export default function Homepge() {
   return (
@@ -159,22 +160,7 @@ export default function Homepge() {
       </tr>
       <tr className='middleRow'>
         <td colSpan={5}>
-          <div class="card-container1">
-          <div class="card1">
-          <div class="front-content1">
-            <p>Hover me</p>
-          </div>
-          <div class="content1">
-            <p class="heading1">Card Hover</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipii
-              voluptas ten mollitia pariatur odit, ab
-              minus ratione adipisci accusamus vel est excepturi laboriosam magnam
-              necessitatibus dignissimos molestias.
-            </p>
-          </div>
-        </div>
-        </div>
+          <OfferCard/>
         </td>
       </tr>
       </center> 

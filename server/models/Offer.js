@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
 
         Description: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
         },
   
     // Offer.associate = (models) => {
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     
     
     });
-
+    
 return Offer;
 
-};
+};  
