@@ -158,14 +158,14 @@ export default function Homepge() {
           <p className='Heading'>OFFERS</p>
         </td>
       </tr>
-      <tr className='middleRow'>
-        <td colSpan={5}>
-          <OfferCard/>
-        </td>
-      </tr>
       </center> 
-    </table>
-    </div>
+      </table>
+      
+        <div className='OfferCard' >
+          <OfferCard/>
+        </div>
+
+    </div>  
     </>
   ) 
 }

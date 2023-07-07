@@ -1,24 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 function OfferCard() {
+  const [offers, setOffers] = useState([]);
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/offers')
+      .then((res) => {
+        setOffers(res.data);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
-    <div class="card-container1">
-    <div class="card1">
-    <div class="front-content1">
-        <p>Hover me</p>
-    </div>
-    <div class="content1">
-        <p class="heading1">Card Hover</p>
-        <p>
-        Lorem ipsum dolor sit amet, consectetur adipii
-        voluptas ten mollitia pariatur odit, ab
-        minus ratione adipisci accusamus vel est excepturi laboriosam magnam
-        necessitatibus dignissimos molestias.
-        </p>
-    </div>
-    </div>
-    </div>
-  )
+    <>
+      {offers.map((offer, index) => (
+        <div className="card-container1" key={index}>
+          <div className="card1">
+            <div className="front-content1">
+              <p>{offer.Title}</p>
+            </div>
+            <div className="content1">
+              <p>{offer.Description}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </>
+  );
 }
 
-export default OfferCard
+export default OfferCard;

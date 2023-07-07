@@ -9,6 +9,7 @@ body{
     background-color: rgb(255, 255, 255);
     border-top-width: 50px;
     border-color: #000000;
+    
   }
 
   .middleRow{
@@ -185,5 +186,8 @@ body{
     opacity: 0;
   }
   
+  .OfferCard{
+    display: flex;
+  }
   
   
