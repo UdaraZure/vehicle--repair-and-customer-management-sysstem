@@ -16,7 +16,6 @@ export default function Homepge() {
       <tr>
         <td colSpan={5}>
           <div className="homepage">
-            <hr size="20" color="white" width="100%"/>
             <Carousel fade interval={2000} style={{marginTop:"10vh"}}>
             <Carousel.Item>
             <img
@@ -154,7 +153,7 @@ export default function Homepge() {
         </td>
       </tr>     
       <tr className='Row'>
-        <td colSpan={5}>
+        <td colSpan={5} >
           <p className='Heading'>OFFERS</p>
         </td>
       </tr>
@@ -164,7 +163,15 @@ export default function Homepge() {
         <div className='OfferCard' >
           <OfferCard/>
         </div>
-
+        <div className="header">
+          <table>
+            <tr className='Row'>
+              <td>
+              <p className='Heading'>Contact Us</p>
+              </td>
+            </tr>
+          </table>
+        </div>
     </div>  
     </>
   ) 
