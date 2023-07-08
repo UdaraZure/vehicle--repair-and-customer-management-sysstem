@@ -51,27 +51,23 @@ function Offers() {
     setEditID(id);
   };
 
-  const handleUpdate = (id) => {
-    const updatedOffer = offers.find((offer) => offer.id === id);
-    if (updatedOffer) {
-      axios
-        .put(`http://localhost:3001/offers/${id}`, updatedOffer)
-        .then((response) => {
-          console.log('Offer updated successfully');
-          setEditID(-1); // Reset the edit ID to exit edit mode
-          window.location.reload(); // Refresh the page
-        })
-        .catch((error) => {
-          console.log('Error updating offer:', error);
-        });
-    }
+  const handleUpdate = (id, updatedOffer) => {
+    axios
+      .put(`http://localhost:3001/offers/${id}`, updatedOffer)
+      .then((response) => {
+        console.log('Offer updated successfully');
+        setEditID(-1); // Reset the edit ID to exit edit mode
+        window.location.reload(); // Refresh the page
+      })
+      .catch((error) => {
+        console.log('Error updating offer:', error);
+      });
   };
 
   const handleInputChange = (e, fieldName, index) => {
     const { value } = e.target;
-    const updatedOffer = { ...offers[index], [fieldName]: value };
     const updatedOffers = [...offers];
-    updatedOffers[index] = updatedOffer;
+    updatedOffers[index][fieldName] = value;
     setOffers(updatedOffers);
   };
 
@@ -125,7 +121,7 @@ function Offers() {
                     />
                   </td>
                   <td>
-                    <button onClick={() => handleUpdate(offer.id)}>Update</button>
+                    <button onClick={() => handleUpdate(offer.id, offers[index])}>Update</button>
                   </td>
                 </tr>
               ) : (

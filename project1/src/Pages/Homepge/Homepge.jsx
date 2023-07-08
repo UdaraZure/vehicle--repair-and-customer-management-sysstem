@@ -1,4 +1,6 @@
 import React from 'react'
+import { FaFacebookF, FaTwitter, FaGoogle, FaInstagram } from 'react-icons/fa';
+
 import Carousel from 'react-bootstrap/Carousel';
 import garage1 from './garage1.jpg'
 import garage2 from './garage2.jpg'
@@ -9,7 +11,7 @@ import OfferCard from '../../components/OfferCard';
 export default function Homepge() {
   return (
     <>
-    <div className="header" style={{padding:'20px 80px'}} >
+    <div className="header">
     <table>
     <center>  
     {/* Carousel */}
@@ -163,16 +165,33 @@ export default function Homepge() {
         <div className='OfferCard' >
           <OfferCard/>
         </div>
+        </div>
         <div className="header">
-          <table>
+          <table className='footer-table'>
             <tr className='Row'>
               <td>
-              <p className='Heading'>Contact Us</p>
+              <p className='Heading'>CONTACT US</p>
               </td>
             </tr>
           </table>
+          
+
+      <div className="social-media-buttons">
+        <a href="#" className="social-media-button">
+          <FaFacebookF />
+        </a>
+        <a href="#" className="social-media-button">
+          <FaTwitter />
+        </a>
+        <a href="#" className="social-media-button">
+          <FaGoogle />
+        </a>
+        <a href="#" className="social-media-button">
+          <FaInstagram />
+        </a>
+      </div>
         </div>
-    </div>  
+      
     </>
   ) 
 }

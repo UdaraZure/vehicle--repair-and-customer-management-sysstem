@@ -9,24 +9,24 @@ export default function Register () {
             <tr>
                 <td className='td'>
                 <button className='userButton'>
-                    Hover me
+                    OWNER
                 </button>
                 </td>
                 <td>
                 <button className='userButton'>
-                    Hover me
+                    MANAGER
                 </button>
                 </td>
             </tr>
             <tr>
                 <td className='td'>
                 <button className='userButton'>
-                    Hover me
+                    EMPLOYEE
                 </button>
                 </td>
                 <td>
                 <button className='userButton'>
-                    Hover me
+                    CUSTOMER
                 </button>
                 </td>
             </tr>

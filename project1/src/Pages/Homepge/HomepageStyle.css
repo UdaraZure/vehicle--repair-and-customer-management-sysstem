@@ -20,17 +20,18 @@ body{
 
   .header{
     background-color: #ffffff;
+    padding: 20px 150px;
 
   }
 
   .Heading {
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     font-size: 40px;
     font-weight: 700;
     text-align: center;
     margin-top: 20px;
     font-family: 'foobar pro';
-    background-color: #000000;
+    background-color: #a4a4a4;
   }
 
   .card-title {
@@ -196,4 +197,10 @@ body{
     display: flex;
   }
   
+  .footer-table{
+    background-color: #a4a4a4;
+    width: 100%;
+    font-family: 'foobar pro';
+    
+  }
   

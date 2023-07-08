@@ -47,12 +47,9 @@
     margin-top: 35px;
     
   }
-  /* td{
-    border: 1px solid black;
-  } */
   
-  .table-head {
-    border: 1px solid black;
+  .table-head, td {
+    
     padding: 8px;
     text-align: left;
   }
