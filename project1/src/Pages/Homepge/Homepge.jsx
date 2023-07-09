@@ -68,6 +68,7 @@ export default function Homepge() {
       </tr>
       <tr className='middleRow'>
         <td>
+          <center>
         <div class="card">
           <p class="card-title">Product Name</p>
           <p class="small-desc">
@@ -80,8 +81,10 @@ export default function Homepge() {
             <div class="go-arrow">→</div>
           </div>
         </div>
+        </center>
         </td>
         <td>
+          <center>
         <div class="card">
           <p class="card-title">Product Name</p>
           <p class="small-desc">
@@ -94,8 +97,10 @@ export default function Homepge() {
             <div class="go-arrow">→</div>
           </div>
         </div>
+        </center>
         </td>
         <td>
+          <center>
         <div class="card">
           <p class="card-title">Product Name</p>
           <p class="small-desc">
@@ -108,10 +113,12 @@ export default function Homepge() {
             <div class="go-arrow">→</div>
           </div>
         </div>
+        </center>
         </td>
       </tr>
       <tr className='middleRow'> 
         <td>
+        <center>
         <div class="card">
           <p class="card-title">Product Name</p>
           <p class="small-desc">
@@ -124,8 +131,10 @@ export default function Homepge() {
             <div class="go-arrow">→</div>
           </div>
         </div>
+        </center>
         </td>
         <td>
+          <center>
         <div class="card">
           <p class="card-title">Product Name</p>
           <p class="small-desc">
@@ -138,8 +147,10 @@ export default function Homepge() {
             <div class="go-arrow">→</div>
           </div>
         </div>
+        </center>
         </td>
         <td>
+          <center>
         <div class="card">
           <p class="card-title">Product Name</p>
           <p class="small-desc">
@@ -152,9 +163,10 @@ export default function Homepge() {
             <div class="go-arrow">→</div>
           </div>
         </div>
+        </center>
         </td>
       </tr>     
-      <tr className='Row'>
+      <tr className='Row' >
         <td colSpan={5} >
           <p className='Heading'>OFFERS</p>
         </td>
