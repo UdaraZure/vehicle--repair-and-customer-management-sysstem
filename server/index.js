@@ -11,11 +11,14 @@ const db = require('./models');
 const postRouter = require('./routes/Posts')
 app.use("/posts", postRouter);  
 
+const offerRouter = require('./routes/Offers')
+app.use("/offers", offerRouter);
+
 const customerRouter = require('./routes/Customers')
 app.use("/customers", customerRouter);
 
-const offerRouter = require('./routes/Offers')
-app.use("/offers", offerRouter);
+const ownerRouter = require('./routes/Owners')
+app.use("/owners", customerRouter);
 
 db.sequelize.sync().then(()=> {
     app.listen(3001, () => {

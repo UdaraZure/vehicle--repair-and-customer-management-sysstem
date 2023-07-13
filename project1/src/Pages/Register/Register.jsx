@@ -4,6 +4,7 @@ import './Register.css'
 export default function Register () {
   return (
     <>
+    <div>
     <center>
         <table>
             <tr>
@@ -32,6 +33,7 @@ export default function Register () {
             </tr>
         </table>
         </center>
+    </div>
     </>
   )
 }

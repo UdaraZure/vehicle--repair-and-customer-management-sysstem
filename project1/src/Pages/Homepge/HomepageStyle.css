@@ -1,6 +1,11 @@
 body{
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(0, 0, 0);
 }
+
+Nav{
+  font-size: 22px;
+}
+
 .homepage {
     background-color: rgb(255, 255, 255);
   } 
@@ -16,23 +21,22 @@ body{
     border-top-width: 10px;
     background-color: rgb(0, 0, 0);
     border-color: #ffffff;
-    align-content: justify;
   }
 
   .header{
     background-color: #ffffff;
-    padding: 20px 150px;
+    padding: 20px 250px;
 
   }
 
   .Heading {
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     font-size: 40px;
     font-weight: 700;
     text-align: center;
     margin-top: 20px;
     font-family: 'foobar pro';
-    background-color: #a4a4a4;
+    background-color: #841302;
   }
 
   .card-title {
@@ -78,8 +82,6 @@ body{
   .card {
     display: block;
     position: relative;
-    max-width: 300px;
-    max-height: 320px;
     background-color: #f2f8f9;
     border-radius: 10px;
     padding: 2em 1.2em;
@@ -89,6 +91,8 @@ body{
     overflow: hidden;
     background: linear-gradient(to bottom, #ffffff, #ffffff);
     font-family: Arial, Helvetica, sans-serif;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2); /* Add shadow properties here */
+
   }
   
   .card:before {
@@ -107,7 +111,7 @@ body{
   }
   
   .card:hover:before {
-    transform: scale(28);
+    transform: scale(35);
   }
   
   .card:hover .small-desc {
@@ -127,12 +131,16 @@ body{
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2); /* Add shadow properties here */
+
   }
   
   .card1 {
     width: 100%;
     height: 100%;
     border-radius: inherit;
+    background-color: #ffffff;
+    box-shadow: #ffffff;
   }
   
   .card1 .front-content1 {
@@ -141,14 +149,14 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1)
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1)  
   }
   
   .card1 .front-content1 p {
     font-size: 32px;
     font-weight: 700;
     opacity: 1;
-    background: linear-gradient(-45deg, #f89b29 0%, #ff0f7b 100% );
+    background: linear-gradient(-45deg, #000000 0%, #c01a01 100% );
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -167,7 +175,7 @@ body{
     justify-content: center;
     text-align: center;
     gap: 10px;
-    background: linear-gradient(-45deg, #f89b29 0%, #ff0f7b 100% );
+    background: linear-gradient(-45deg, #000000 0%, #a41802 100% );
     color: #e8e8e8;
     padding: 20px;
     line-height: 1.5;
@@ -184,6 +192,7 @@ body{
   
   .card1:hover .content1 {
     transform: translateY(0);
+    font-size: 28px;
   }
   
   .card1:hover .front-content1 {
@@ -196,12 +205,162 @@ body{
   
   .OfferCard{
     display: flex;
+    flex-wrap: wrap;
+  }
+
+  .OfferCard > div {
+    flex: 1 1 300px;
+    margin: 10px;
+    width: 100px;
   }
   
   .footer-table{
-    background-color: #a4a4a4;
+    background-color: #000000;
     width: 100%;
     font-family: 'foobar pro';
     
   }
+
+  .cover-photo{
+    height: 630px;
+  }
+
+  .cover-photo img{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .service-cards{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .service-cards > div {
+    flex: 1 1 300px;
+    margin: 15px;
+    width: 100px;
+    flex-wrap: wrap;
+    display: flex;
+  }
+  
+  .middle-header{
+    background-color: #000000;
+    padding: 20px 250px;
+  }
+
+  .social-media-buttons{
+    width: 75%;
+    height: fit-content;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    padding: 25px 25px;
+    gap: 100px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.055);
+    flex-wrap: wrap;
+  }
+  
+  /* for all social containers*/
+  .socialContainer {
+    width: 52px;
+    height: 52px;
+    background-color: rgb(44, 44, 44);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition-duration: .3s;
+  }
+  /*facebook*/
+  .containerOne:hover {
+    background-color: #3242ab;
+    transition-duration: .3s;
+  } 
+  /* email*/
+  .containerTwo:hover {
+    background-color: #0073b1;
+    transition-duration: .3s;
+  } 
+  /* linkdin*/
+  .containerThree:hover {
+    background-color: #0072b1;
+    transition-duration: .3s;
+  } 
+  /* Whatsapp*/
+  .containerFour:hover {
+    background-color: #128C7E;
+    transition-duration: .3s;
+  } 
+  
+  .socialContainer:active {
+    transform: scale(0.9);
+    transition-duration: .3s;
+  }
+  
+  .socialSvg {
+    width: 17px;
+  }
+  
+  .socialSvg path {
+    fill: rgb(255, 255, 255);
+  }
+  
+  .socialContainer:hover .socialSvg {
+    animation: slide-in-top 0.3s both;
+  }
+  
+  @keyframes slide-in-top {
+    0% {
+      transform: translateY(-50px);
+      opacity: 0;
+    }
+  
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .contact-details table{
+    width: 450px;
+    height: 200px;
+    border-radius: 30px;
+    background: #ffffff;
+    box-shadow: 10px 10px 20px #bebebe,
+              -15px -15px 30px #ffffff;
+    margin-top: 20px;
+  }
+
+  .contact-details{
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .contact-details div{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .contact{
+    padding: 0px 20px;
+    border-radius: 10px;
+    margin-left: 50px;
+    font-family: 'monserrat', sans-serif;
+  }
+
+  .data{
+    font-weight: bold;
+    padding-left: 50px;
+    align-content: center;
+    width: 150px;
+
+  }
+
+  .map-container{
+    padding: 30px;
+  }
+  
   

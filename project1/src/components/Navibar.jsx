@@ -1,3 +1,5 @@
+import React, { useRef } from 'react';
+import { Link } from 'react-scroll';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -21,13 +23,13 @@ function Navigationbar() {
               />
             </Nav.Link>
             
-            <Nav.Link href="/services">Services</Nav.Link>
-            <Nav.Link href="/Offers">Offers</Nav.Link>
-            <Nav.Link href="/ContactUs">Contact Us</Nav.Link>
+            <Nav.Link><Link to="section1" smooth={true} duration={100}>Services</Link></Nav.Link>
+            <Nav.Link><Link to="section2" smooth={true} duration={100}>Offers</Link></Nav.Link>
+            <Nav.Link><Link to="section3" smooth={true} duration={100}>Contact Us</Link></Nav.Link>
 
           </Nav>
           <Nav>
-            <Nav.Link href="/Login" className="Login-button">Login</Nav.Link>
+            <Nav.Link href="/Customers/login" className="Login-button">Login</Nav.Link>
             <Nav.Link href="/Register" className="Register-button">Register</Nav.Link>
           </Nav>
         </Navbar.Collapse>

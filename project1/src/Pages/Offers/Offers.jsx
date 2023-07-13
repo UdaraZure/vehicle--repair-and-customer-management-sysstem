@@ -8,6 +8,10 @@ function Offers() {
   const [offers, setOffers] = useState([]);
   const [editID, setEditID] = useState(-1);
   const [editedValues, setEditedValues] = useState({ Title: '', Description: '' });
+  const [response, setResponse] = useState();
+
+
+
 
   const initialValues = {
     Title: '',
@@ -21,21 +25,29 @@ function Offers() {
 
   const onSubmit = (values, { resetForm }) => {
     axios
-      .post('http://localhost:3001/offers', values)
+      .post('http://localhost:3001/offers', values, {
+        headers: {
+          accessToken: localStorage.getItem('accessToken'),
+        }
+      })
       .then((response) => {
+        setResponse(response.data);
         console.log('success');
         resetForm();
-        window.location.reload(); // Refresh the page
+        // window.location.reload(); // Refresh the page
       })
       .catch((error) => {
-        console.log(error);
         console.log('error');
+        console.log(error);
       });
   };
+  
 
   useEffect(() => {
     axios
       .get('http://localhost:3001/offers')
+
+      
       .then((response) => {
         const { data } = response;
         if (data && data.length > 0) {
@@ -45,7 +57,9 @@ function Offers() {
       .catch((error) => {
         console.error('Error fetching offers:', error);
       });
-  }, []);
+  }, [response]);
+
+
 
   const handleEdit = (id) => {
     setEditID(id);
