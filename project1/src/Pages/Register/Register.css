@@ -1,51 +1,131 @@
-.userButton {
-  width: 20em;
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 350px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
   position: relative;
-  height: 10em;
-  border: 3px ridge #ea1414;
+  margin-top: 100px;
+}
+
+.title {
+  font-size: 28px;
+  color: #841302;
+  font-weight: 600;
+  letter-spacing: -1px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+}
+
+.title::before,.title::after {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  left: 0px;
+  background-color: #841302;
+}
+
+.title::before {
+  width: 18px;
+  height: 18px;
+  background-color: #841302;
+}
+
+.title::after {
+  width: 18px;
+  height: 18px;
+  animation: pulse 1s linear infinite;
+}
+
+.message, .signin {
+  color: rgba(88, 87, 87, 0.822);
+  font-size: 14px;
+}
+
+.signin {
+  text-align: center;
+}
+
+.signin a {
+  color: #841302;
+}
+
+.signin a:hover {
+  text-decoration: underline #4e0b01;
+}
+
+.flex {
+  display: flex;
+  width: 100%;
+  gap: 6px;
+}
+
+.form label {
+  position: relative;
+}
+
+.form label .input-register {
+  width: 100%;
+  padding: 10px 10px 20px 10px;
+  outline: 0;
+  border: 1px solid rgba(105, 105, 105, 0.397);
+  border-radius: 10px;
+}
+
+.form label .input-register + span {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  color: grey;
+  font-size: 0.9em;
+  cursor: text;
+  transition: 0.3s ease;
+}
+
+.form label .input-register:placeholder-shown + span {
+  top: 15px;
+  font-size: 0.9em;
+}
+
+.form label .input-register:focus + span,.form label .input-register:valid + span {
+  top: 30px;
+  font-size: 0.7em;
+  font-weight: 600;
+}
+
+.form label .input-register:valid + span {
+  color: #9a9a9a;
+}
+
+.submit {
+  border: none;
   outline: none;
-  background-color: transparent;
-  color: white;
-  transition: 1s;
-  border-radius: 0.3em;
+  background-color: #841302;
+  padding: 10px;
+  border-radius: 10px;
+  color: #fff;
   font-size: 16px;
-  font-weight: bold;
+  transform: .3s ease;
 }
 
-.userButton::after {
-  content: "";
-  position: absolute;
-  top: -30px;
-  left: 3%;
-  width: 95%;
-  height: 40%;
-  background-color: #000000;
-  transition: 0.7s;
-  transform-origin: center;
+.submit:hover {
+  background-color: #690f01;
 }
 
-.userButton::before {
-  content: "";
-  transform-origin: center;
-  position: absolute;
-  top: 80%;
-  left: 3%;
-  width: 95%;
-  height: 40%;
-  background-color: #000000;
-  transition: 0.5s;
-}
+@keyframes pulse {
+  from {
+    transform: scale(0.9);
+    opacity: 1;
+  }
 
-.userButton:hover::before, .userButton:hover::after {
-  transform: scale(0)
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
 }
-
-.userButton:hover {
-  box-shadow: inset 0px 0px 25px #ea1414;
-}
-
-.td{
-  align-content: center;
-  padding: 60px;
-}
-

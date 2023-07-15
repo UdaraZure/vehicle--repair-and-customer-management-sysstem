@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     const Offer = sequelize.define("Offer", {
         Title: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: false, 
         },
 
         Description: {

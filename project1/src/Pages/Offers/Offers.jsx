@@ -10,9 +10,6 @@ function Offers() {
   const [editedValues, setEditedValues] = useState({ Title: '', Description: '' });
   const [response, setResponse] = useState();
 
-
-
-
   const initialValues = {
     Title: '',
     Description: '',
