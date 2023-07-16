@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
-import { Link } from 'react-scroll';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GarageIcon from "./GarageIcon.png"
 
-function Navigationbar() {
+function HeadNavbar() {
   return (
     <>
     <div>
@@ -23,10 +22,6 @@ function Navigationbar() {
               />
             </Nav.Link>
             
-            <Nav.Link><Link to="section1" smooth={true} duration={100}>Services</Link></Nav.Link>
-            <Nav.Link><Link to="section2" smooth={true} duration={100}>Offers</Link></Nav.Link>
-            <Nav.Link><Link to="section3" smooth={true} duration={100}>Contact Us</Link></Nav.Link>
-
           </Nav>
           <Nav>
             <Nav.Link href="/Customers/login" className="Login-button" target="_blank">Login</Nav.Link>
@@ -42,5 +37,5 @@ function Navigationbar() {
   )
 }
 
-export default Navigationbar;
+export default HeadNavbar;
 

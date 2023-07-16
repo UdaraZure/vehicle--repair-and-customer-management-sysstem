@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
 import loginIcon from './login-icon.png';
+import Navigationbar from '../../components/NavBar';
+
 
 export default function Login() {
   const [username, setUsername] = useState('');
@@ -21,6 +23,7 @@ export default function Login() {
 
   return (
     <>
+      <Navigationbar />
       <div className="container-form">
         <div className="card-form">
           <div className='form-header1'>

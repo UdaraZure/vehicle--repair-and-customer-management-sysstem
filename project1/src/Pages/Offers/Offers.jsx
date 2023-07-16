@@ -3,6 +3,8 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './Offers.css';
 import * as Yup from 'yup';
 import axios from 'axios';
+import Navbar from '../../components/NavBar';
+
 
 function Offers() {
   const [offers, setOffers] = useState([]);
@@ -84,6 +86,7 @@ function Offers() {
 
   return (
     <>
+      <Navbar />	
       <div className="OfferContainer">
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
           <Form className="form-container">
@@ -94,6 +97,14 @@ function Offers() {
             <label className="label">Description:</label>
             <ErrorMessage name="Description" component="span" />
             <Field id="InputOffer" name="Description" className="field" placeholder="Description" />
+
+            <label className="label">From:</label>
+            <ErrorMessage name="FromDate" component="span" />
+            <Field type="date" id="InputOffer" name="FromDate" className="field" placeholder="" />
+
+            <label className="label">Valid Till:</label>
+            <ErrorMessage name="TillDate" component="span" />
+            <Field type="date" id="InputOffer" name="TillDate" className="field" placeholder="" />
 
             <button type="submit" className="submit-button">
               Submit

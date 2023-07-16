@@ -1,21 +1,27 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const Posts = sequelize.define("Posts", {
-        title: {
+    const service = sequelize.define("service", {
+        serviceID: {
+            type: DataTypes.STRING,
+            allowNull: false, 
+        },
+
+        ServiceDesrciption: {
             type: DataTypes.STRING,
             allowNull: false,
         },
 
-        postText: {
+        ServiceDesrciption: {
             type: DataTypes.STRING,
             allowNull: false,
         },
 
-        username: {
+        ServicePrice: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-                
-    })
-    return Posts
-}
+    });
+    
+return service;
+
+};  

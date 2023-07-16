@@ -1,30 +1,34 @@
 module.exports = (sequelize, DataTypes) => {
 
     const Offer = sequelize.define("Offer", {
-        Title: {
+
+        OfferID: {
             type: DataTypes.STRING,
             allowNull: false, 
         },
 
+        Title: {
+            type: DataTypes.STRING,
+            allowNull: false, 
+        },
+ 
         Description: {
             type: DataTypes.STRING,
             allowNull: true,
         },
 
-        username:{
-            type:DataTypes.STRING,
+        FromDate:{
+            type:DataTypes.DATE,
+            allowNull: false,
+        },
+
+        TillDate:{
+            type: DataTypes.DATE,
             allowNull: false,
         },
   
-    // Offer.associate = (models) => {
-    //     Offer.hasMany(models.Offers, {
-    //         onDelete: "cascade",
-    //     });
-    // };
-    
-    
     });
     
 return Offer;
-
+ 
 };  

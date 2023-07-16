@@ -1,16 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
 
-    const Owners = sequelize.define("Owners", {
-        username: {
+    const owner = sequelize.define("owner", {
+        OwnerID: {
+            type: DataTypes.STRING,
+            allowNull: false, 
+        },
+
+        Role: {
             type: DataTypes.STRING,
             allowNull: false,
         },
 
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-                
-    }) 
-    return Owners;
-} 
+    });
+    
+return owner;
+
+};  

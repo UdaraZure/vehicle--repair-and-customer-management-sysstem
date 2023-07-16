@@ -6,7 +6,6 @@ import Register from './Register/Register'
 import EmployeeDashboard from './EmployeeDashboard/EmployeeDashboard';
 import CustomerRegister from './CustomerRegister/CustomerRegister';
 import Offers from './Offers/Offers';
-import OwnerRegister from './OwnerRegister/OwnerRegister';
 
 export default function PathBunch() {
   return (
@@ -19,7 +18,6 @@ export default function PathBunch() {
                 <Route path = "/Register" element={<Register/>}></Route>
                 <Route path = "/employeedashboard" element={<EmployeeDashboard/>}></Route>
                 <Route path = "/CustomerRegister" element={<CustomerRegister/>}></Route>
-                <Route path = "/OwnerRegister" element={<OwnerRegister/>}></Route>
                 <Route path = "/Offers" element={<Offers/>}></Route>
             </Routes>
         </Router>
