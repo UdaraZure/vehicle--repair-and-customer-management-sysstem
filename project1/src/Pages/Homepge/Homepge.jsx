@@ -7,7 +7,7 @@ import MapContainer from './MapContainer';
 
 export default function Homepge() {
 
-    const [isNavVisible, setIsNavVisible] = useState(true);
+  const [isNavVisible, setIsNavVisible] = useState(true);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [animationFrame, setAnimationFrame] = useState(null);
 

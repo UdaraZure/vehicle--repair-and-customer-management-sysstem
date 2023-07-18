@@ -213,7 +213,16 @@ Nav{
     margin: 10px;
     width: 100px;
   }
-  
+
+  .valid-dates {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    font-size: 15px;
+    display: flex;
+    flex-wrap:wrap;
+  }
+
   .footer-table{
     background-color: #000000;
     width: 100%;

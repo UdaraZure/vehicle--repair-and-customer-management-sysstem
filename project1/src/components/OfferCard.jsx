@@ -8,12 +8,17 @@ function OfferCard() {
     axios.get('http://localhost:3001/offers')
       .then((res) => {
         setOffers(res.data);
-        console.log(res.data);
+        console.log(res.data); 
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
 
   return (
     <>
@@ -25,6 +30,10 @@ function OfferCard() {
             </div>
             <div className="content1">
               <p>{offer.Description}</p>
+              <div className="valid-dates" style={{fontSize:"15px"}} >
+                <div>Valid from: {formatDate(offer.FromDate)}</div>
+                <div style={{ marginLeft: '10px' }}>Till: {formatDate(offer.TillDate)}</div>
+              </div>
             </div>
           </div>
         </div>
