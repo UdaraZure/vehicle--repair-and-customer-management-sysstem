@@ -63,17 +63,15 @@ function Offers() {
 
 
   const handleEdit = (id) => {
-    setEditID(id);
+    // Show confirmation popup
+  const confirmUpdate = window.confirm('Are you sure you want to update this offer?');
+  if (!confirmUpdate) {
+    return;
+  }
+  setEditID(id);
   };
 
   const handleUpdate = (id, updatedOffer) => {
-
-    // Show confirmation popup
-    const confirmUpdate = window.confirm('Are you sure you want to update this offer?');
-    if (!confirmUpdate) {
-      return;
-    }
-
     axios
       .put(`http://localhost:3001/offers/${id}`, updatedOffer)
       .then((response) => {
@@ -95,7 +93,7 @@ function Offers() {
     if (!confirmDelete) {
       return;
     }
-    
+
     axios
       .delete(`http://localhost:3001/offers/${id}`)
       .then((response) => {
@@ -169,7 +167,7 @@ function Offers() {
           </thead>
           <tbody>
             {offers.map((offer, index) =>
-              offer.OfferID === editID ? (
+              offer.OfferID === editID ? ( 
                 <tr key={offer.OfferID}>
                   <td>{offer.OfferID}</td>
                   <td>

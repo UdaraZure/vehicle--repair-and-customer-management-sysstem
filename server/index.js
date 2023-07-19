@@ -14,6 +14,9 @@ app.use("/offers", offerRouter);
  
 const ServiceTypeRouter = require('./routes/ServiceTypes')
 app.use("/ServiceTypes", ServiceTypeRouter);
+
+const EmployeeRouter = require('./routes/Employees')
+app.use("/Employees", EmployeeRouter);
        
 db.sequelize.sync().then(()=> {
     app.listen(3001, () => {

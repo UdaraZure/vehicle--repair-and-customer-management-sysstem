@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
+    "cdbreact": "^1.5.18",
     "formik": "^2.4.2",
     "google-map-react": "^2.2.1",
     "mdb-react-ui-kit": "^6.1.0",
