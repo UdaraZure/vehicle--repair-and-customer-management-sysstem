@@ -4,6 +4,8 @@ import './Offers.css';
 import * as Yup from 'yup';
 import axios from 'axios';
 import Navbar from '../../components/NavBar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Offers() {
@@ -55,6 +57,7 @@ function Offers() {
       .then((response) => {
         setResponse(response.data);
         console.log('success');
+        toast.success('Offer creaated successfully!');
         resetForm();
         // window.location.reload(); // Refresh the page
       })
@@ -168,6 +171,7 @@ function Offers() {
             <button type="submit" className="submit-button">
               Submit
             </button>
+            <ToastContainer position="top-center" autoClose={3000} />
           </Form>
         </Formik>
       </div>

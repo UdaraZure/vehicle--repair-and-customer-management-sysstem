@@ -4,6 +4,8 @@ import './Employees.css';
 import * as Yup from 'yup';
 import axios from 'axios';
 import Navbar from '../../components/NavBar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function Employees() {
@@ -87,6 +89,7 @@ function Employees() {
       })
       .then((response) => {
         setResponse(response.data);
+        toast.success('Employee creaated successfully!');
         console.log('success');
         resetForm();
         // window.location.reload(); // Refresh the page
@@ -278,6 +281,7 @@ function Employees() {
             <button type="submit" className="submit-button">
               Submit
             </button>
+            <ToastContainer position="top-center" autoClose={3000} /> 
           </Form>
         </Formik>
       </div>

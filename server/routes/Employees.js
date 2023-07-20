@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { Employee } = require("../models")
+const bcrypt = require('bcrypt');
 
 // Get all Employees
 router.get("/", async (req, res) => {
   try {
     const listOfEmployees = await Employee.findAll();
     res.json(listOfEmployees);
-  } catch (error) {
+  } catch (error) { 
     console.error('Error fetching Employees:', error);
     res.status(500).json({ error: 'Internal server error' });
   } 
@@ -17,12 +18,50 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const EmployeeData = req.body;
-    const createdEmployee = await Employee.create(EmployeeData);
-    res.json(createdEmployee);
+    const hash = await bcrypt.hash(EmployeeData.Password, 10);
+    await Employee.create({
+      Role: EmployeeData.Role,
+      EmpName: EmployeeData.EmpName,
+      Address: EmployeeData.Address,
+      TelNo: EmployeeData.TelNo,
+      Email: EmployeeData.Email,
+      NIC: EmployeeData.NIC,
+      Gender: EmployeeData.Gender,
+      BirthDay: EmployeeData.BirthDay,
+      StartDate: EmployeeData.StartDate,
+      EndDate: EmployeeData.EndDate,
+      Password: hash,
+      Status: EmployeeData.Status,
+    });
+
+    // const createdEmployee = await Employee.create(EmployeeData);
+    res.json("Employee created successfully");
   } catch (error) {
     console.error('Error creating Employee:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
+}); 
+
+router.post("/login", async (req, res) => {
+  const { Email, Password } = req.body;
+  const EmployeeData = await Employee.findOne({ where: { Email: Email } });
+
+  if (!EmployeeData) {
+    return res.status(404).json({ error: 'Employee not found' });
+  }
+
+  bcrypt.compare(Password, EmployeeData.Password)
+    .then((match) => {
+      if (!match) {
+        return res.status(401).json({ error: 'Wrong Email and Password Combination!' });
+      }
+
+      res.json("logged in");
+    })
+    .catch((error) => {
+      console.error('Error comparing passwords:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
 });
 
 // Update an Employee

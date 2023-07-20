@@ -1,13 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Offer = sequelize.define(
-    "Offer",
+  const Offer = sequelize.define("Offer",
     {
-      // idOffer: {
-      //   type: DataTypes.STRING,
-      //   allowNull: false, 
-      //   autoincrement: true,
-      // }, 
-
       OfferID: {
         type: DataTypes.STRING,
         allowNull: false,  

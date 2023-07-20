@@ -6,17 +6,17 @@ import Navigationbar from '../../components/NavBar';
 
 
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [Email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const login = () => {
-    const data = { username: username, password: password };
+    const data = { Email: Email, password: password };
     axios.post('http://localhost:3001/Customers/login', data).then((response) => {
       if (response.data.error) {
         alert(response.data.error);
       }
       localStorage.setItem('accessToken', response.data);
-      setUsername('');
+      setEmail('');
       setPassword('');
     });
   };
@@ -31,8 +31,11 @@ export default function Login() {
           <p className="tittle-word">Log in</p>
           </div>
           <div className="inputBox">
-            <input type="text" required />
-            <span className="user">Email</span>
+            <input 
+            type="text" 
+            required
+            setEmail />
+            <span className="Email">Email</span>
           </div>
 
           <div className="inputBox">
@@ -40,7 +43,7 @@ export default function Login() {
             <span>Password</span>
           </div>
 
-          <button className="enter">Enter</button>
+          <button className="enter" onClick={login}>Enter</button>
         </div>
       </div>
     </>
@@ -60,10 +63,10 @@ export default function Login() {
                 required
                 type="text"
                 onChange={(event) => {
-                  setUsername(event.target.value);
+                  setEmail(event.target.value);
                 }}
               />
-              <span>Phone number, username, or email</span>
+              <span>Phone number, Email, or Email</span>
             </label>
             <label>
               <input

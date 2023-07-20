@@ -5,16 +5,14 @@ import './Customer.css';
 import Navigationbar from '../../components/NavBar';
 import axios from 'axios'; 
 import{useNavigate} from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Customer() {
 
-  // const [offers, setOffers] = useState([]); 
-  // const [editID, setEditID] = useState(-1);
   const [editedValues, setEditedValues] = useState({ Title: '', Description: '' });
   const [response, setResponse] = useState();
   let navigate = useNavigate();
-  // const [successMessage, setSuccessMessage] = useState(false);
-
 
   const initialValues = {
     CusName: '',
@@ -71,14 +69,14 @@ export default function Customer() {
   
   const onSubmit = (values, { resetForm }) => {
     // Show a popup message
-  const successMessage = document.createElement('div');
-  successMessage.className = 'popup-message';
-  successMessage.textContent = 'Customer Account Created. You will be redirected to the login page';
-  document.body.appendChild(successMessage);
+  // const successMessage = document.createElement('div');
+  // successMessage.className = 'popup-message';
+  // successMessage.textContent = 'Customer Account Created. You will be redirected to the login page';
+  // document.body.appendChild(successMessage);
 
   // Redirect to the login page after two seconds
   setTimeout(() => {
-    successMessage.remove();
+    // successMessage.remove();
     navigate("/Customers/login");
   }, 3000);
 
@@ -92,6 +90,7 @@ export default function Customer() {
       .then((response) => {
         setResponse(response.data);
         console.log('success');
+        toast.success('Customer Account Created. You will be redirected to the login page');
         resetForm();
         
       })
@@ -171,6 +170,7 @@ export default function Customer() {
           <button type="submit" className="submit" >
             Submit
           </button>
+          <ToastContainer position="top-center" autoClose={3000} />
 
           <p className="signin">
             Already have an account? <a href="http://localhost:3000/Customers/login" target="_blank">log in</a>
@@ -178,12 +178,7 @@ export default function Customer() {
         </Form>
       </Formik>
       </div>
-      {/* Popup message */}
-    {/* {successMessage && (
-      <div className="popup-message">
-        User Account Created
-      </div>
-    )} */}
+      
     </>
   );
 }
