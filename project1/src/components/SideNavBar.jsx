@@ -27,10 +27,13 @@ function SideNavBar() {
         <CDBSidebarContent className="sidebar-content">
           <CDBSidebarMenu>
             <NavLink exact to="http://localhost:3000/Offers" activeClassName="activeClicked" target="_blank">
-              <CDBSidebarMenuItem icon="columns">Offers</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem ><p>Offers</p></CDBSidebarMenuItem>
             </NavLink>
             <NavLink exact to="http://localhost:3000/ServiceTypes" activeClassName="activeClicked" target="_blank">
-              <CDBSidebarMenuItem icon="table">Service Types</CDBSidebarMenuItem>
+              <CDBSidebarMenuItem><p>Service Types</p></CDBSidebarMenuItem>
+            </NavLink>
+            <NavLink exact to="http://localhost:3000/Employees" activeClassName="activeClicked" target="_blank">
+              <CDBSidebarMenuItem><p>Employees</p></CDBSidebarMenuItem>
             </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>

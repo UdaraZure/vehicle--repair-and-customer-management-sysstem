@@ -32,7 +32,7 @@ export default function Login() {
           </div>
           <div className="inputBox">
             <input type="text" required />
-            <span className="user">Username</span>
+            <span className="user">Email</span>
           </div>
 
           <div className="inputBox">

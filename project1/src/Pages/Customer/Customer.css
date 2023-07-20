@@ -1,3 +1,8 @@
+body{
+    background-color: #000000;
+    
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -70,7 +75,7 @@
   position: relative;
 }
 
-.form label .input-register {
+.form label .input-customer {
   width: 100%;
   padding: 10px 10px 20px 10px;
   outline: 0;
@@ -78,7 +83,7 @@
   border-radius: 10px;
 }
 
-.form label .input-register + span {
+.form label .input-customer + span {
   position: absolute;
   left: 10px;
   top: 15px;
@@ -88,18 +93,18 @@
   transition: 0.3s ease;
 }
 
-.form label .input-register:placeholder-shown + span {
+.form label .input-customer:placeholder-shown + span {
   top: 15px;
   font-size: 0.9em;
 }
 
-.form label .input-register:focus + span,.form label .input-register:valid + span {
+.form label .input-customer:focus + span,.form label .input-customer:valid + span {
   top: 30px;
   font-size: 0.7em;
   font-weight: 600;
 }
 
-.form label .input-register:valid + span {
+.form label .input-customer:valid + span {
   color: #9a9a9a;
 }
 
@@ -128,4 +133,19 @@
     transform: scale(1.8);
     opacity: 0;
   }
+}
+
+.popup-message {
+  background-color: green;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+
+  /* Add a shadow */
+  box-shadow: 0 0 500px 200px rgba(0, 0, 0, 0.2);
 }

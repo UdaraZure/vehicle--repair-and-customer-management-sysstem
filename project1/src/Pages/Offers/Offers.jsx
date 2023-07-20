@@ -10,7 +10,7 @@ function Offers() {
   const [offers, setOffers] = useState([]);
   const [editID, setEditID] = useState(-1);
   const [editedValues, setEditedValues] = useState({ Title: '', Description: '' });
-  const [response, setResponse] = useState()
+  const [response, setResponse] = useState();
 
   const initialValues = {
     Title: '',
@@ -22,9 +22,28 @@ function Offers() {
   const validationSchema = Yup.object().shape({
     Title: Yup.string().min(5).max(50).required('You must input a title'),
     Description: Yup.string().max(100).required('You must input a description'),
-    FromDate: Yup.date().required('You must input a date'),
-    TillDate: Yup.date().required('You must input a date'),
+    FromDate: Yup.date()
+      .required('You must input a date')
+      .min(new Date(), 'From Date cannot be before today')
+      .test('fromDateBeforeTillDate', 'From Date must be before Till Date', function (value) {
+        const tillDate = this.parent.TillDate;
+        if (tillDate) {
+          return new Date(value) < new Date(tillDate);
+        }
+        return true;
+      }),
+    TillDate: Yup.date()
+      .required('You must input a date')
+      .min(new Date(), 'Till Date cannot be before today')
+      .test('tillDateAfterFromDate', 'Till Date must be after From Date', function (value) {
+        const fromDate = this.parent.FromDate;
+        if (fromDate) {
+          return new Date(value) > new Date(fromDate);
+        }
+        return true;
+      }),
   });
+  
 
   const onSubmit = (values, { resetForm }) => {
     axios

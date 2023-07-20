@@ -43,3 +43,8 @@
     overflow-y: auto;
     /* Scrollable contents if viewport is shorter than content. */
   }
+
+
+  .sidebar-content p{
+    color: aliceblue;
+  }

@@ -46,7 +46,19 @@ function Employees() {
     .required('Must Enter the email'),    
     NIC: Yup.string()
     .required('You must input your NIC')
-    .matches(/^[0-9]{9}[VX]$/, 'Invalid NIC format'),
+    .test('nic-validation', 'Invalid NIC format', (value) => {
+      if (!value) {
+        return false; // Fail validation if the value is empty
+      }
+
+      // Check if the NIC matches the format of 9 digits followed by 'V' or 'X'
+      const nicPattern1 = /^[0-9]{9}[VX]$/;
+
+      // Check if the NIC consists of 12 unique digits
+      const nicPattern2 = /^\d{12}$/;
+
+      return nicPattern1.test(value) || nicPattern2.test(value);
+    }),
     Gender: Yup.string().required('You must input your gender'),
     BirthDay: Yup.date()
     .required('You must input your birthday')
@@ -54,10 +66,16 @@ function Employees() {
       return value < new Date();
     }),    
     StartDate: Yup.date().required('You must input your start date'),
-    Password: Yup.string().required('You must input your password'),
+    Password: Yup.string().required('Password is required')
+    .min(8, 'Password must be at least 8 characters long')
+    .max(50, 'Password must not exceed 50 characters')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+      'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
+    ),
     ConfirmPassword: Yup.string()
-      .oneOf([Yup.ref('Password'), null], 'Passwords must match')
-      .required('Confirm password is required'),
+    .oneOf([Yup.ref('Password'), null], 'Passwords must match')
+    .required('Confirm password is required'),
   });
 
   const onSubmit = (values, { resetForm }) => {
@@ -192,7 +210,7 @@ function Employees() {
 
             <label className="label">Employee Name:</label>
             <ErrorMessage name="EmpName" component="span" />
-            <Field id="InputEmployee" name="EmpName" className="field" placeholder="EmpName..." />
+            <Field id="InputEmployee" name="EmpName" className="field" placeholder="Name..." />
 
             <label className="label">Address:</label>
             <ErrorMessage name="Address" component="span" />
@@ -200,7 +218,7 @@ function Employees() {
 
             <label className="label">Telephone Number:</label>
             <ErrorMessage name="TelNo" component="span" />
-            <Field id="InputEmployee" name="TelNo" className="field" placeholder="Tel No" />
+            <Field id="InputEmployee" name="TelNo" className="field" placeholder="07********" />
 
             <label className="label">Email:</label>
             <ErrorMessage name="Email" component="span" />
@@ -208,7 +226,7 @@ function Employees() {
 
             <label className="label">NIC:</label>
             <ErrorMessage name="NIC" component="span" />
-            <Field id="InputEmployee" name="NIC" className="field" placeholder="NIC" />
+            <Field id="InputEmployee" name="NIC" className="field" placeholder="*********V/X" />
 
             <label className="label">Gender:</label>
               <ErrorMessage name="Gender" component="span" />

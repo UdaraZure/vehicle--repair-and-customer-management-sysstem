@@ -1,9 +1,17 @@
 module.exports = (sequelize, DataTypes) => {
+  const Offer = sequelize.define(
+    "Offer",
+    {
+      // idOffer: {
+      //   type: DataTypes.STRING,
+      //   allowNull: false, 
+      //   autoincrement: true,
+      // }, 
 
-    const Offer = sequelize.define("Offer", {
       OfferID: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false,  
+        // primaryKey: true,
       },
       Title: {
         type: DataTypes.STRING,
@@ -21,37 +29,37 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-    }, {
+    },
+    {
       hooks: {
         beforeValidate: (offer) => {
           // Generate the OfferID with the desired format
           if (!offer.OfferID) {
-            // Find the highest existing OfferID
-            return Offer.max('OfferID').then((maxOfferID) => {
-              let nextOfferID = "OF001"; // Default OfferID if no existing records
-  
+            // Find the highest existing numeric part of OfferID
+            return Offer.max("OfferID").then((maxOfferID) => {
+              let nextNumericPart = 1; // Default numeric part if no existing records
+
               if (maxOfferID) {
-                // Increment the numeric part of the highest OfferID
+                // Extract the numeric part from the highest OfferID and increment it
                 const numericPart = parseInt(maxOfferID.slice(2), 10);
-                const nextNumericPart = numericPart + 1;
-                const paddedNumericPart = nextNumericPart.toString().padStart(3, '0');
-                nextOfferID = `OF${paddedNumericPart}`;
+                nextNumericPart = numericPart + 1;
               }
-  
-              offer.OfferID = nextOfferID;
+
+              const paddedNumericPart = nextNumericPart.toString().padStart(3, "0");
+              offer.OfferID = `OF${paddedNumericPart}`;
             });
           }
-        }
-      }, 
+        },
+      },
       getterMethods: {
         formattedOfferID() {
           // Custom getter method to retrieve the formatted OfferID
           const numericPart = parseInt(this.OfferID.slice(2), 10);
-          return `OF${numericPart.toString().padStart(3, '0')}`;
-        }
-      }
-    });
-  
-    return Offer;
-  };
-   
+          return `OF${numericPart.toString().padStart(3, "0")}`;
+        },
+      },
+    }
+  );
+
+  return Offer;
+};
