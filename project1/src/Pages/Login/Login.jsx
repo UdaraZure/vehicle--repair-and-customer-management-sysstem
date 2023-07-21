@@ -3,22 +3,28 @@ import axios from 'axios';
 import './Login.css';
 import loginIcon from './login-icon.png';
 import Navigationbar from '../../components/NavBar';
-
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [Email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [Password, setPassword] = useState('');
+
+  let navigate = useNavigate();
 
   const login = () => {
-    const data = { Email: Email, password: password };
-    axios.post('http://localhost:3001/Customers/login', data).then((response) => {
-      if (response.data.error) {
-        alert(response.data.error);
-      }
-      localStorage.setItem('accessToken', response.data);
-      setEmail('');
-      setPassword('');
-    });
+    const data = { Email: Email, Password: Password };
+    axios.post('http://localhost:3001/Employees/login', data)
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          localStorage.setItem('accessToken', response.data);
+          navigate('/OwnerDashboard');
+        }
+      })
+      .catch((error) => {
+        console.error("Error occurred", error);
+      });
   };
 
   return (
@@ -34,12 +40,19 @@ export default function Login() {
             <input 
             type="text" 
             required
-            setEmail />
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }} />
             <span className="Email">Email</span>
           </div>
 
           <div className="inputBox">
-            <input type="password" required />
+            <input 
+            type="Password" 
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
+            required />
             <span>Password</span>
           </div>
 
@@ -71,7 +84,7 @@ export default function Login() {
             <label>
               <input
                 required
-                type="password"
+                type="Password"
                 onChange={(event) => {
                   setPassword(event.target.value);
                 }}
@@ -83,7 +96,7 @@ export default function Login() {
         </form>
 
         <div className="content__forgot-buttons">
-          <button>Forgot password?</button>
+          <button>Forgot Password?</button>
         </div>
       </div>
     </div> */

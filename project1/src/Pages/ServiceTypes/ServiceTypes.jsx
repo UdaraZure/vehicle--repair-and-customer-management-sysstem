@@ -84,24 +84,24 @@ function ServiceTypes() {
       });
   };
   
-  const handleDelete = (id) => {
+  // const handleDelete = (id) => {
 
-    // Show confirmation popup
-    const confirmDelete = window.confirm('Are you sure you want to delete this serviceType?');
-    if (!confirmDelete) {
-      return;
-    }
+  //   // Show confirmation popup
+  //   const confirmDelete = window.confirm('Are you sure you want to delete this serviceType?');
+  //   if (!confirmDelete) {
+  //     return;
+  //   }
 
-    axios
-      .delete(`http://localhost:3001/serviceTypes/${id}`)
-      .then((response) => {
-        console.log('serviceType deleted successfully');
-        setServiceTypes((prevServiceTypes) => prevServiceTypes.filter((serviceType) => serviceType.ServiceTypeID !== id));
-      })
-      .catch((error) => {
-        console.log('Error deleting service Type:', error);
-      });
-  };
+  //   axios
+  //     .delete(`http://localhost:3001/serviceTypes/${id}`)
+  //     .then((response) => {
+  //       console.log('serviceType deleted successfully');
+  //       setServiceTypes((prevServiceTypes) => prevServiceTypes.filter((serviceType) => serviceType.ServiceTypeID !== id));
+  //     })
+  //     .catch((error) => {
+  //       console.log('Error deleting service Type:', error);
+  //     });
+  // };
   
   
 
@@ -175,7 +175,7 @@ function ServiceTypes() {
                   <td>{serviceType.STDescription}</td>
                   <td>
                     <button onClick={() => handleEdit(serviceType.ServiceTypeID)}>Edit</button>
-                    <button onClick={() => handleDelete(serviceType.ServiceTypeID)}>Delete</button>
+                    {/* <button onClick={() => handleDelete(serviceType.ServiceTypeID)}>Delete</button> */}
                   </td>
                 </tr>
               )

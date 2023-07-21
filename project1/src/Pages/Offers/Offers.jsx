@@ -55,17 +55,27 @@ function Offers() {
         }
       })
       .then((response) => {
-        setResponse(response.data);
-        console.log('success');
-        toast.success('Offer creaated successfully!');
-        resetForm();
-        // window.location.reload(); // Refresh the page
+        if (response.data.error) {
+          console.log('error');
+          console.log(response.data.error);
+          // Handle network errors or server-side validation errors
+          toast.error('Failed to create offer. Please try again.');
+        } else if (response.status === 201 || response.status === 200) {
+          setResponse(response.data);
+          console.log('success');
+          toast.success('Offer created successfully!');
+          resetForm();
+          // window.location.reload(); // Refresh the page
+        }
       })
       .catch((error) => {
         console.log('error');
         console.log(error);
+        // Handle network errors or server-side validation errors
+        toast.error('Failed to create offer. Please try again.');
       });
   };
+  
   
 
   useEffect(() => {

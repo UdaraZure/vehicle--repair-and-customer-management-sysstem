@@ -141,24 +141,24 @@ function Employees() {
       });
   };
   
-  const handleDelete = (id) => {
+  // const handleDelete = (id) => {
 
-    // Show confirmation popup
-    const confirmDelete = window.confirm('Are you sure you want to delete this Employee?');
-    if (!confirmDelete) {
-      return;
-    }
+  //   // Show confirmation popup
+  //   const confirmDelete = window.confirm('Are you sure you want to delete this Employee?');
+  //   if (!confirmDelete) {
+  //     return;
+  //   }
 
-    axios
-      .delete(`http://localhost:3001/employees/${id}`)
-      .then((response) => {
-        console.log('Employee deleted successfully');
-        setEmployees((prevEmployees) => prevEmployees.filter((employee) => employee.EmployeeID !== id));
-      })
-      .catch((error) => {
-        console.log('Error deleting employee:', error);
-      });
-  };
+  //   axios
+  //     .delete(`http://localhost:3001/employees/${id}`)
+  //     .then((response) => {
+  //       console.log('Employee deleted successfully');
+  //       setEmployees((prevEmployees) => prevEmployees.filter((employee) => employee.EmployeeID !== id));
+  //     })
+  //     .catch((error) => {
+  //       console.log('Error deleting employee:', error);
+  //     });
+  // };
   
   
 
@@ -374,7 +374,7 @@ function Employees() {
                   <td>{employee.Status}</td> 
                   <td>
                     <button onClick={() => handleEdit(employee.EmployeeID)}>Edit</button>
-                    <button onClick={() => handleDelete(employee.EmployeeID)}>Delete</button>
+                    {/* <button onClick={() => handleDelete(employee.EmployeeID)}>Delete</button> */}
                   </td>
                 </tr>
               )

@@ -16,7 +16,7 @@ export default function PathBunch() {
         <Router>
             <Routes>
                 <Route exact path = "/" element={<Homepge/>}></Route>
-                <Route path = "/Customers/login" element={<Login/>}></Route>
+                <Route path = "/Employees/login" element={<Login/>}></Route>
                 <Route path = "/Customer" element={<Customer/>}></Route>
                 <Route path = "/employeedashboard" element={<EmployeeDashboard/>}></Route>
                 <Route path = "/Offers" element={<Offers/>}></Route>

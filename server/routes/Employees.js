@@ -3,6 +3,8 @@ const router = express.Router();
 const { Employee } = require("../models")
 const bcrypt = require('bcrypt');
 
+const {sign} = require('jsonwebtoken')
+
 // Get all Employees
 router.get("/", async (req, res) => {
   try {
@@ -53,10 +55,14 @@ router.post("/login", async (req, res) => {
   bcrypt.compare(Password, EmployeeData.Password)
     .then((match) => {
       if (!match) {
-        return res.status(401).json({ error: 'Wrong Email and Password Combination!' });
+        return res.status(401).json({ error: 'Wrong Email and Password Combination!' }); 
       }
+      const accessToken = sign({Email:Employee.Email, Role:Employee.Role, id: Employee.id},
+        "jsonwebtokensecret"
+        );
 
-      res.json("logged in");
+      res.json(accessToken);
+      
     })
     .catch((error) => {
       console.error('Error comparing passwords:', error);
