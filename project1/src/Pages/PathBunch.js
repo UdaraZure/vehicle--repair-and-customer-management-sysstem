@@ -8,6 +8,7 @@ import Offers from './Offers/Offers';
 import ServiceTypes from './ServiceTypes/ServiceTypes';
 import OwnerDashboard from './OwnerDashboard/OwnerDashboard';
 import Employees from './Employees/Employees';
+import Quotation from './Quotation/Quotation';
 
 export default function PathBunch() {
   return (
@@ -23,6 +24,7 @@ export default function PathBunch() {
                 <Route path = "/ServiceTypes" element={<ServiceTypes/>}></Route>
                 <Route path = "/OwnerDashboard" element={<OwnerDashboard/>}></Route>
                 <Route path = "/Employees" element={<Employees/>}></Route>
+                <Route path = "/Quotation" element={<Quotation/>}></Route>
             </Routes>
         </Router>
     </div>

@@ -1,0 +1,76 @@
+/* Styling for the form elements */
+.quotation-container{
+    background-color: #fff;
+}
+
+.form-group {
+    display: flex;
+    align-items: center; /* Align items horizontally */
+    margin-bottom: 10px;
+  }
+  
+  .form-group label {
+    font-weight: bold;
+    margin-right: 10px; /* Add some spacing between label and input */
+  }
+
+  .service-input {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .form-control {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .btn-submit {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn-submit:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Styling for error messages */
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  /* Styling for the service list */
+  .service-section {
+    margin-top: 20px;
+  }
+  
+  .service-list {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  
+  .service-item {
+    margin-bottom: 5px;
+  }
+  
+  /* Styling for the total price */
+  .total-price {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  /* Styling for the message when no services are added */
+  .no-services {
+    margin-top: 20px;
+    font-style: italic;
+    color: #777;
+  }
+  
