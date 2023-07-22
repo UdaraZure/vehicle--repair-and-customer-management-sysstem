@@ -57,7 +57,7 @@ router.post("/login", async (req, res) => {
       if (!match) {
         return res.status(401).json({ error: 'Wrong Email and Password Combination!' }); 
       }
-      const accessToken = sign({Email:Employee.Email, Role:Employee.Role, id: Employee.id},
+      const accessToken = sign({Email:EmployeeData.Email, Role:EmployeeData.Role, id: EmployeeData.id},
         "jsonwebtokensecret"
         );
 

@@ -103,8 +103,8 @@ module.exports = (sequelize, DataTypes) => {
     //         onDelete: "cascade",
     //     });
     // };
-    
-return Employee;
+     
+return Employee; 
 
 };  
 

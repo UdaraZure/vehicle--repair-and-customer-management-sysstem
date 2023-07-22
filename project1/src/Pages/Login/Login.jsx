@@ -60,45 +60,5 @@ export default function Login() {
         </div>
       </div>
     </>
-
-    /* <div className="container-login">
-      <div className="content-login">
-        <img
-          src={loginIcon}
-          height="50"
-          width="120"
-          alt=""
-        />
-        <form className="content__form">
-          <div className="content__inputs">
-            <label>
-              <input
-                required
-                type="text"
-                onChange={(event) => {
-                  setEmail(event.target.value);
-                }}
-              />
-              <span>Phone number, Email, or Email</span>
-            </label>
-            <label>
-              <input
-                required
-                type="Password"
-                onChange={(event) => {
-                  setPassword(event.target.value);
-                }}
-              />
-              <span>Password</span>
-            </label>
-          </div>
-          <button onClick={login}>Log In</button>
-        </form>
-
-        <div className="content__forgot-buttons">
-          <button>Forgot Password?</button>
-        </div>
-      </div>
-    </div> */
   );
 }

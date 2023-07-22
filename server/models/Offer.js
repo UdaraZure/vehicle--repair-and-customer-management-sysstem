@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      Email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       hooks: {

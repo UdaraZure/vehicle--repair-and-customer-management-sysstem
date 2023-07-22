@@ -18,9 +18,11 @@ router.get("/", async (req, res) => {
 router.post("/",validateToken, async (req, res) => {
   try {
     const offerData = req.body;
-    const Role = req.user.Role;
-    offerData.Role = Role;
-    const createdOffer = await Offer.create(offerData);
+
+    const Email = req.user.Email;
+    offerData.Email = Email; 
+
+    const createdOffer = await Offer.create(offerData); 
     res.json(createdOffer);
   } catch (error) {
     console.error('Error creating offer:', error);
