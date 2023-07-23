@@ -9,15 +9,15 @@ function App() {
 
   return (
     <>
-    <LoginContext.Provider value={{LoginState, setLoginState}}>
-    <div className="App">
-    </div>
-    <div>
+    
+    <div className='App'>
       <center>
+      <LoginContext.Provider value={{LoginState, setLoginState}}>
       <PathBunch/>
+      </LoginContext.Provider>
       </center>
     </div>
-    </LoginContext.Provider>
+    
     </>
 
   );
