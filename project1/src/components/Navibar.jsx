@@ -30,10 +30,8 @@ function Navigationbar() {
           </Nav>
           {!localStorage.getItem('accessToken')&& (
           <Nav>
-    
               <Nav.Link href="/Employees/login" className="Login-button" target="_blank">Login</Nav.Link>
               <Nav.Link href="/Customer" className="Register-button" target="_blank">Register</Nav.Link>
-
           </Nav>
           )
           }

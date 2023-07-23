@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import './Login.css';
 import loginIcon from './login-icon.png';
 import Navigationbar from '../../components/NavBar';
 import { useNavigate } from 'react-router-dom';
+import { LoginContext } from '../../helpers/LoginContext'; 
 
 export default function Login() {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
+  const {setLoginState} = useContext(LoginContext);
 
   let navigate = useNavigate();
 
@@ -19,6 +21,7 @@ export default function Login() {
           alert(response.data.error);
         } else {
           localStorage.setItem('accessToken', response.data);
+          setLoginState(true);
           navigate('/OwnerDashboard');
         }
       })
