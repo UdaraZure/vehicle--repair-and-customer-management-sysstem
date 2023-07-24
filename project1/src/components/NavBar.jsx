@@ -1,35 +1,17 @@
-import React, { useEffect, useRef } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import GarageIcon from "./GarageIcon.png"
-// import { LoginContext } from '../helpers/LoginContext';
-// import { useState } from 'react';
-// import axios from 'axios';
+
 
 function HeadNavbar() {
-  // const [loginState, setLoginState] = useState(false);
 
  
-  // useEffect(()=> {
-  //   axios.get('http://localhost:3001/Employees/login', {
-  //     headers: {
-  //       accessToken: localStorage.getItem('accessToken'),
-  //     },
-  //   })
-  //     .then((response)=>{
-  //     if(response.data.error){
-  //       setLoginState(false);
-  //     } else{
-  //       setLoginState(true);
-  //     }
-  // });
-  // },[]);
+  
 
   return (
     <>
-    {/* <LoginContext.Provider value={{loginState, setLoginState}}> */}
     <div>
     <Navbar collapseOnSelect expand="lg" bg="black" variant="dark" fixed='top' >
       <Container>
@@ -45,18 +27,17 @@ function HeadNavbar() {
             </Nav.Link>
             
           </Nav>
-          {/* {!localStorage.getItem('accessToken') && ( */}
+          
           <Nav>
             <Nav.Link href="/Employees/login" className="Login-button" target="_blank">Login</Nav.Link>
             <Nav.Link href="/Customer" className="Register-button" target="_blank">Register</Nav.Link>
           </Nav>
-          {/* )}  */}
+          
         </Navbar.Collapse>
       </Container>
     </Navbar>
     <hr size="2" color= "fff" width="50%"/>
     </div>
-    {/* </LoginContext.Provider>         */}
     </>
   )
 }

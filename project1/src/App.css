@@ -1,0 +1,11 @@
+.Navbar-main button{
+    height: 50px;
+    width: 100px;
+    background-color: #841302;
+    border-radius: 10px;
+    color: aliceblue;
+}
+
+.Navbar-main button:hover{ 
+    background-color: #4e0b01;
+}

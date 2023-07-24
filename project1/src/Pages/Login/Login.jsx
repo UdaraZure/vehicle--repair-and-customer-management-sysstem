@@ -8,7 +8,8 @@ import { LoginContext } from '../../helpers/LoginContext';
 export default function Login() {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState(''); 
-  const [setLoginState] = useContext(LoginContext);
+  const { setLoginState } = useContext(LoginContext);
+
 
   let navigate = useNavigate();
 
