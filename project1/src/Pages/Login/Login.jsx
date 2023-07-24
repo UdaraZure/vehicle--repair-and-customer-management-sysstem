@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import './Login.css';
 import loginIcon from './login-icon.png';
-import Navigationbar from '../../components/NavBar';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../helpers/LoginContext'; 
 
@@ -32,7 +31,6 @@ export default function Login() {
 
   return (
     <>
-      <Navigationbar />
       <div className="container-form">
         <div className="card-form">
           <div className='form-header1'>

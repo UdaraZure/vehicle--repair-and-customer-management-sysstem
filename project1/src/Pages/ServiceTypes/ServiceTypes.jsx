@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './ServiceTypes.css';
 import * as Yup from 'yup';
 import axios from 'axios';
-import Navbar from '../../components/NavBar';
 
 
 function ServiceTypes() {
@@ -84,26 +83,6 @@ function ServiceTypes() {
       });
   };
   
-  // const handleDelete = (id) => {
-
-  //   // Show confirmation popup
-  //   const confirmDelete = window.confirm('Are you sure you want to delete this serviceType?');
-  //   if (!confirmDelete) {
-  //     return;
-  //   }
-
-  //   axios
-  //     .delete(`http://localhost:3001/serviceTypes/${id}`)
-  //     .then((response) => {
-  //       console.log('serviceType deleted successfully');
-  //       setServiceTypes((prevServiceTypes) => prevServiceTypes.filter((serviceType) => serviceType.ServiceTypeID !== id));
-  //     })
-  //     .catch((error) => {
-  //       console.log('Error deleting service Type:', error);
-  //     });
-  // };
-  
-  
 
   const handleInputChange = (e, fieldName, index) => {
     const { value } = e.target;
@@ -114,7 +93,7 @@ function ServiceTypes() {
 
   return (
     <>
-      <Navbar />	
+
       <div className="ServiceTypeContainer">
         
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>

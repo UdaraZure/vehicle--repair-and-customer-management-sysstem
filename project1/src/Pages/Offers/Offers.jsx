@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './Offers.css';
 import * as Yup from 'yup';
 import axios from 'axios';
-import Navbar from '../../components/NavBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -156,7 +155,6 @@ function Offers() {
 
   return (
     <>
-      <Navbar />	
       <div className="OfferContainer">
         
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>

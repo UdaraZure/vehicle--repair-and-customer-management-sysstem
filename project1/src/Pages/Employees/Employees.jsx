@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import './Employees.css';
 import * as Yup from 'yup';
 import axios from 'axios';
-import Navbar from '../../components/NavBar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -141,27 +140,6 @@ function Employees() {
       });
   };
   
-  // const handleDelete = (id) => {
-
-  //   // Show confirmation popup
-  //   const confirmDelete = window.confirm('Are you sure you want to delete this Employee?');
-  //   if (!confirmDelete) {
-  //     return;
-  //   }
-
-  //   axios
-  //     .delete(`http://localhost:3001/employees/${id}`)
-  //     .then((response) => {
-  //       console.log('Employee deleted successfully');
-  //       setEmployees((prevEmployees) => prevEmployees.filter((employee) => employee.EmployeeID !== id));
-  //     })
-  //     .catch((error) => {
-  //       console.log('Error deleting employee:', error);
-  //     });
-  // };
-  
-  
-
   const handleInputChange = (e, fieldName, index) => {
     const { name, value } = e.target;
     const updatedEmployees = [...employees];
@@ -195,7 +173,6 @@ function Employees() {
 
   return (
     <>
-      <Navbar />	
       <div className="EmployeeContainer">
 
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>

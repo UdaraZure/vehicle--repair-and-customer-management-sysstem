@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import './Customer.css';
-import Navigationbar from '../../components/NavBar';
 import axios from 'axios'; 
 import{useNavigate} from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
@@ -68,11 +67,6 @@ export default function Customer() {
   });
   
   const onSubmit = (values, { resetForm }) => {
-    // Show a popup message
-  // const successMessage = document.createElement('div');
-  // successMessage.className = 'popup-message';
-  // successMessage.textContent = 'Customer Account Created. You will be redirected to the login page';
-  // document.body.appendChild(successMessage);
 
   // Redirect to the login page after two seconds
   setTimeout(() => {
@@ -118,7 +112,6 @@ export default function Customer() {
 
   return (
     <>
-    <Navigationbar />
     <div className='register-body'>
     <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
         <Form className="form">
