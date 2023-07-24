@@ -10,12 +10,10 @@ import { useState } from 'react';
 
 
 function Navigationbar() {
-const {loginState, setLoginState} = useState(false);
+const [loginState, setLoginState] = useState(false);
 
   return (
-    <>
-    <LoginContext.Provider value={{loginState, setLoginState}}>
-
+    <LoginContext.Provider value={{ loginState, setLoginState }}>
     <div>
     <Navbar collapseOnSelect expand="lg" bg="black" variant="dark" fixed='top' >
       <Container>
@@ -47,7 +45,6 @@ const {loginState, setLoginState} = useState(false);
     <hr size="2" color= "fff" width="50%"/>
     </div>
     </LoginContext.Provider>        
-    </>
   )
 }
 

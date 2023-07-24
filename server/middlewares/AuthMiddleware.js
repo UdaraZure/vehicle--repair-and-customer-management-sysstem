@@ -13,7 +13,6 @@ const validateToken = (req, res, next) => {
         req.user = validToken;  
 
         if (validToken) {
-            // req.user = validToken;
             return next();
         }       
     } catch (err) {

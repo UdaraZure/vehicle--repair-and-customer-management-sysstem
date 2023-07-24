@@ -7,8 +7,8 @@ import { LoginContext } from '../../helpers/LoginContext';
 
 export default function Login() {
   const [Email, setEmail] = useState('');
-  const [Password, setPassword] = useState('');
-  const {setLoginState} = useContext(LoginContext);
+  const [Password, setPassword] = useState(''); 
+  const [setLoginState] = useContext(LoginContext);
 
   let navigate = useNavigate();
 
@@ -20,7 +20,7 @@ export default function Login() {
           alert(response.data.error);
         } else {
           navigate('/OwnerDashboard');
-          localStorage.setItem('accessToken', response.data);
+          localStorage.setItem('accessToken', response.data.accessToken);          
           setLoginState(true);
           
         }
