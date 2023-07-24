@@ -50,7 +50,7 @@ function Offers() {
     axios
       .post('http://localhost:3001/offers', values, {
         headers: {
-          accessToken: localStorage.getItem('accessToken'),
+          accessToken:localStorage.getItem('accessToken'),
         }
       })
       .then((response) => {

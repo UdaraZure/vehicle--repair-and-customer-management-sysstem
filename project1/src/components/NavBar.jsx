@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -6,9 +6,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import GarageIcon from "./GarageIcon.png"
 import { LoginContext } from '../helpers/LoginContext';
 import { useState } from 'react';
+import axios from 'axios';
 
 function HeadNavbar() {
   const {loginState, setLoginState} = useState(false);
+
+  useEffect(()=> {
+    setLoginState(true);
+  },[]);
 
   return (
     <>
@@ -28,7 +33,7 @@ function HeadNavbar() {
             </Nav.Link>
             
           </Nav>
-          {!loginState && (
+          {!localStorage.getItem('accessToken') && (
           <Nav>
             <Nav.Link href="/Employees/login" className="Login-button" target="_blank">Login</Nav.Link>
             <Nav.Link href="/Customer" className="Register-button" target="_blank">Register</Nav.Link>

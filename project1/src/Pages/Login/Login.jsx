@@ -19,9 +19,10 @@ export default function Login() {
         if (response.data.error) {
           alert(response.data.error);
         } else {
+          navigate('/OwnerDashboard');
           localStorage.setItem('accessToken', response.data);
           setLoginState(true);
-          navigate('/OwnerDashboard');
+          
         }
       })
       .catch((error) => {

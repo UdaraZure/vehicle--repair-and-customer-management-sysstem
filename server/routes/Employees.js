@@ -5,6 +5,8 @@ const bcrypt = require('bcrypt');
 
 const {sign} = require('jsonwebtoken')
 
+const { validateToken } = require ('../middlewares/AuthMiddleware')
+
 // Get all Employees
 router.get("/", async (req, res) => {
   try {
@@ -104,5 +106,9 @@ router.delete("/:id", async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+  router.get('/login', validateToken,(req,res) =>{
+    res.json(req.user)
+  })
   
 module.exports = router;
