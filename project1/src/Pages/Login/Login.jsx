@@ -17,13 +17,13 @@ export default function Login() {
     const data = { Email: Email, Password: Password };
     axios.post('http://localhost:3001/Employees/login', data)
       .then((response) => {
+        // console.log(response); // log the response data
         if (response.data.error) {
           alert(response.data.error);
-        } else {
+        } else { 
+          localStorage.setItem('accessToken', response.data.token);          
+          setLoginState({username: "" , id: 0, status: true	});
           navigate('/OwnerDashboard');
-          localStorage.setItem('accessToken', response.data.accessToken);          
-          setLoginState(true);
-          
         }
       })
       .catch((error) => {

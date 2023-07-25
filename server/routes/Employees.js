@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
         "jsonwebtokensecret"
         );
 
-      res.json(accessToken);
+      res.json({token: accessToken, username: username, Role: EmployeeData.Role, id: EmployeeData.id});
       
     })
     .catch((error) => {
@@ -112,3 +112,4 @@ router.delete("/:id", async (req, res) => {
   })
   
 module.exports = router;
+ 

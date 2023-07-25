@@ -12,27 +12,40 @@ import axios from 'axios';
 
 
 function App() {
-  const [loginState, setLoginState] = useState(false);
+  const [loginState, setLoginState] = useState({
+    username: "", 
+    id: 0, 
+    status: false,
+  });
 
  
   useEffect(()=> {
-    axios.get('http://localhost:3001/Employees/login', {
+    axios
+    .get('http://localhost:3001/Employees/login', {
       headers: {
         accessToken: localStorage.getItem('accessToken'),
       },
     })
       .then((response)=>{
       if(response.data.error){
-        setLoginState(false);
+        setLoginState({...loginState, status: false});
       } else{
-        setLoginState(true);
+        setLoginState({
+          username: response.data.Email, 
+          id: response.data.id, 
+          status: true,
+        });
       }
   });
   },[]);
    
   const Logout = () => {
     localStorage.removeItem('accessToken');
-    setLoginState(false);
+    setLoginState({
+      username: "", 
+      id: 0, 
+      status: false
+    });
   };
 
   return (
@@ -40,7 +53,7 @@ function App() {
    
     <div className="App">
     
-      <>
+     
       <Navbar className='Navbar-main' collapseOnSelect expand="lg" bg="black" variant="dark" fixed='top' >
       <Container>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -53,9 +66,8 @@ function App() {
               width = "120"
               />
             </Nav.Link>
-            
           </Nav>
-          {!loginState ? (
+          {!loginState.status ? (
           <Nav>
             <Nav.Link href="/Employees/login" className="Login-button" target="_blank">Login</Nav.Link>
             <Nav.Link href="/Customer" className="Register-button" target="_blank">Register</Nav.Link>
@@ -63,21 +75,17 @@ function App() {
           ) : (
             <button onClick={Logout}>Logout</button>
           )} 
+          <p>{loginState.username}</p>
         </Navbar.Collapse>
       </Container>
     </Navbar>
-      </>
-    
-    
     </div>
     <div>
       <center>
       <PathBunch/>
       </center>
     </div>
-    
     </LoginContext.Provider>
-
   );
 }
 
