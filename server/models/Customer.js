@@ -63,7 +63,6 @@ module.exports = (sequelize, DataTypes) => {
           }
         },
       },
-      // ... other options ...
     });
     
 return Customer;

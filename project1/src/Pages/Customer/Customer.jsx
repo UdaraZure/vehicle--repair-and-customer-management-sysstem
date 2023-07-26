@@ -80,6 +80,18 @@ export default function Customer() {
         headers: {
           accessToken: localStorage.getItem('accessToken'),
         }
+        
+      })
+      .then((response) => {
+
+        const newValues = {
+          ...values,
+          UserID: response.data.CustomerID,
+          UserRole: 'Customer',
+        }
+        axios
+        .post('http://localhost:3001/User', newValues)
+        
       })
       .then((response) => {
         setResponse(response.data);
@@ -89,7 +101,6 @@ export default function Customer() {
         
       })
       .catch((error) => {
-        console.log('error');
         console.log(error);
       });
      

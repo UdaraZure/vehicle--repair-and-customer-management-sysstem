@@ -87,6 +87,17 @@ function Employees() {
         }
       })
       .then((response) => {
+
+        const newValues = {
+          ...values,
+          UserID: response.data.EmployeeID,
+          UserRole: values.Role,
+        }
+        axios
+        .post('http://localhost:3001/User', newValues)
+        
+      })
+      .then((response) => {
         setResponse(response.data);
         toast.success('Employee creaated successfully!');
         console.log('success');

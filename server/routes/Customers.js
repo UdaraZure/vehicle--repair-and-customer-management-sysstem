@@ -18,12 +18,15 @@ router.post("/", async (req, res) => {
   try {
     const CustomerData = req.body;
     const createdCustomer = await Customer.create(CustomerData);
-    res.json(createdCustomer);
+    const CustomerID = createdCustomer.CustomerID; // Assuming "CustomerID" is the property in the model
+
+    res.json({ CustomerID });
   } catch (error) {
     console.error('Error creating Customer:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 // Update an Customer
 router.put("/:id", async (req, res) => {

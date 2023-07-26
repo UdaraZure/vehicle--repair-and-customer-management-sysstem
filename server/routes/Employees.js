@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
   try {
     const EmployeeData = req.body;
     const hash = await bcrypt.hash(EmployeeData.Password, 10);
-    await Employee.create({
+    const createdEmployee = await Employee.create({
       Role: EmployeeData.Role,
       EmpName: EmployeeData.EmpName,
       Address: EmployeeData.Address,
@@ -38,13 +38,14 @@ router.post("/", async (req, res) => {
       Status: EmployeeData.Status,
     });
 
-    // const createdEmployee = await Employee.create(EmployeeData);
-    res.json("Employee created successfully");
+    const EmployeeID = createdEmployee.EmployeeID; 
+    res.json({ EmployeeID });
   } catch (error) {
     console.error('Error creating Employee:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-}); 
+});
+
 
 router.post("/login", async (req, res) => {
   const { Email, Password } = req.body;
