@@ -63,7 +63,7 @@ router.post("/login", async (req, res) => {
         "jsonwebtokensecret"
         );
 
-      res.json({token: accessToken, username: username, Role: EmployeeData.Role, id: EmployeeData.id});
+      res.json({token: accessToken, username: EmployeeData.username, Role: EmployeeData.Role, id: EmployeeData.id});
       
     })
     .catch((error) => {

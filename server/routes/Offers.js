@@ -4,7 +4,7 @@ const { Offer } = require("../models")
 const {validateToken} = require("../middlewares/AuthMiddleware");
 
 // Get all offers
-router.get("/", async (req, res) => {
+router.get("/",validateToken, async (req, res) => {
   try {
     const listOfOffers = await Offer.findAll();
     res.json(listOfOffers);
@@ -31,7 +31,7 @@ router.post("/",validateToken, async (req, res) => {
 });
 
 // Update an offer
-router.put("/:id", async (req, res) => {
+router.put("/:id",validateToken, async (req, res) => {
   try {
     const offerId = req.params.id;
     const updatedOfferData = req.body;
@@ -49,7 +49,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // Delete an offer
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", validateToken, async (req, res) => {
     try {
       const offerId = req.params.id;
       const rowsDeleted = await Offer.destroy({
