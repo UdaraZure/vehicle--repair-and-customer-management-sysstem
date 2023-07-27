@@ -21,7 +21,7 @@ function HeadNavbar() {
             <Nav.Link href="/">
               <img className='GarageIcon'
               src={GarageIcon}
-              height="50"
+              height="60"
               width = "120"
               />
             </Nav.Link>

@@ -16,7 +16,7 @@ function SideNavBar() {
     
   return (
     <>
-      <div style={{ display: 'flex', height: '100vh', overflow: 'scroll initial', marginTop:"80px" }}>
+      <div style={{ display: 'flex', height: '100vh', overflow: 'scroll initial', marginTop:"95px" }}>
       <CDBSidebar textColor="#fff" backgroundColor="#333">
         <CDBSidebarHeader prefix={<i className="fa fa-bars fa-large"></i>}>
           <a href="http://localhost:3000/OwnerDashboard" className="text-decoration-none" style={{ color: 'inherit' }}>
@@ -38,7 +38,7 @@ function SideNavBar() {
           </CDBSidebarMenu>
         </CDBSidebarContent>
 
-        <CDBSidebarFooter style={{ textAlign: 'center' }}>
+        {/* <CDBSidebarFooter style={{ textAlign: 'center' }}>
           <div
             className="sidebar-btn-wrapper"
             style={{
@@ -47,7 +47,7 @@ function SideNavBar() {
           >
             Sidebar Footer
           </div>
-        </CDBSidebarFooter>
+        </CDBSidebarFooter> */}
       </CDBSidebar>
     </div>
     </>

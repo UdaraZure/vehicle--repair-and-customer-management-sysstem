@@ -9,21 +9,57 @@ export default function Login() {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState(''); 
   const { setLoginState } = useContext(LoginContext);
+  const [loginStat, setLoginStat] = useState({
+    username: "", 
+    Role: "", 
+    status: false,
+  });
+
 
 
   let navigate = useNavigate();
 
   const login = () => {
     const data = { Email: Email, Password: Password };
-    axios.post('http://localhost:3001/Employees/login', data)
+    axios.post('http://localhost:3001/User/login', data)
       .then((response) => {
         if (response.data.error) {
           alert(response.data.error);
         } else { 
           localStorage.setItem('accessToken', response.data.token);          
           setLoginState({username: response.data.username , id: response.data.id , status: true	});
-          navigate('/OwnerDashboard');
+        
         }
+      })
+      .then((response) => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) {
+          axios
+            .get('http://localhost:3001/User/Authentication', {
+              headers: {
+                accessToken: accessToken,
+              },
+            })
+            .then((response) => {
+              console.log(response.data);
+              if (response.data.error) {
+                setLoginStat({ ...loginStat, status: false });
+              } else {
+                setLoginStat({
+                  username: response.data.Email, 
+                  Role: response.data.UserRole, 
+                  status: true,
+                   
+                })
+              }
+console.log(response.data.Role);
+              if (response.data.Role	 === "Clark") {
+                navigate('/ClarkDashboard');
+              }
+                 
+            });
+        }
+        
       })
       .catch((error) => {
         console.error("Error occurred", error);

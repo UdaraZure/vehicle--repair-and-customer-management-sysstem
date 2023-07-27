@@ -18,6 +18,17 @@ router.get("/", async (req, res) => {
   } 
 });
 
+router.get("/ClarkDetails", async (req, res) => {
+  try {
+    const listOfClarks = await User.findAll({ where: { UserRole: "Clark" } });
+    res.json(listOfClarks);
+  } catch (error) {
+    console.error('Error fetching Clarks:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  } 
+});
+
+
 // Create a new Employee
 router.post("/", async (req, res) => {
   try {
@@ -47,31 +58,31 @@ router.post("/", async (req, res) => {
 });
 
 
-router.post("/login", async (req, res) => {
-  const { Email, Password } = req.body;
-  const EmployeeData = await Employee.findOne({ where: { Email: Email } });
+// router.post("/login", async (req, res) => {
+//   const { Email, Password } = req.body;
+//   const EmployeeData = await Employee.findOne({ where: { Email: Email } });
 
-  if (!EmployeeData) {
-    return res.status(404).json({ error: 'Employee not found' });
-  }
+//   if (!EmployeeData) {
+//     return res.status(404).json({ error: 'Employee not found' });
+//   }
 
-  bcrypt.compare(Password, EmployeeData.Password)
-    .then((match) => {
-      if (!match) {
-        return res.status(401).json({ error: 'Wrong Email and Password Combination!' }); 
-      }
-      const accessToken = sign({Email:EmployeeData.Email, Role:EmployeeData.Role, id: EmployeeData.id},
-        "jsonwebtokensecret"
-        );
+//   bcrypt.compare(Password, EmployeeData.Password)
+//     .then((match) => {
+//       if (!match) {
+//         return res.status(401).json({ error: 'Wrong Email and Password Combination!' }); 
+//       }
+//       const accessToken = sign({Email:EmployeeData.Email, Role:EmployeeData.Role, id: EmployeeData.id},
+//         "jsonwebtokensecret"
+//         );
 
-      res.json({token: accessToken, username: EmployeeData.username, Role: EmployeeData.Role, id: EmployeeData.id});
+//       res.json({token: accessToken, username: EmployeeData.username, Role: EmployeeData.Role, id: EmployeeData.id});
       
-    })
-    .catch((error) => {
-      console.error('Error comparing passwords:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    });
-});
+//     })
+//     .catch((error) => {
+//       console.error('Error comparing passwords:', error);
+//       res.status(500).json({ error: 'Internal server error' });
+//     });
+// });
 
 // Update an Employee
 router.put("/:id", async (req, res) => {
@@ -108,9 +119,9 @@ router.delete("/:id", async (req, res) => {
     }
   });
 
-  router.get('/login', validateToken,(req,res) =>{
-    res.json(req.user)
-  })
+  // router.get('/login', validateToken,(req,res) =>{
+  //   res.json(req.user)
+  // })
   
 module.exports = router;
  

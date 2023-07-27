@@ -12,7 +12,7 @@ import axios from 'axios';
 function App() {
   const [loginState, setLoginState] = useState({
     username: "", 
-    id: 0, 
+    Role: "", 
     status: false,
   });
 
@@ -20,7 +20,7 @@ function App() {
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
       axios
-        .get('http://localhost:3001/Employees/login', {
+        .get('http://localhost:3001/User/Authentication', {
           headers: {
             accessToken: accessToken,
           },
@@ -31,8 +31,9 @@ function App() {
           } else {
             setLoginState({
               username: response.data.Email, 
-              id: response.data.id, 
+              Role: response.data.UserRole, 
               status: true,
+
             });
           }
         });
@@ -43,14 +44,15 @@ function App() {
     localStorage.removeItem('accessToken');
     setLoginState({
       username: "", 
-      id: 0, 
-      status: false
+      Role: "", 
+      status: false,
     });
   };
 
   return (
     <LoginContext.Provider value={{ loginState, setLoginState }}>
-      <div className="App">       
+      <div className="App">   
+      
         <Navbar className='Navbar-main' collapseOnSelect expand="lg" bg="black" variant="dark" fixed='top'>
           <Container>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -66,7 +68,7 @@ function App() {
               </Nav>
               {!loginState.status ? (
                 <Nav>
-                  <Nav.Link href="/Employees/login" className="Login-button" >Login</Nav.Link>
+                  <Nav.Link href="/login" className="Login-button" >Login</Nav.Link>
                   <Nav.Link href="/Customer" className="Register-button" >Register</Nav.Link>
                 </Nav>
               ) : (
@@ -76,10 +78,10 @@ function App() {
             </Navbar.Collapse>
           </Container>
         </Navbar>
-      </div>
+        </div>    
       <div>
         <center>
-          <PathBunch/>
+          <PathBunch userRole={loginState.Role}/>
         </center>
       </div>
     </LoginContext.Provider>

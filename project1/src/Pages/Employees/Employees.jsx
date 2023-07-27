@@ -93,7 +93,8 @@ function Employees() {
           UserID: response.data.EmployeeID,
           UserRole: values.Role,
         }
-        axios
+        console.log(newValues);
+         axios
         .post('http://localhost:3001/User', newValues)
         
       })

@@ -18,6 +18,54 @@ router.get("/", async (req, res) => {
   } 
 });
 
+router.post("/login", async (req, res) => {
+  const { Email, Password } = req.body;
+ 
+  const UserData = await User.findOne({ where: { Email: Email } });
+
+  if (!UserData) {
+   
+    return res.status(404).json({ error: 'User not found' });
+  }
+ 
+  bcrypt.compare(Password, UserData.Password)
+    .then((match) => {
+      if (!match) {
+        return res.status(401).json({ error: 'Wrong Email and Password Combination!' }); 
+      }
+      const accessToken = sign({Email:UserData.Email, Role:UserData.UserRole},
+        "jsonwebtokensecret"
+        );
+
+      res.json({token: accessToken, username: UserData.Email, Role: UserData.UserRole});
+      
+    })
+    .catch((error) => {
+      console.error('Error comparing passwords:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    });
+});
+
+// router.post("/login", async (req, res) => {
+//   const { Password, Email } = req.body;
+//   const existingUser = await User.findOne({ where: { Email: Email } });
+//   if (!existingUser) {
+//     res.json({ error: "User Doesn't Exist" });
+//   } else {
+//     bcrypt.compare(Password, existingUser.Password).then((match) => {
+//       if (!match) {
+//         res.json({ error: "Wrong Username and Password Combination" });
+//       } else {
+//         const accessToken = sign(
+//           { Email: existingUser.Email, UserRole: existingUser.UserRole },
+//           "jsonwebtokensecret"
+//         );
+//         res.json(accessToken);
+//       }
+//     });
+//   }
+// });
+
 // Create a new User
 router.post("/", async (req, res) => {
   try {
@@ -37,31 +85,31 @@ router.post("/", async (req, res) => {
   }
 }); 
 
-router.post("/login", async (req, res) => {
-  const { Email, Password } = req.body;
-  const UserData = await User.findOne({ where: { Email: Email } });
+// router.post("/login", async (req, res) => {
+//   const { Email, Password } = req.body;
+//   const UserData = await User.findOne({ where: { Email: Email } });
 
-  if (!UserData) {
-    return res.status(404).json({ error: 'User not found' });
-  }
+//   if (!UserData) {
+//     return res.status(404).json({ error: 'User not found' });
+//   }
 
-  bcrypt.compare(Password, UserData.Password)
-    .then((match) => {
-      if (!match) {
-        return res.status(401).json({ error: 'Wrong Email and Password Combination!' }); 
-      }
-      const accessToken = sign({Email:UserData.Email, Role:UserData.Role, id: UserData.id},
-        "jsonwebtokensecret"
-        );
+//   bcrypt.compare(Password, UserData.Password)
+//     .then((match) => {
+//       if (!match) {
+//         return res.status(401).json({ error: 'Wrong Email and Password Combination!' }); 
+//       }
+//       const accessToken = sign({Email:UserData.Email, Role:UserData.UserRole, id: UserData.UserID},
+//         "jsonwebtokensecret"
+//         );
 
-      res.json({token: accessToken, username: UserData.username, Role: UserData.Role, id: UserData.id});
+//       res.json({token: accessToken, username: UserData.Email, Role: UserData.UserRole, id: UserData.UserID});
       
-    })
-    .catch((error) => {
-      console.error('Error comparing passwords:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    });
-});
+//     })
+//     .catch((error) => {
+//       console.error('Error comparing passwords:', error);
+//       res.status(500).json({ error: 'Internal server error' });
+//     });
+// });
 
 // Update an User
 router.put("/:id", async (req, res) => {
@@ -98,7 +146,7 @@ router.delete("/:id", async (req, res) => {
     }
   });
 
-  router.get('/login', validateToken,(req,res) =>{
+  router.get('/Authentication', validateToken,(req,res) =>{
     res.json(req.user)
   })
   

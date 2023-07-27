@@ -2,42 +2,14 @@ import React, { useState, useEffect } from 'react';
 import coverPhoto from './diasauto_cover1.png';
 import './HomepageStyle.css';
 import OfferCard from '../../components/OfferCard';
-import Navigationbar from '../../components/Navibar';
 import MapContainer from './MapContainer';
 
 export default function Homepge() {
 
-  const [isNavVisible, setIsNavVisible] = useState(true);
-  const [prevScrollPos, setPrevScrollPos] = useState(0);
-  const [animationFrame, setAnimationFrame] = useState(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      cancelAnimationFrame(animationFrame);
-
-      setAnimationFrame(
-        requestAnimationFrame(() => {
-          const currentScrollPos = window.pageYOffset;
-          const isScrollingUp = prevScrollPos > currentScrollPos;
-
-          setIsNavVisible(isScrollingUp || currentScrollPos < 10);
-          setPrevScrollPos(currentScrollPos);
-        })
-      );
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      cancelAnimationFrame(animationFrame);
-    };
-  }, [prevScrollPos, animationFrame]);
 
   return (
     <>
-      {isNavVisible && (
-        <Navigationbar />
-      )}
+  
       
       <div style={{ marginTop: "10vh" }} className='cover-photo'>
         <img src={coverPhoto} alt="Cover Photo" />
