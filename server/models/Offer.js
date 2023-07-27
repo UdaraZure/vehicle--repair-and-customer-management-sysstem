@@ -55,8 +55,14 @@ module.exports = (sequelize, DataTypes) => {
           return `OF${numericPart.toString().padStart(3, "0")}`;
         },
       },
-    }
-  );
+    });
+
+    Offer.associate = (models) => {
+      Offer.belongsTo(models.Employee, {
+        foreignKey: "EmployeeID",
+        onDelete: "cascade",
+      });
+  };
 
   return Offer;
 };

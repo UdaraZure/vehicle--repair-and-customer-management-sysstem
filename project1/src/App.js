@@ -79,9 +79,9 @@ function App() {
           </Container>
         </Navbar>
         </div>    
-      <div>
+      <div style={{marginTop:"110px"}}>
         <center>
-          <PathBunch userRole={loginState.Role}/>
+          <PathBunch/>
         </center>
       </div>
     </LoginContext.Provider>

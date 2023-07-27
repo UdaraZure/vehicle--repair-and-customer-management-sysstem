@@ -20,7 +20,9 @@ export default function Login() {
   let navigate = useNavigate();
 
   const login = () => {
+    
     const data = { Email: Email, Password: Password };
+
     axios.post('http://localhost:3001/User/login', data)
       .then((response) => {
         if (response.data.error) {
@@ -52,9 +54,17 @@ export default function Login() {
                    
                 })
               }
-console.log(response.data.Role);
-              if (response.data.Role	 === "Clark") {
+
+              if (response.data.Role	 === "Owner") {
+                navigate('/OwnerDashboard');
+              } else if (response.data.Role	 === "Manager") {
+                navigate('/ManagerDashboard');
+              } else if (response.data.Role	 === "Clark") {
                 navigate('/ClarkDashboard');
+              } else if (response.data.Role	 === "Customer") {
+                navigate('/CustomerDashboard');
+              } else {
+                navigate('/Login');
               }
                  
             });

@@ -33,11 +33,11 @@ router.post("/login", async (req, res) => {
       if (!match) {
         return res.status(401).json({ error: 'Wrong Email and Password Combination!' }); 
       }
-      const accessToken = sign({Email:UserData.Email, Role:UserData.UserRole},
+      const accessToken = sign({Email:UserData.Email, Role:UserData.UserRole, UserID: UserData.UserID},
         "jsonwebtokensecret"
         );
 
-      res.json({token: accessToken, username: UserData.Email, Role: UserData.UserRole});
+      res.json({token: accessToken, username: UserData.Email, Role: UserData.UserRole, UserID: UserData.UserID});
       
     })
     .catch((error) => {

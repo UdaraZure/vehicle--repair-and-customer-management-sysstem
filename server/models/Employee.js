@@ -98,11 +98,12 @@ module.exports = (sequelize, DataTypes) => {
         }
       });
 
-    // Employee.associate = (models) => {
-    //     Employee.hasMany(models.Offer, {
-    //         onDelete: "cascade",
-    //     });
-    // };
+    Employee.associate = (models) => {
+        Employee.hasMany(models.Offer, {
+            foreignKey: "EmployeeID",
+            onDelete: "cascade",
+        });
+    };
      
 return Employee; 
 
