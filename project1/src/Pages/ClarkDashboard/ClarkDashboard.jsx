@@ -1,74 +1,108 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import './ClarkDashboard.css';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
-import Row from 'react-bootstrap/Row';
-import Tab from 'react-bootstrap/Tab';
-import Modal from 'react-bootstrap/Modal';
-
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./ClarkDashboard.css";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import Col from "react-bootstrap/Col";
+import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
+import Tab from "react-bootstrap/Tab";
+import Modal from "react-bootstrap/Modal";
 
 export default function ClarkDashboard() {
+  const [employee, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+  const [editMode, setEditMode] = useState(false); // New state variable for edit mode
+  const [editedEmployee, setEditedEmployee] = useState(null); // New state variable for edited values
   const [loginState, setLoginState] = useState({
-    username: "", 
-    Role: "", 
+    username: "",
+    Role: "",
     status: false,
     UserID: "",
   });
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      axios
-        .get('http://localhost:3001/User/Authentication', {
-          headers: {
-            accessToken: accessToken,
-          },
-        })
-        .then((response) => {
+    const fetchData = async () => {
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        try {
+          const response = await axios.get("http://localhost:3001/User/Authentication", {
+            headers: {
+              accessToken: accessToken,
+            },
+          });
+
           if (response.data.error) {
             setLoginState({ ...loginState, status: false });
           } else {
-            console.log(response.data)
+            console.log(response.data);
             setLoginState({
-              username: response.data.Email, 
-              Role: response.data.UserRole, 
+              username: response.data.Email,
+              Role: response.data.UserRole,
               status: true,
-              UserID: response.data.UserID
+              UserID: response.data.UserID,
             });
+
+            try {
+              const employeeResponse = await axios.get(`http://localhost:3001/Employees/profile/${response.data.UserID}`);
+              console.log("employee", employeeResponse.data);
+              setEmployees(employeeResponse.data);
+            } catch (error) {
+              console.log("Error :", error);
+            }
           }
-        });
+        } catch (error) {
+          console.error("Error authenticating user:", error);
+        }
+      }
+    };
+
+    fetchData();
+  }, []); // Make sure to pass an empty dependency array to run this effect only once on mount
+
+  const onSubmit = async (values) => {
+    const data = {
+      ...values,
+      EmployeeID: loginState.UserID,
+    };
+
+    console.log(data);
+
+    try {
+      const response = await axios.post("http://localhost:3001/Job", data);
+      console.log("Form data sent successfully:", response.data);
+      handleCloseModal(); // Close the modal after successful form submission
+      // Add any additional actions you want to perform after successful submission
+    } catch (error) {
+      console.error("Error submitting form:", error);
     }
-  }, []); // Adding loginState.status as a dependency
-
-  const onSubmit = (values) => {
-
-const data ={
-  ...values,
-  EmployeeID: loginState.UserID,
-}
-
-console.log(data);
-    axios
-  .post('http://localhost:3001/Job', data)
-  .then((response) => {
-    console.log('Form data sent successfully:', response.data);
-    handleCloseModal(); // Close the modal after successful form submission
-    // Add any additional actions you want to perform after successful submission
-  })
- 
-        .catch((error) => {
-          console.error('Error authenticating user:', error);
-        });
-
   };
-  
+  const handleEditInfo = () => {
+    setEditedEmployee(employee); // Store the current employee data in editedEmployee state
+    setEditMode(true); // Enable edit mode
+  };
 
-  return (
+  // Function to handle the "Update" button click
+  const handleUpdateInfo = async () => {
+    try {
+      // Make an API call to update the employee data in the database using editedEmployee state
+      await axios
+      
+      .put(`http://localhost:3001/Employees/${employee.EmployeeID}`, editedEmployee);
+
+      // Update the employee state with the edited values
+      setEmployees(editedEmployee);
+
+      // Exit edit mode and clear the editedEmployee state
+      setEditMode(false);
+      setEditedEmployee(null);
+    } catch (error) {
+      console.error("Error updating employee data:", error);
+    }
+  };
+
+   return (
     <>
       <div style={{ marginTop: "100px" }}>
         <Tab.Container id="left-tabs-example" defaultActiveKey="first">
@@ -85,12 +119,21 @@ console.log(data);
             </Col>
             <Col sm={9}>
               <Tab.Content>
-                <Tab.Pane eventKey="first" className='Pcard'>
+                <Tab.Pane eventKey="first" className="Pcard">
                   <div className="Pcard-details">
-                    <p className="text-title">Card title</p>
-                    <p className="text-body">Here are the details of the Pcard</p>
+                    <div className="pcaard-header">
+                      Profile details of {employee && employee.EmpName}
+                    </div>
+                    <div className="Pcard-details">
+                      <div>Address: {editMode ? <input type="text" value={editedEmployee?.Address || ""} onChange={(e) => setEditedEmployee({ ...editedEmployee, Address: e.target.value })} /> : (employee && employee.Address)}</div>
+                      <div>TelNo: {editMode ? <input type="text" value={editedEmployee?.TelNo || ""} onChange={(e) => setEditedEmployee({ ...editedEmployee, TelNo: e.target.value })} /> : (employee && employee.TelNo)}</div>
+                      <div>NIC: {editMode ? <input type="text" value={editedEmployee?.NIC || ""} onChange={(e) => setEditedEmployee({ ...editedEmployee, NIC: e.target.value })} /> : (employee && employee.NIC)}</div>
+                      <div>StartDate: {employee && employee.StartDate}</div>
+                      <div>Status: {employee && employee.Status}</div>
+                    </div>
                   </div>
-                  <button className="Pcard-button">Edit info</button>
+                  {!editMode && <button className="Pcard-button" onClick={handleEditInfo}>Edit info</button>}
+                  {editMode && <button className="Pcard-button" onClick={handleUpdateInfo}>Update</button>}
                 </Tab.Pane>
 
                 <Tab.Pane eventKey="second">
@@ -112,48 +155,79 @@ console.log(data);
           {/* Repair Job Form */}
           <Formik
             initialValues={{
-              CustomerID: '',
-              VehicleNumber: '',
-              Model: '',
-              ServiceType: '',
-              JobDescription: '',
+              CustomerID: "",
+              VehicleNumber: "",
+              Model: "",
+              ServiceType: "",
+              JobDescription: "",
             }}
             onSubmit={onSubmit}
           >
             <Form>
-              <div className="form-group">
+            <div className="form-group">
                 <label htmlFor="CustomerID">Customer ID:</label>
                 <Field type="text" id="CustomerID" name="CustomerID" required />
-                <ErrorMessage name="CustomerID" component="div" className="error-message" />
+                <ErrorMessage
+                  name="CustomerID"
+                  component="div"
+                  className="error-message"
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="VehicleNumber">Vehicle Number:</label>
-                <Field type="text" id="VehicleNumber" name="VehicleNumber" required />
-                <ErrorMessage name="VehicleNumber" component="div" className="error-message" />
+                <Field
+                  type="text"
+                  id="VehicleNumber"
+                  name="VehicleNumber"
+                  required
+                />
+                <ErrorMessage
+                  name="VehicleNumber"
+                  component="div"
+                  className="error-message"
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="Model">Vehicle Model:</label>
                 <Field type="text" id="Model" name="Model" required />
-                <ErrorMessage name="Model" component="div" className="error-message" />
+                <ErrorMessage
+                  name="Model"
+                  component="div"
+                  className="error-message"
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="ServiceType">Service Type:</label>
-                <Field type="text" id="ServiceType" name="ServiceType" required />
-                <ErrorMessage name="ServiceType" component="div" className="error-message" />
+                <Field
+                  type="text"
+                  id="ServiceType"
+                  name="ServiceType"
+                  required
+                />
+                <ErrorMessage
+                  name="ServiceType"
+                  component="div"
+                  className="error-message"
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="JobDescription">Job Description:</label>
-                <Field as="textarea" id="JobDescription" name="JobDescription" required />
-                <ErrorMessage name="JobDescription" component="div" className="error-message" />
+                <Field
+                  as="textarea"
+                  id="JobDescription"
+                  name="JobDescription"
+                  required
+                />
+                <ErrorMessage
+                  name="JobDescription"
+                  component="div"
+                  className="error-message"
+                />
               </div>
-              <button type="submit">Submit</button>
-            </Form>
+              <button type="submit">Submit</button>            
+              </Form>
           </Formik>
         </Modal.Body>
-        {/* No need to change the Modal.Footer */}
-        <Modal.Footer>
-          {/* Add any footer content/buttons here */}
-        </Modal.Footer>
       </Modal>
     </>
   );

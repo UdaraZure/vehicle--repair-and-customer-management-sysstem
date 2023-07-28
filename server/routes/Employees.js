@@ -18,24 +18,20 @@ router.get("/", async (req, res) => {
   } 
 });
 
-router.get('/profile', validateToken, async (req, res) => {
+router.get("/profile/:id", async (req, res) => {
+  const {id} = req.params;
   try {
-    const userId = req.user.userId; // Assuming 'userId' is the key containing the user ID in the JWT payload
-    const employee = await Employee.findByPk(userId); // Assuming 'Employee' model has 'findByPk' method
-
-    if (!employee) {
-      return res.status(404).json({ error: 'Employee not found' });
-    }
-
-    // You can exclude sensitive fields like 'Password' from the response if needed
-    const { Password, ...employeeData } = employee.toJSON();
-
-    res.json(employeeData);
-  } catch (error) {
-    console.error('Error fetching Employee details:', error);
+    const listOfEmployees = await Employee.findOne(
+      {where: {EmployeeID: id}}
+    );
+    res.json(listOfEmployees);
+  } catch (error) { 
+    console.error('Error fetching Employees:', error);
     res.status(500).json({ error: 'Internal server error' });
-  }
-});         
+  } 
+});
+
+        
 
 // Create a new Employee
 router.post("/", async (req, res) => {

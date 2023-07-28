@@ -8,6 +8,9 @@ import PathBunch from './Pages/PathBunch';
 import { LoginContext } from './helpers/LoginContext';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
+
 
 function App() {
   const [loginState, setLoginState] = useState({
@@ -15,6 +18,7 @@ function App() {
     Role: "", 
     status: false,
   });
+
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
@@ -39,18 +43,22 @@ function App() {
         });
     }
   }, [loginState.status]); // Adding loginState.status as a dependency
-
+ 
   const Logout = () => {
+    
     localStorage.removeItem('accessToken');
     setLoginState({
       username: "", 
       Role: "", 
       status: false,
     });
+    
   };
 
   return (
+    <BrowserRouter>
     <LoginContext.Provider value={{ loginState, setLoginState }}>
+      
       <div className="App">   
       
         <Navbar className='Navbar-main' collapseOnSelect expand="lg" bg="black" variant="dark" fixed='top'>
@@ -72,7 +80,11 @@ function App() {
                   <Nav.Link href="/Customer" className="Register-button" >Register</Nav.Link>
                 </Nav>
               ) : (
-                <button onClick={Logout}>Logout</button>
+                <button onClick={() => {
+                  Logout();
+                  window.location = "/login";
+                }}>Logout</button>
+                
               )} 
               <p>{loginState.username}</p>
             </Navbar.Collapse>
@@ -85,7 +97,7 @@ function App() {
         </center>
       </div>
     </LoginContext.Provider>
-  );
+  </BrowserRouter>);
 }
 
 export default App;
