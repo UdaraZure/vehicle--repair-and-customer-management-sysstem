@@ -30,6 +30,9 @@ app.use("/Job", JobRouter);
 const QuotationRouter = require('./routes/Quotation')
 app.use("/Quotation", QuotationRouter);
 
+const ServiceRouter = require('./routes/Services')
+app.use("/Service", ServiceRouter);
+
 
        
 db.sequelize.sync().then(()=> {

@@ -15,9 +15,6 @@ function RepairJob() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [serviceTypeOptions, setServiceTypeOptions] = useState([]);
   const [selectedServiceType, setSelectedServiceType] = useState(null);
-  const [quotationExists, setQuotationExists] = useState(false);
-  const [quotationSubmitted, setQuotationSubmitted] = useState(false);
-  const [existingQuotation, setExistingQuotation] = useState(null);
 
   useEffect(() => {
     axios
@@ -45,19 +42,7 @@ function RepairJob() {
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:3001/Quotation?JobID=${JobID}`)
-      .then((res) => {
-        if (res.data.length > 0) {
-          setQuotationExists(true);
-          setExistingQuotation(res.data[0]);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [JobID]);
+  
 
   const handleModalClose = () => {
     setShowModal(false);
@@ -96,49 +81,17 @@ function RepairJob() {
       CreationDate: new Date().toISOString().slice(0, 10),
       QuotationStatus: "manager approval pending",
     };
-    if (quotationSubmitted) {
-      axios
-        .put(`http://localhost:3001/Quotation/${existingQuotation.QuotationID}`, newQuotation)
-        .then((res) => {
-          console.log(res.data);
-          setShowModal(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } else {
-      axios
-        .post("http://localhost:3001/Quotation", newQuotation)
-        .then((res) => {
-          console.log(res.data);
-          setQuotationSubmitted(true);
-          setShowModal(false);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-
-  const handleEdit = () => {
     axios
-      .get(`http://localhost:3001/Quotation/${existingQuotation.QuotationID}`)
+      .post("http://localhost:3001/Quotation", newQuotation)
       .then((res) => {
-        const quotationData = res.data;
-        setSelectedServiceType({
-          value: quotationData.ServiceType,
-          label: quotationData.ServiceType,
-        });
-        setDescription(quotationData.Description);
-        setAmount(quotationData.Amount);
-        setTableData([]);
-        setTotalAmount(quotationData.Qamount);
-        setShowModal(true);
+        console.log(res.data);
+        setShowModal(false);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  
 
   return (
     <div>
@@ -153,15 +106,9 @@ function RepairJob() {
               <div>Created By: {job.EmployeeID}</div>
               <div>Created at: {job.JobCreationDate}</div>
             </div>
-            {quotationExists && !quotationSubmitted ? (
-              <button className="createQ-button" onClick={handleEdit}>
-                <p className="createQ-button-content">Edit Quotation</p>
-              </button>
-            ) : (
-              <button className="createQ-button" onClick={handleModalShow}>
-                <p className="createQ-button-content">Create Quotation</p>
-              </button>
-            )}
+            <button className="createQ-button" onClick={handleModalShow}>
+              <p className="createQ-button-content">Create Quotation</p>
+            </button>
             <Modal show={showModal} onHide={handleModalClose}>
               <Modal.Header closeButton>
                 <Modal.Title>Create Quotation</Modal.Title>
@@ -177,7 +124,6 @@ function RepairJob() {
                       onChange={(selectedOption) =>
                         setSelectedServiceType(selectedOption)
                       }
-                      value={selectedServiceType}
                     />
                   </div>
                   <Form.Group controlId="description">
@@ -233,15 +179,9 @@ function RepairJob() {
                 <Button variant="primary" onClick={handleAddRecord}>
                   Add Record
                 </Button>
-                {quotationSubmitted ? (
-                  <Button variant="success" onClick={handleFinish}>
-                    Update
-                  </Button>
-                ) : (
-                  <Button variant="success" onClick={handleFinish}>
-                    Finish
-                  </Button>
-                )}
+                <Button variant="success" onClick={handleFinish}>
+                  Finish
+                </Button>
               </Modal.Footer>
             </Modal>
           </div>
