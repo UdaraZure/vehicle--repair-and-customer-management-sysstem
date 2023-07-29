@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
         },
 
-        ServiceDesrciption: {
+        ServiceDescription: {
             type: DataTypes.STRING,
             allowNull: false,
         },

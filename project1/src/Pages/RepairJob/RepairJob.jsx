@@ -15,6 +15,7 @@ function RepairJob() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [serviceTypeOptions, setServiceTypeOptions] = useState([]);
   const [selectedServiceType, setSelectedServiceType] = useState(null);
+  const [serviceArray, setServiceArray] = useState([]);
 
   useEffect(() => {
     axios
@@ -34,8 +35,10 @@ function RepairJob() {
         const options = res.data.map((ServiceType) => ({
           value: ServiceType.STName,
           label: ServiceType.STName,
+          ServiceTypeID: ServiceType.ServiceTypeID,
         }));
         setServiceTypeOptions(options);
+        console.log(options);
       })
       .catch((error) => {
         console.log(error);
@@ -61,17 +64,40 @@ function RepairJob() {
   };
 
   const handleAddRecord = () => {
+    if (!selectedServiceType) {
+      console.log("Please select a service type.");
+      return;
+    }
+  
     const newRecord = {
       serviceType: selectedServiceType.value,
       description: description,
       amount: amount,
     };
+  
+    const newQuotationService = {
+      JobID: JobID,
+      ServiceTypeID: selectedServiceType.ServiceTypeID,
+      Description: description,
+      Amount: amount,
+    };
+  
+    // Use the callback form to update serviceArray
+    setServiceArray(prevServiceArray => [...prevServiceArray, newQuotationService]);
+  
+    // Now log the updated serviceArray to check if it has been updated correctly
+    console.log([...serviceArray, newQuotationService]);
+  
+    // Rest of the code remains the same
     setTableData([...tableData, newRecord]);
     setTotalAmount(totalAmount + Number(amount));
     setDescription("");
     setAmount(0);
     setSelectedServiceType(null);
   };
+  
+  
+  
 
   const handleFinish = () => {
     const newQuotation = {
@@ -81,16 +107,40 @@ function RepairJob() {
       CreationDate: new Date().toISOString().slice(0, 10),
       QuotationStatus: "manager approval pending",
     };
+  
     axios
       .post("http://localhost:3001/Quotation", newQuotation)
       .then((res) => {
         console.log(res.data);
+        // After creating the quotation, send each service in serviceArray to the service table
+        serviceArray.forEach((service) => {
+          const newService = {
+            QuotationID: res.data.QuotationID, // Use the QuotationID generated for the new quotation
+            JobID: service.JobID,
+            ServiceTypeID: service.ServiceTypeID,
+            ServiceDescription:service.Description,
+            ServicePrice: service.Amount,
+          };
+
+          console.log(newService);
+  
+          axios
+            .post("http://localhost:3001/Service", newService)
+            .then((res) => {
+              console.log(res.data);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        });
+  
         setShowModal(false);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+  
   
 
   return (
