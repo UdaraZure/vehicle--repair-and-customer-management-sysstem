@@ -16,6 +16,14 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true, 
         },
 
+        QuotationID: {
+            type: DataTypes.STRING,
+        },
+
+        Qamount: {
+          type: DataTypes.STRING,
+      },
+
         VehicleNumber: {
             type: DataTypes.STRING,
             allowNull: false, 

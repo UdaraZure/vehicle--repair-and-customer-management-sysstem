@@ -27,6 +27,9 @@ app.use("/User", UserRouter);
 const JobRouter = require('./routes/RepairJob')
 app.use("/Job", JobRouter);
 
+const QuotationRouter = require('./routes/Quotation')
+app.use("/Quotation", QuotationRouter);
+
 
        
 db.sequelize.sync().then(()=> {

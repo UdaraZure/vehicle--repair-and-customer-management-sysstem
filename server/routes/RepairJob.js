@@ -16,15 +16,15 @@ router.get("/", async (req, res) => {
 
 router.get("/:JobID", async (req, res) => {
   try {
-    const jobId = req.params.JobID; // Retrieve the JobID from the URL parameter
-    const job = await Job.findByPk(jobId);
-
-    if (!job) {
-      // If the job with the specified JobID does not exist, return a 404 Not Found status.
-      return res.status(404).json({ error: 'Job not found' });
-    }
-
+    const jobID = req.params.JobID; // Retrieve the JobID from the URL parameter
+    const job = await Job.findAll({
+      where: {
+        JobID: jobID
+      }
+    });
+    
     res.json(job);
+    
   } catch (error) {
     console.error('Error fetching job:', error);
     res.status(500).json({ error: 'Internal server error' });
