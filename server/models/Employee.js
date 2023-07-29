@@ -74,14 +74,14 @@ module.exports = (sequelize, DataTypes) => {
             if (!employee.EmployeeID) {
               // Find the highest existing EmployeeID
               return Employee.max('EmployeeID').then((maxEmployeeID) => {
-                let nextEmployeeID = "E001"; // Default EmployeeID if no existing records
+                let nextEmployeeID = "EMP001"; // Default EmployeeID if no existing records
     
                 if (maxEmployeeID) {
                   // Increment the numeric part of the highest EmployeeID
                   const numericPart = parseInt(maxEmployeeID.slice(2), 10);
                   const nextNumericPart = numericPart + 1;
                   const paddedNumericPart = nextNumericPart.toString().padStart(3, '0');
-                  nextEmployeeID = `E${paddedNumericPart}`;
+                  nextEmployeeID = `EMP${paddedNumericPart}`;
                 }
     
                 employee.EmployeeID = nextEmployeeID;
@@ -93,7 +93,7 @@ module.exports = (sequelize, DataTypes) => {
           formattedEmployeeID() {
             // Custom getter method to retrieve the formatted EmployeeID
             const numericPart = parseInt(this.EmployeeID.slice(2), 10);
-            return `E${numericPart.toString().padStart(3, '0')}`;
+            return `EMP${numericPart.toString().padStart(3, '0')}`;
           }
         }
       });

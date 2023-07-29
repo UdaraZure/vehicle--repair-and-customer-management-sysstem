@@ -1,0 +1,60 @@
+.jobcard {
+    width: 100%;
+    max-width: 290px;
+    height: 70px;
+    background: #353535;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    backdrop-filter: blur(10px);
+    transition: 0.2s ease-in-out;
+    margin:10px;
+  }
+  
+  .jobcard:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+  }
+  
+  .jobcard img {
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+    border-radius: 10px;
+    background: linear-gradient(#d7cfcf, #9198e5);
+  }
+  
+  .jobcard:hover > .img {
+    transition: 0.5s ease-in-out;
+    background: linear-gradient(#9198e5, #712020);
+  }
+  
+  .textBox {
+    width: calc(100% - 90px);
+    margin-left: 10px;
+    color: rgb(255, 255, 255);
+    font-family: 'Poppins' sans-serif;
+  }
+  
+  .jobcard textContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .jobcard span {
+    font-size: 10px;
+  }
+  
+  .jobcard h1 {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .jobcard p {
+    font-size: 12px;
+    font-weight: lighter;
+  }
+  
+  

@@ -24,11 +24,13 @@ module.exports = (sequelize, DataTypes) => {
         JobCreationDate: {
             type: DataTypes.DATE,
             allowNull: true,
+            defaultValue: DataTypes.NOW, // Set the default value to the current date and time
         },
 
         Status: {
             type: DataTypes.STRING,
             allowNull: true, 
+            defaultValue: "New",
         },
 
         ServiceType: {
@@ -53,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
 
               if (maxJobID) {
                 // Extract the numeric part from the highest JobID and increment it
-                const numericPart = parseInt(maxJobID.slice(2), 10);
+                const numericPart = parseInt(maxJobID.slice(3), 10);
                 nextNumericPart = numericPart + 1;
               }
 

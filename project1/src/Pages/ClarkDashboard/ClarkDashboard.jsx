@@ -7,6 +7,7 @@ import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
 import Modal from "react-bootstrap/Modal";
+import { RepairJobCard } from "../../components/RepairJobCard";
 
 export default function ClarkDashboard() {
   const [employee, setEmployees] = useState([]);
@@ -15,6 +16,12 @@ export default function ClarkDashboard() {
   const handleCloseModal = () => setShowModal(false);
   const [editMode, setEditMode] = useState(false); // New state variable for edit mode
   const [editedEmployee, setEditedEmployee] = useState(null); // New state variable for edited values
+  const [searchQuery, setSearchQuery] = useState("");
+  const [repairJobs, setRepairJobs] = useState([]); // New state variable for repair jobs
+
+  const [submitValue,setSubmitValue] = useState("");
+
+
   const [loginState, setLoginState] = useState({
     username: "",
     Role: "",
@@ -73,11 +80,14 @@ export default function ClarkDashboard() {
       const response = await axios.post("http://localhost:3001/Job", data);
       console.log("Form data sent successfully:", response.data);
       handleCloseModal(); // Close the modal after successful form submission
-      // Add any additional actions you want to perform after successful submission
+setSubmitValue(loginState.UserID)
+      setRepairJobs([...repairJobs, response.data]);
+
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
+
   const handleEditInfo = () => {
     setEditedEmployee(employee); // Store the current employee data in editedEmployee state
     setEditMode(true); // Enable edit mode
@@ -100,6 +110,10 @@ export default function ClarkDashboard() {
     } catch (error) {
       console.error("Error updating employee data:", error);
     }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
    return (
@@ -139,6 +153,21 @@ export default function ClarkDashboard() {
                 <Tab.Pane eventKey="second">
                   <div>
                     <button onClick={handleShowModal}>Create Repair job</button>
+                  </div>
+                  <div>
+                    <div>
+                      {/* Add the search bar */}
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        placeholder="Search by Job ID"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    {/* Pass the searchQuery to the RepairJobCard component */}
+            <RepairJobCard searchQuery={searchQuery} value ={submitValue} repairJobs={repairJobs} setRepairJobs={setRepairJobs} />
                   </div>
                 </Tab.Pane>
               </Tab.Content>

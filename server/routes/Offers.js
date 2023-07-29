@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const { Offer } = require("../models")
-const {validateToken} = require("../middlewares/AuthMiddleware");
 
 // Get all offers
 router.get("/", async (req, res) => {
@@ -15,14 +14,10 @@ router.get("/", async (req, res) => {
 });
 
 // Create a new offer
-router.post("/",validateToken, async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const offerData = req.body;
-
-    const Email = req.user.Email;
-    offerData.Email = Email; 
-
-    const createdOffer = await Offer.create(offerData); 
+    const createdOffer = await Offer.create(offerData);
     res.json(createdOffer);
   } catch (error) {
     console.error('Error creating offer:', error);

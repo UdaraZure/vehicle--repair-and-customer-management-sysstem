@@ -67,7 +67,7 @@ router.put("/:id", async (req, res) => {
     const EmployeeId = req.params.id;
     const updatedEmployeeData = req.body;
     const [rowsUpdated] = await Employee.update(updatedEmployeeData, {
-      where: { id: EmployeeId }
+      where: { EmployeeID: EmployeeId } // Update the field name to match your database column name
     });
     if (rowsUpdated === 0) {
       return res.status(404).json({ error: 'Employee not found' });
@@ -78,6 +78,7 @@ router.put("/:id", async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
 
 // Delete an Employee
 router.delete("/:id", async (req, res) => {
