@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
 import Modal from "react-bootstrap/Modal";
 import { RepairJobCard } from "../../components/RepairJobCard";
+// import { useNavigate } from "react-router-dom";
 
 export default function ClarkDashboard() {
   const [employee, setEmployees] = useState([]);
@@ -20,6 +21,8 @@ export default function ClarkDashboard() {
   const [repairJobs, setRepairJobs] = useState([]); // New state variable for repair jobs
 
   const [submitValue,setSubmitValue] = useState("");
+
+  // let navigate = useNavigate();	
 
 
   const [loginState, setLoginState] = useState({
@@ -77,11 +80,14 @@ export default function ClarkDashboard() {
     console.log(data);
 
     try {
-      const response = await axios.post("http://localhost:3001/Job", data);
+      const response = await axios
+      .post("http://localhost:3001/Job", data);
       console.log("Form data sent successfully:", response.data);
       handleCloseModal(); // Close the modal after successful form submission
 setSubmitValue(loginState.UserID)
       setRepairJobs([...repairJobs, response.data]);
+
+      
 
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -167,7 +173,12 @@ setSubmitValue(loginState.UserID)
                   </div>
                   <div>
                     {/* Pass the searchQuery to the RepairJobCard component */}
-            <RepairJobCard searchQuery={searchQuery} value ={submitValue} repairJobs={repairJobs} setRepairJobs={setRepairJobs} />
+            <RepairJobCard 
+            searchQuery={searchQuery} 
+            value ={submitValue} 
+            repairJobs={repairJobs} 
+            setRepairJobs={setRepairJobs}
+            />
                   </div>
                 </Tab.Pane>
               </Tab.Content>

@@ -7,6 +7,16 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false, 
         },
 
+        EmployeeID: {
+            type: DataTypes.STRING,
+            allowNull: false, 
+        },
+        
+        JobID: {
+            type: DataTypes.STRING,
+            allowNull: false, 
+        },
+
         CreationDate:{
             type: DataTypes.DATE,
             allowNull: false,

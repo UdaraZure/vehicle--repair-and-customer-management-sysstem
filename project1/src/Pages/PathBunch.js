@@ -1,5 +1,5 @@
 import React from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Homepge from './Homepge/Homepge'
 import Login from './Login/Login'
 import Customer from './Customer/Customer'
@@ -9,6 +9,8 @@ import OwnerDashboard from './OwnerDashboard/OwnerDashboard';
 import Employees from './Employees/Employees';
 import Quotation from './Quotation/Quotation';
 import ClarkDashboard from './ClarkDashboard/ClarkDashboard';
+import RepairJob from './RepairJob/RepairJob';
+
 
 export default function PathBunch() {
 
@@ -25,6 +27,7 @@ export default function PathBunch() {
             <Route path = "/OwnerDashboard" element={<OwnerDashboard/>}></Route>
             <Route path = "/Employees" element={<Employees/>}></Route>
             <Route path = "/Quotation" element={<Quotation/>}></Route>
+            <Route path = "/RepairJob/:JobID" element={<RepairJob/>}></Route>
             <Route path = "*" element={<div>NOT FOUND</div>}></Route>
         </Routes>
     </div>

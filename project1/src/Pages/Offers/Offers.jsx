@@ -50,7 +50,7 @@ function Offers() {
     axios
       .post('http://localhost:3001/offers', values, {
         headers: {
-          accessToken: localStorage.getItem('accessToken'),
+          accessToken:localStorage.getItem('accessToken'),
         }
       })
       .then((response) => {
@@ -60,8 +60,7 @@ function Offers() {
           // Handle network errors or server-side validation errors
           toast.error('Failed to create offer. Please try again.');
         } else if (response.status === 201 || response.status === 200) {
-          // Update the offers state with the newly created offer
-          setOffers((prevOffers) => [...prevOffers, response.data]);
+          setResponse(response.data);
           console.log('success');
           toast.success('Offer created successfully!');
           resetForm();
@@ -75,7 +74,6 @@ function Offers() {
         toast.error('Failed to create offer. Please try again.');
       });
   };
-  
   
   
 

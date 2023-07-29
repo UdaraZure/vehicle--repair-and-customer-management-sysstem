@@ -57,12 +57,12 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
 
-    Offer.associate = (models) => {
-      Offer.belongsTo(models.Employee, {
-        foreignKey: "EmployeeID",
-        onDelete: "cascade",
-      });
-  };
+  //   Offer.associate = (models) => {
+  //     Offer.belongsTo(models.Employee, {
+  //       foreignKey: "EmployeeID",
+  //       onDelete: "cascade",
+  //     });
+  // };
 
   return Offer;
 };

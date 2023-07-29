@@ -195,9 +195,9 @@ function Employees() {
             <ErrorMessage name="Role" component="span" />
             <Field as="select" id="InputEmployee" name="Role" className="field">
               <option value="">Select Role</option>
-              <option value="Manager">Manager</option>
               <option value="Clark">Clark</option>
-              <option value="Clark">Owner</option>
+              <option value="Manager">Manager</option>
+              <option value="Owner">Owner</option>
             </Field>
 
             <label className="label">Employee Name:</label>

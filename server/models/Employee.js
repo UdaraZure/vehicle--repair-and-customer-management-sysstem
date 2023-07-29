@@ -68,44 +68,35 @@ module.exports = (sequelize, DataTypes) => {
         },
  
     }, {
-        hooks: {
-          beforeValidate: (employee) => {
-            // Generate the EmployeeID with the desired format
-            if (!employee.EmployeeID) {
-              // Find the highest existing EmployeeID
-              return Employee.max('EmployeeID').then((maxEmployeeID) => {
-                let nextEmployeeID = "EMP001"; // Default EmployeeID if no existing records
-    
-                if (maxEmployeeID) {
-                  // Increment the numeric part of the highest EmployeeID
-                  const numericPart = parseInt(maxEmployeeID.slice(2), 10);
-                  const nextNumericPart = numericPart + 1;
-                  const paddedNumericPart = nextNumericPart.toString().padStart(3, '0');
-                  nextEmployeeID = `EMP${paddedNumericPart}`;
-                }
-    
-                employee.EmployeeID = nextEmployeeID;
-              });
+      hooks: {
+        beforeValidate: async (employee) => {
+          // Generate the EmployeeID with the desired format if it's not provided
+          if (!employee.EmployeeID) {
+            // Find the highest existing EmployeeID
+            const maxEmployeeID = await Employee.max('EmployeeID');
+            let nextEmployeeID = "EMP001"; // Default EmployeeID if no existing records
+  
+            if (maxEmployeeID) {
+              // Increment the numeric part of the highest EmployeeID
+              const numericPart = parseInt(maxEmployeeID.slice(3), 10);
+              const nextNumericPart = numericPart + 1;
+              const paddedNumericPart = nextNumericPart.toString().padStart(3, '0');
+              nextEmployeeID = `EMP${paddedNumericPart}`;
             }
-          }
-        }, 
-        getterMethods: {
-          formattedEmployeeID() {
-            // Custom getter method to retrieve the formatted EmployeeID
-            const numericPart = parseInt(this.EmployeeID.slice(2), 10);
-            return `EMP${numericPart.toString().padStart(3, '0')}`;
+  
+            employee.EmployeeID = nextEmployeeID;
           }
         }
-      });
-
-    Employee.associate = (models) => {
-        Employee.hasMany(models.Offer, {
-            foreignKey: "EmployeeID",
-            onDelete: "cascade",
-        });
-    };
-     
-return Employee; 
-
-};  
-
+      },
+      // ... (getterMethods and other configurations)
+    });
+  
+    // Employee.associate = (models) => {
+    //     Employee.hasMany(models.Offer, {
+    //         foreignKey: "EmployeeID",
+    //         onDelete: "cascade",
+    //     });
+    // };
+  
+    return Employee;
+  };
