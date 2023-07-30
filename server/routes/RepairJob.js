@@ -14,6 +14,23 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/getJobByEmployeeID/:EmployeeID", async (req, res) => {
+  try {
+    const employeeID = req.params.EmployeeID; // Retrieve the EmployeeID from the URL parameter
+    const job = await Job.findAll({
+      where: {
+        EmployeeID: employeeID
+      }
+    });
+    
+    res.json(job);
+    
+  } catch (error) {
+    console.error('Error fetching job:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.get("/:JobID", async (req, res) => {
   try {
     const jobID = req.params.JobID; // Retrieve the JobID from the URL parameter

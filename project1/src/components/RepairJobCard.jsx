@@ -3,7 +3,8 @@ import axios from 'axios';
 import './RepairJobCard.css';
 // import { useNavigate } from "react-router-dom";
 
-export const RepairJobCard = ({ searchQuery ,value } ) => {
+
+export const RepairJobCard = ({ searchQuery ,value,}) => {
   const [repairJobs, setRepairJobs] = useState([]);
 
   // useEffect(() => {
@@ -13,7 +14,16 @@ export const RepairJobCard = ({ searchQuery ,value } ) => {
   // let navigate = useNavigate();	
 
   const Reload = () => {
-    axios.get('http://localhost:3001/Job')
+    // Retrieve the accessToken from Local Storage
+    const accessToken = localStorage.getItem('accessToken');
+
+    const decodedToken = JSON.parse(atob(accessToken.split('.')[1]));
+
+    // Parse the accessToken to get the EmployeeID (UserID)
+    const { UserID: employeeID } = decodedToken;
+
+    // Make the API request with the correct EmployeeID
+    axios.get(`http://localhost:3001/Job/getJobByEmployeeID/${employeeID}`)
       .then((res) => {
         setRepairJobs(res.data);
         console.log(res.data);
@@ -22,6 +32,7 @@ export const RepairJobCard = ({ searchQuery ,value } ) => {
         console.log(error);
       });
   };
+
 
   useEffect(() => {
     Reload();

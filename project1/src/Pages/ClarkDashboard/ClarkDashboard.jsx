@@ -20,9 +20,10 @@ export default function ClarkDashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [repairJobs, setRepairJobs] = useState([]); // New state variable for repair jobs
 
-  const [submitValue, setSubmitValue] = useState("");
+  const [submitValue,setSubmitValue] = useState("");
 
-  // let navigate = useNavigate();
+  // let navigate = useNavigate();	
+
 
   const [loginState, setLoginState] = useState({
     username: "",
@@ -31,19 +32,18 @@ export default function ClarkDashboard() {
     UserID: "",
   });
 
+  
+
   useEffect(() => {
     const fetchData = async () => {
       const accessToken = localStorage.getItem("accessToken");
       if (accessToken) {
         try {
-          const response = await axios.get(
-            "http://localhost:3001/User/Authentication",
-            {
-              headers: {
-                accessToken: accessToken,
-              },
-            }
-          );
+          const response = await axios.get("http://localhost:3001/User/Authentication", {
+            headers: {
+              accessToken: accessToken,
+            },
+          });
 
           if (response.data.error) {
             setLoginState({ ...loginState, status: false });
@@ -57,9 +57,7 @@ export default function ClarkDashboard() {
             });
 
             try {
-              const employeeResponse = await axios.get(
-                `http://localhost:3001/Employees/profile/${response.data.UserID}`
-              );
+              const employeeResponse = await axios.get(`http://localhost:3001/Employees/profile/${response.data.UserID}`);
               console.log("employee", employeeResponse.data);
               setEmployees(employeeResponse.data);
             } catch (error) {
@@ -84,11 +82,15 @@ export default function ClarkDashboard() {
     console.log(data);
 
     try {
-      const response = await axios.post("http://localhost:3001/Job", data);
+      const response = await axios
+      .post("http://localhost:3001/Job", data);
       console.log("Form data sent successfully:", response.data);
       handleCloseModal(); // Close the modal after successful form submission
-      setSubmitValue(loginState.UserID);
+setSubmitValue(loginState.UserID)
       setRepairJobs([...repairJobs, response.data]);
+
+      
+
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -103,10 +105,9 @@ export default function ClarkDashboard() {
   const handleUpdateInfo = async () => {
     try {
       // Make an API call to update the employee data in the database using editedEmployee state
-      await axios.put(
-        `http://localhost:3001/Employees/${employee.EmployeeID}`,
-        editedEmployee
-      );
+      await axios
+      
+      .put(`http://localhost:3001/Employees/${employee.EmployeeID}`, editedEmployee);
 
       // Update the employee state with the edited values
       setEmployees(editedEmployee);
@@ -123,7 +124,7 @@ export default function ClarkDashboard() {
     setSearchQuery(e.target.value);
   };
 
-  return (
+   return (
     <>
       <div style={{ marginTop: "100px" }}>
         <Tab.Container id="left-tabs-example" defaultActiveKey="first">
@@ -146,71 +147,15 @@ export default function ClarkDashboard() {
                       Profile details of {employee && employee.EmpName}
                     </div>
                     <div className="Pcard-details">
-                      <div>
-                        Address:{" "}
-                        {editMode ? (
-                          <input
-                            type="text"
-                            value={editedEmployee?.Address || ""}
-                            onChange={(e) =>
-                              setEditedEmployee({
-                                ...editedEmployee,
-                                Address: e.target.value,
-                              })
-                            }
-                          />
-                        ) : (
-                          employee && employee.Address
-                        )}
-                      </div>
-                      <div>
-                        TelNo:{" "}
-                        {editMode ? (
-                          <input
-                            type="text"
-                            value={editedEmployee?.TelNo || ""}
-                            onChange={(e) =>
-                              setEditedEmployee({
-                                ...editedEmployee,
-                                TelNo: e.target.value,
-                              })
-                            }
-                          />
-                        ) : (
-                          employee && employee.TelNo
-                        )}
-                      </div>
-                      <div>
-                        NIC:{" "}
-                        {editMode ? (
-                          <input
-                            type="text"
-                            value={editedEmployee?.NIC || ""}
-                            onChange={(e) =>
-                              setEditedEmployee({
-                                ...editedEmployee,
-                                NIC: e.target.value,
-                              })
-                            }
-                          />
-                        ) : (
-                          employee && employee.NIC
-                        )}
-                      </div>
+                      <div>Address: {editMode ? <input type="text" value={editedEmployee?.Address || ""} onChange={(e) => setEditedEmployee({ ...editedEmployee, Address: e.target.value })} /> : (employee && employee.Address)}</div>
+                      <div>TelNo: {editMode ? <input type="text" value={editedEmployee?.TelNo || ""} onChange={(e) => setEditedEmployee({ ...editedEmployee, TelNo: e.target.value })} /> : (employee && employee.TelNo)}</div>
+                      <div>NIC: {editMode ? <input type="text" value={editedEmployee?.NIC || ""} onChange={(e) => setEditedEmployee({ ...editedEmployee, NIC: e.target.value })} /> : (employee && employee.NIC)}</div>
                       <div>StartDate: {employee && employee.StartDate}</div>
                       <div>Status: {employee && employee.Status}</div>
                     </div>
                   </div>
-                  {!editMode && (
-                    <button className="Pcard-button" onClick={handleEditInfo}>
-                      Edit info
-                    </button>
-                  )}
-                  {editMode && (
-                    <button className="Pcard-button" onClick={handleUpdateInfo}>
-                      Update
-                    </button>
-                  )}
+                  {!editMode && <button className="Pcard-button" onClick={handleEditInfo}>Edit info</button>}
+                  {editMode && <button className="Pcard-button" onClick={handleUpdateInfo}>Update</button>}
                 </Tab.Pane>
 
                 <Tab.Pane eventKey="second">
@@ -230,12 +175,12 @@ export default function ClarkDashboard() {
                   </div>
                   <div>
                     {/* Pass the searchQuery to the RepairJobCard component */}
-                    <RepairJobCard
-                      searchQuery={searchQuery}
-                      value={submitValue}
-                      repairJobs={repairJobs}
-                      setRepairJobs={setRepairJobs}
-                    />
+            <RepairJobCard 
+            searchQuery={searchQuery} 
+            value ={submitValue} 
+            repairJobs={repairJobs} 
+            setRepairJobs={setRepairJobs}
+            />
                   </div>
                 </Tab.Pane>
               </Tab.Content>
@@ -261,7 +206,7 @@ export default function ClarkDashboard() {
             onSubmit={onSubmit}
           >
             <Form>
-              <div className="form-group">
+            <div className="form-group">
                 <label htmlFor="CustomerID">Customer ID:</label>
                 <Field type="text" id="CustomerID" name="CustomerID" required />
                 <ErrorMessage
@@ -321,8 +266,8 @@ export default function ClarkDashboard() {
                   className="error-message"
                 />
               </div>
-              <button type="submit">Submit</button>
-            </Form>
+              <button type="submit">Submit</button>            
+              </Form>
           </Formik>
         </Modal.Body>
       </Modal>

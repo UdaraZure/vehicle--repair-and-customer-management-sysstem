@@ -4,6 +4,8 @@ import axios from "axios";
 import "./RepairJob.css";
 import { Button, Modal, Table, Form } from "react-bootstrap";
 import Select from "react-select";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function RepairJob() {
   let { JobID } = useParams();
@@ -16,6 +18,7 @@ function RepairJob() {
   const [serviceTypeOptions, setServiceTypeOptions] = useState([]);
   const [selectedServiceType, setSelectedServiceType] = useState(null);
   const [serviceArray, setServiceArray] = useState([]);
+  const [quotationCreated, setQuotationCreated] = useState(false);
 
   useEffect(() => {
     axios
@@ -45,6 +48,14 @@ function RepairJob() {
       });
   }, []);
 
+  useEffect(() => {
+    const updatedTableData = serviceArray.map((service) => ({
+      serviceType: service.ServiceTypeID,
+      description: service.Description,
+      amount: service.Amount,
+    }));
+    setTableData(updatedTableData);
+  }, [serviceArray]);
   
 
   const handleModalClose = () => {
@@ -68,26 +79,29 @@ function RepairJob() {
       console.log("Please select a service type.");
       return;
     }
-  
+
     const newRecord = {
       serviceType: selectedServiceType.value,
       description: description,
       amount: amount,
     };
-  
+
     const newQuotationService = {
       JobID: JobID,
       ServiceTypeID: selectedServiceType.ServiceTypeID,
       Description: description,
       Amount: amount,
     };
-  
+
     // Use the callback form to update serviceArray
-    setServiceArray(prevServiceArray => [...prevServiceArray, newQuotationService]);
-  
+    setServiceArray((prevServiceArray) => [
+      ...prevServiceArray,
+      newQuotationService,
+    ]);
+
     // Now log the updated serviceArray to check if it has been updated correctly
     console.log([...serviceArray, newQuotationService]);
-  
+
     // Rest of the code remains the same
     setTableData([...tableData, newRecord]);
     setTotalAmount(totalAmount + Number(amount));
@@ -95,9 +109,6 @@ function RepairJob() {
     setAmount(0);
     setSelectedServiceType(null);
   };
-  
-  
-  
 
   const handleFinish = () => {
     const newQuotation = {
@@ -107,7 +118,7 @@ function RepairJob() {
       CreationDate: new Date().toISOString().slice(0, 10),
       QuotationStatus: "manager approval pending",
     };
-  
+
     axios
       .post("http://localhost:3001/Quotation", newQuotation)
       .then((res) => {
@@ -118,12 +129,12 @@ function RepairJob() {
             QuotationID: res.data.QuotationID, // Use the QuotationID generated for the new quotation
             JobID: service.JobID,
             ServiceTypeID: service.ServiceTypeID,
-            ServiceDescription:service.Description,
+            ServiceDescription: service.Description,
             ServicePrice: service.Amount,
           };
 
           console.log(newService);
-  
+
           axios
             .post("http://localhost:3001/Service", newService)
             .then((res) => {
@@ -133,12 +144,30 @@ function RepairJob() {
               console.log(error);
             });
         });
-  
+
         setShowModal(false);
+        setQuotationCreated(true);
+        toast("Quotation sent to manager for approval");
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleDeleteRecord = (index) => {
+    const recordToDelete = tableData[index];
+    setTableData(tableData.filter((record) => record !== recordToDelete));
+    setTotalAmount(totalAmount - Number(recordToDelete.amount));
+  };
+
+  const handleDeleteService = (index) => {
+    const serviceToDelete = serviceArray[index];
+    // Update the totalAmount by subtracting the deleted service's amount
+    setTotalAmount(totalAmount - Number(serviceToDelete.Amount));
+    // Use the callback form to update serviceArray
+    setServiceArray((prevServiceArray) =>
+      prevServiceArray.filter((service, i) => i !== index)
+    );
   };
   
   
@@ -155,10 +184,13 @@ function RepairJob() {
               <div>Service Type: {job.ServiceType}</div>
               <div>Created By: {job.EmployeeID}</div>
               <div>Created at: {job.JobCreationDate}</div>
+              <div>Total Amount: {totalAmount}</div>
             </div>
-            <button className="createQ-button" onClick={handleModalShow}>
-              <p className="createQ-button-content">Create Quotation</p>
-            </button>
+            {!quotationCreated && (
+              <button className="createQ-button" onClick={handleModalShow}>
+                <p className="createQ-button-content">Create Quotation</p>
+              </button>
+            )}
             <Modal show={showModal} onHide={handleModalClose}>
               <Modal.Header closeButton>
                 <Modal.Title>Create Quotation</Modal.Title>
@@ -203,16 +235,25 @@ function RepairJob() {
                       </tr>
                     </thead>
                     <tbody>
-                      {tableData.map((record, index) => {
-                        return (
-                          <tr key={index}>
-                            <td>{record.serviceType}</td>
-                            <td>{record.description}</td>
-                            <td>{record.amount}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
+  {tableData.map((record, index) => {
+    return (
+      <tr key={index}>
+        <td>{record.serviceType}</td>
+        <td>{record.description}</td>
+        <td>{record.amount}</td>
+        <td>
+          <Button
+            variant="danger"
+            onClick={() => handleDeleteService(index)}
+          >
+            Delete
+          </Button>
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
                     <tfoot>
                       <tr>
                         <td colSpan="2">Total Amount:</td>

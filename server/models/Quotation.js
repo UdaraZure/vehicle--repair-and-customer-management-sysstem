@@ -13,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
 
+        ManagerID: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
+
         JobID: {
           type: DataTypes.STRING,
           allowNull: false,

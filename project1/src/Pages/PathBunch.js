@@ -10,6 +10,7 @@ import Employees from './Employees/Employees';
 import Quotation from './Quotation/Quotation';
 import ClarkDashboard from './ClarkDashboard/ClarkDashboard';
 import RepairJob from './RepairJob/RepairJob';
+import ManagerDashboard from './ManagerDashboard/ManagerDashboard';
 
 
 export default function PathBunch() {
@@ -28,6 +29,7 @@ export default function PathBunch() {
             <Route path = "/Employees" element={<Employees/>}></Route>
             <Route path = "/Quotation" element={<Quotation/>}></Route>
             <Route path = "/RepairJob/:JobID" element={<RepairJob/>}></Route>
+            <Route path = "/ManagerDashboard" element={<ManagerDashboard/>}></Route>
             <Route path = "*" element={<div>NOT FOUND</div>}></Route>
         </Routes>
     </div>
