@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
         QuotationID: {
           type: DataTypes.STRING,
           allowNull: false,
-          primaryKey: true, // Assuming QuotationID is the primary key
         },
 
         EmployeeID: {

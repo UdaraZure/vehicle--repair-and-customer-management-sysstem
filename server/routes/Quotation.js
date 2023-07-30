@@ -40,12 +40,12 @@ router.get("/:id", async (req, res) => {
 });
 
 // Update a quotation by ID
-router.put("/:id", async (req, res) => {
+router.put("/:QuotationID", async (req, res) => {
   try {
-    const quotation = await quotation.findByPk(req.params.id);
-    if (quotation) {
-      await quotation.update(req.body);
-      res.status(200).json(quotation);
+    const quotationData = await quotation.findOne({ where: { QuotationID: req.params.QuotationID } });
+    if (quotationData) {
+      await quotationData.update(req.body);
+      res.status(200).json(quotationData);
     } else {
       res.status(404).json({ message: "Quotation not found" });
     }
