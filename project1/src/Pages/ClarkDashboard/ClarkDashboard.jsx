@@ -8,22 +8,20 @@ import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
 import Modal from "react-bootstrap/Modal";
 import { RepairJobCard } from "../../components/RepairJobCard";
-// import { useNavigate } from "react-router-dom";
+import Autosuggest from "react-autosuggest";
 
 export default function ClarkDashboard() {
   const [employee, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
-  const [editMode, setEditMode] = useState(false); // New state variable for edit mode
-  const [editedEmployee, setEditedEmployee] = useState(null); // New state variable for edited values
+  const [editMode, setEditMode] = useState(false);
+  const [editedEmployee, setEditedEmployee] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [repairJobs, setRepairJobs] = useState([]); // New state variable for repair jobs
+  const [repairJobs, setRepairJobs] = useState([]);
+  const [customerIds, setCustomerIds] = useState([]); // New state variable for customer IDs
 
   const [submitValue,setSubmitValue] = useState("");
-
-  // let navigate = useNavigate();	
-
 
   const [loginState, setLoginState] = useState({
     username: "",
@@ -31,8 +29,6 @@ export default function ClarkDashboard() {
     status: false,
     UserID: "",
   });
-
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,7 +67,20 @@ export default function ClarkDashboard() {
     };
 
     fetchData();
-  }, []); // Make sure to pass an empty dependency array to run this effect only once on mount
+  }, []);
+
+  useEffect(() => {
+    const fetchCustomerIds = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/Customers");
+        setCustomerIds(response.data.map((customer) => customer.CustomerID)); // Extract the list of customer IDs from the response data
+      } catch (error) {
+        console.error("Error fetching customer IDs:", error);
+      }
+    };
+
+    fetchCustomerIds();
+  }, []);
 
   const onSubmit = async (values) => {
     const data = {
@@ -82,37 +91,25 @@ export default function ClarkDashboard() {
     console.log(data);
 
     try {
-      const response = await axios
-      .post("http://localhost:3001/Job", data);
+      const response = await axios.post("http://localhost:3001/Job", data);
       console.log("Form data sent successfully:", response.data);
-      handleCloseModal(); // Close the modal after successful form submission
-setSubmitValue(loginState.UserID)
+      handleCloseModal();
+      setSubmitValue(loginState.UserID);
       setRepairJobs([...repairJobs, response.data]);
-
-      
-
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
 
   const handleEditInfo = () => {
-    setEditedEmployee(employee); // Store the current employee data in editedEmployee state
-    setEditMode(true); // Enable edit mode
+    setEditedEmployee(employee);
+    setEditMode(true);
   };
 
-  // Function to handle the "Update" button click
   const handleUpdateInfo = async () => {
     try {
-      // Make an API call to update the employee data in the database using editedEmployee state
-      await axios
-      
-      .put(`http://localhost:3001/Employees/${employee.EmployeeID}`, editedEmployee);
-
-      // Update the employee state with the edited values
+      await axios.put(`http://localhost:3001/Employees/${employee.EmployeeID}`, editedEmployee);
       setEmployees(editedEmployee);
-
-      // Exit edit mode and clear the editedEmployee state
       setEditMode(false);
       setEditedEmployee(null);
     } catch (error) {
@@ -124,7 +121,17 @@ setSubmitValue(loginState.UserID)
     setSearchQuery(e.target.value);
   };
 
-   return (
+  // Function to get the suggestions for the customer ID field
+  const getSuggestions = (value) => {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+    return inputLength === 0 ? [] : customerIds.filter((id) => id.toLowerCase().slice(0, inputLength) === inputValue);
+  };
+
+  // Function to render the suggestion
+  const renderSuggestion = (suggestion) => <div>{suggestion}</div>;
+
+  return (
     <>
       <div style={{ marginTop: "100px" }}>
         <Tab.Container id="left-tabs-example" defaultActiveKey="first">
@@ -164,7 +171,6 @@ setSubmitValue(loginState.UserID)
                   </div>
                   <div>
                     <div>
-                      {/* Add the search bar */}
                       <input
                         type="text"
                         value={searchQuery}
@@ -174,13 +180,12 @@ setSubmitValue(loginState.UserID)
                     </div>
                   </div>
                   <div>
-                    {/* Pass the searchQuery to the RepairJobCard component */}
-            <RepairJobCard 
-            searchQuery={searchQuery} 
-            value ={submitValue} 
-            repairJobs={repairJobs} 
-            setRepairJobs={setRepairJobs}
-            />
+                    <RepairJobCard
+                      searchQuery={searchQuery}
+                      value={submitValue}
+                      repairJobs={repairJobs}
+                      setRepairJobs={setRepairJobs}
+                    />
                   </div>
                 </Tab.Pane>
               </Tab.Content>
@@ -194,7 +199,6 @@ setSubmitValue(loginState.UserID)
           <Modal.Title>Create Repair Job</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {/* Repair Job Form */}
           <Formik
             initialValues={{
               CustomerID: "",
@@ -205,69 +209,49 @@ setSubmitValue(loginState.UserID)
             }}
             onSubmit={onSubmit}
           >
-            <Form>
-            <div className="form-group">
-                <label htmlFor="CustomerID">Customer ID:</label>
-                <Field type="text" id="CustomerID" name="CustomerID" required />
-                <ErrorMessage
-                  name="CustomerID"
-                  component="div"
-                  className="error-message"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="VehicleNumber">Vehicle Number:</label>
-                <Field
-                  type="text"
-                  id="VehicleNumber"
-                  name="VehicleNumber"
-                  required
-                />
-                <ErrorMessage
-                  name="VehicleNumber"
-                  component="div"
-                  className="error-message"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="Model">Vehicle Model:</label>
-                <Field type="text" id="Model" name="Model" required />
-                <ErrorMessage
-                  name="Model"
-                  component="div"
-                  className="error-message"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="ServiceType">Service Type:</label>
-                <Field
-                  type="text"
-                  id="ServiceType"
-                  name="ServiceType"
-                  required
-                />
-                <ErrorMessage
-                  name="ServiceType"
-                  component="div"
-                  className="error-message"
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="JobDescription">Job Description:</label>
-                <Field
-                  as="textarea"
-                  id="JobDescription"
-                  name="JobDescription"
-                  required
-                />
-                <ErrorMessage
-                  name="JobDescription"
-                  component="div"
-                  className="error-message"
-                />
-              </div>
-              <button type="submit">Submit</button>            
+            {({ values, setFieldValue }) => (
+              <Form>
+                <div className="form-group">
+                  <label htmlFor="CustomerID">Customer ID:</label>
+                  <Autosuggest
+                    suggestions={getSuggestions(values.CustomerID)}
+                    onSuggestionsFetchRequested={({ value }) => setFieldValue("CustomerID", value)}
+                    onSuggestionsClearRequested={() => setFieldValue("CustomerID", "")}
+                    getSuggestionValue={(suggestion) => suggestion}
+                    renderSuggestion={renderSuggestion}
+                    inputProps={{
+                      id: "CustomerID",
+                      name: "CustomerID",
+                      value: values.CustomerID,
+                      onChange: (e, { newValue }) => setFieldValue("CustomerID", newValue),
+                      required: true,
+                    }}
+                  />
+                  <ErrorMessage name="CustomerID" component="div" className="error-message" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="VehicleNumber">Vehicle Number:</label>
+                  <Field type="text" id="VehicleNumber" name="VehicleNumber" required />
+                  <ErrorMessage name="VehicleNumber" component="div" className="error-message" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="Model">Vehicle Model:</label>
+                  <Field type="text" id="Model" name="Model" required />
+                  <ErrorMessage name="Model" component="div" className="error-message" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="ServiceType">Service Type:</label>
+                  <Field type="text" id="ServiceType" name="ServiceType" required />
+                  <ErrorMessage name="ServiceType" component="div" className="error-message" />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="JobDescription">Job Description:</label>
+                  <Field as="textarea" id="JobDescription" name="JobDescription" required />
+                  <ErrorMessage name="JobDescription" component="div" className="error-message" />
+                </div>
+                <button type="submit">Submit</button>
               </Form>
+            )}
           </Formik>
         </Modal.Body>
       </Modal>
