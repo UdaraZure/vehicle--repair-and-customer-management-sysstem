@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
 
 
 // Update an Customer
-router.put("/:CustomerID", async (req, res) => {
+router.put("/CustomerDetails/:CustomerID", async (req, res) => {
   try {
     const CustomerId = req.params.CustomerID;
     const updatedCustomerData = req.body;

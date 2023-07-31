@@ -1,0 +1,32 @@
+/* JobTable.css */
+.job-table-container {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .job-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .job-table th,
+  .job-table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+  }
+  
+  .job-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .job-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .job-table tr:hover {
+    background-color: #f0e0e0;
+  }
+  

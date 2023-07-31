@@ -9,7 +9,7 @@ import Tab from "react-bootstrap/Tab";
 import Modal from "react-bootstrap/Modal";
 import { RepairJobCard } from "../../components/RepairJobCard";
 import Autosuggest from "react-autosuggest";
-import Select from 'react-select';
+import Select from "react-select";
 
 export default function ClarkDashboard() {
   const [employee, setEmployees] = useState([]);
@@ -93,9 +93,10 @@ export default function ClarkDashboard() {
     fetchCustomerIds();
   }, []);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values, { setSubmitting }) => {
     const data = {
       ...values,
+      CustomerID: value, // Set the CustomerID from the value state variable
       EmployeeID: loginState.UserID,
     };
 
@@ -109,6 +110,8 @@ export default function ClarkDashboard() {
       setRepairJobs([...repairJobs, response.data]);
     } catch (error) {
       console.error("Error submitting form:", error);
+    } finally {
+      setSubmitting(false); // Don't forget to set submitting to false to enable the submit button again after form submission
     }
   };
 
@@ -294,11 +297,13 @@ export default function ClarkDashboard() {
                 <div className="form-group">
                   <label htmlFor="CustomerID">Customer ID:</label>
                   <Select
-                  options={options}
-                  value={options.find((option) => option.value === value)}
-                  onChange={(selectedOption) => setValue(selectedOption.value)}
-                  placeholder="Enter Customer ID"
-                />
+                    options={options}
+                    value={options.find((option) => option.value === value)}
+                    onChange={(selectedOption) =>
+                      setValue(selectedOption.value)
+                    }
+                    placeholder="Enter Customer ID"
+                  />
                   <ErrorMessage
                     name="CustomerID"
                     component="div"
