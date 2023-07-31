@@ -115,7 +115,9 @@ function RepairJob() {
       EmployeeID: jobData[0].EmployeeID,
       JobID: JobID,
       Qamount: totalAmount,
+      JobDescription: jobData[0].JobDescription,
       CreationDate: new Date().toISOString().slice(0, 10),
+
       QuotationStatus: "manager approval pending",
     };
 

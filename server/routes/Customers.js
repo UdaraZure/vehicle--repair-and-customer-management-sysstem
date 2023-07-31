@@ -9,8 +9,26 @@ router.get("/", async (req, res) => {
     res.json(listOfCustomers);
   } catch (error) {
     console.error('Error fetching Customers:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json(error.message);
   } 
+});
+
+router.get("/CustomerDetails/:CustomerID", async (req, res) => {
+  try {
+    const CustomerID = req.params.CustomerID;
+    const customer = await Customer.findAll({
+      where: { CustomerID: CustomerID } // Update the field name to match your database column name
+    });
+    if (!customer) {
+      return res.status(404).json({ error: 'The Customer could not be found.' });
+    }
+    else{
+      res.json(customer);
+    }
+  } catch (error) {
+    console.error('Error fetching Customer:', error);
+    res.status(500).json(error.message);
+  }
 });
 
 // Create a new Customer
@@ -29,12 +47,12 @@ router.post("/", async (req, res) => {
 
 
 // Update an Customer
-router.put("/:id", async (req, res) => {
+router.put("/:CustomerID", async (req, res) => {
   try {
-    const CustomerId = req.params.id;
+    const CustomerId = req.params.CustomerID;
     const updatedCustomerData = req.body;
     const [rowsUpdated] = await Customer.update(updatedCustomerData, {
-      where: { id: CustomerId }
+      where: { CustomerID: CustomerId }
     });
     if (rowsUpdated === 0) {
       return res.status(404).json({ error: 'Customer not found' });

@@ -27,6 +27,11 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
           },
 
+        JobDescription: {
+          type: DataTypes.STRING,
+          allowNull: false,
+        },
+
         CreationDate: {
           type: DataTypes.DATE,
           allowNull: false,

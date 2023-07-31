@@ -9,6 +9,7 @@ import Tab from "react-bootstrap/Tab";
 import Modal from "react-bootstrap/Modal";
 import { RepairJobCard } from "../../components/RepairJobCard";
 import Autosuggest from "react-autosuggest";
+import Select from 'react-select';
 
 export default function ClarkDashboard() {
   const [employee, setEmployees] = useState([]);
@@ -19,9 +20,9 @@ export default function ClarkDashboard() {
   const [editedEmployee, setEditedEmployee] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [repairJobs, setRepairJobs] = useState([]);
-  const [customerIds, setCustomerIds] = useState([]); // New state variable for customer IDs
-
-  const [submitValue,setSubmitValue] = useState("");
+  const [customerIds, setCustomerIds] = useState([]);
+  const [value, setValue] = useState("");
+  const [submitValue, setSubmitValue] = useState("");
 
   const [loginState, setLoginState] = useState({
     username: "",
@@ -30,16 +31,24 @@ export default function ClarkDashboard() {
     UserID: "",
   });
 
+  const options = customerIds.map((customerId) => ({
+    value: customerId,
+    label: customerId,
+  }));
+
   useEffect(() => {
     const fetchData = async () => {
       const accessToken = localStorage.getItem("accessToken");
       if (accessToken) {
         try {
-          const response = await axios.get("http://localhost:3001/User/Authentication", {
-            headers: {
-              accessToken: accessToken,
-            },
-          });
+          const response = await axios.get(
+            "http://localhost:3001/User/Authentication",
+            {
+              headers: {
+                accessToken: accessToken,
+              },
+            }
+          );
 
           if (response.data.error) {
             setLoginState({ ...loginState, status: false });
@@ -53,7 +62,9 @@ export default function ClarkDashboard() {
             });
 
             try {
-              const employeeResponse = await axios.get(`http://localhost:3001/Employees/profile/${response.data.UserID}`);
+              const employeeResponse = await axios.get(
+                `http://localhost:3001/Employees/profile/${response.data.UserID}`
+              );
               console.log("employee", employeeResponse.data);
               setEmployees(employeeResponse.data);
             } catch (error) {
@@ -108,7 +119,10 @@ export default function ClarkDashboard() {
 
   const handleUpdateInfo = async () => {
     try {
-      await axios.put(`http://localhost:3001/Employees/${employee.EmployeeID}`, editedEmployee);
+      await axios.put(
+        `http://localhost:3001/Employees/${employee.EmployeeID}`,
+        editedEmployee
+      );
       setEmployees(editedEmployee);
       setEditMode(false);
       setEditedEmployee(null);
@@ -125,11 +139,21 @@ export default function ClarkDashboard() {
   const getSuggestions = (value) => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
-    return inputLength === 0 ? [] : customerIds.filter((id) => id.toLowerCase().slice(0, inputLength) === inputValue);
+    return inputLength === 0
+      ? []
+      : customerIds.filter(
+          (id) => id.toLowerCase().slice(0, inputLength) === inputValue
+        );
   };
 
   // Function to render the suggestion
   const renderSuggestion = (suggestion) => <div>{suggestion}</div>;
+  const handleChange = (event, { newValue }) => {
+    setValue(newValue);
+  };
+  const handleSuggestionSelected = (event, { suggestion }) => {
+    setValue(suggestion);
+  };
 
   return (
     <>
@@ -154,15 +178,71 @@ export default function ClarkDashboard() {
                       Profile details of {employee && employee.EmpName}
                     </div>
                     <div className="Pcard-details">
-                      <div>Address: {editMode ? <input type="text" value={editedEmployee?.Address || ""} onChange={(e) => setEditedEmployee({ ...editedEmployee, Address: e.target.value })} /> : (employee && employee.Address)}</div>
-                      <div>TelNo: {editMode ? <input type="text" value={editedEmployee?.TelNo || ""} onChange={(e) => setEditedEmployee({ ...editedEmployee, TelNo: e.target.value })} /> : (employee && employee.TelNo)}</div>
-                      <div>NIC: {editMode ? <input type="text" value={editedEmployee?.NIC || ""} onChange={(e) => setEditedEmployee({ ...editedEmployee, NIC: e.target.value })} /> : (employee && employee.NIC)}</div>
+                      <div>
+                        Address:{" "}
+                        {editMode ? (
+                          <input
+                            type="text"
+                            value={editedEmployee?.Address || ""}
+                            onChange={(e) =>
+                              setEditedEmployee({
+                                ...editedEmployee,
+                                Address: e.target.value,
+                              })
+                            }
+                          />
+                        ) : (
+                          employee && employee.Address
+                        )}
+                      </div>
+                      <div>
+                        TelNo:{" "}
+                        {editMode ? (
+                          <input
+                            type="text"
+                            value={editedEmployee?.TelNo || ""}
+                            onChange={(e) =>
+                              setEditedEmployee({
+                                ...editedEmployee,
+                                TelNo: e.target.value,
+                              })
+                            }
+                          />
+                        ) : (
+                          employee && employee.TelNo
+                        )}
+                      </div>
+                      <div>
+                        NIC:{" "}
+                        {editMode ? (
+                          <input
+                            type="text"
+                            value={editedEmployee?.NIC || ""}
+                            onChange={(e) =>
+                              setEditedEmployee({
+                                ...editedEmployee,
+                                NIC: e.target.value,
+                              })
+                            }
+                          />
+                        ) : (
+                          employee && employee.NIC
+                        )}
+                      </div>
                       <div>StartDate: {employee && employee.StartDate}</div>
                       <div>Status: {employee && employee.Status}</div>
                     </div>
                   </div>
-                  {!editMode && <button className="Pcard-button" onClick={handleEditInfo}>Edit info</button>}
-                  {editMode && <button className="Pcard-button" onClick={handleUpdateInfo}>Update</button>}
+                  {!editMode && (
+                    <button className="Pcard-button" onClick={handleEditInfo}>
+                      Edit info
+                    </button>
+                  )}
+                  {editMode && (
+                    <button className="Pcard-button" onClick={handleUpdateInfo}>
+                      Update
+                    </button>
+                  )}
                 </Tab.Pane>
 
                 <Tab.Pane eventKey="second">
@@ -213,41 +293,68 @@ export default function ClarkDashboard() {
               <Form>
                 <div className="form-group">
                   <label htmlFor="CustomerID">Customer ID:</label>
-                  <Autosuggest
-                    suggestions={getSuggestions(values.CustomerID)}
-                    onSuggestionsFetchRequested={({ value }) => setFieldValue("CustomerID", value)}
-                    onSuggestionsClearRequested={() => setFieldValue("CustomerID", "")}
-                    getSuggestionValue={(suggestion) => suggestion}
-                    renderSuggestion={renderSuggestion}
-                    inputProps={{
-                      id: "CustomerID",
-                      name: "CustomerID",
-                      value: values.CustomerID,
-                      onChange: (e, { newValue }) => setFieldValue("CustomerID", newValue),
-                      required: true,
-                    }}
+                  <Select
+                  options={options}
+                  value={options.find((option) => option.value === value)}
+                  onChange={(selectedOption) => setValue(selectedOption.value)}
+                  placeholder="Enter Customer ID"
+                />
+                  <ErrorMessage
+                    name="CustomerID"
+                    component="div"
+                    className="error-message"
                   />
-                  <ErrorMessage name="CustomerID" component="div" className="error-message" />
                 </div>
                 <div className="form-group">
                   <label htmlFor="VehicleNumber">Vehicle Number:</label>
-                  <Field type="text" id="VehicleNumber" name="VehicleNumber" required />
-                  <ErrorMessage name="VehicleNumber" component="div" className="error-message" />
+                  <Field
+                    type="text"
+                    id="VehicleNumber"
+                    name="VehicleNumber"
+                    required
+                  />
+                  <ErrorMessage
+                    name="VehicleNumber"
+                    component="div"
+                    className="error-message"
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="Model">Vehicle Model:</label>
                   <Field type="text" id="Model" name="Model" required />
-                  <ErrorMessage name="Model" component="div" className="error-message" />
+                  <ErrorMessage
+                    name="Model"
+                    component="div"
+                    className="error-message"
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="ServiceType">Service Type:</label>
-                  <Field type="text" id="ServiceType" name="ServiceType" required />
-                  <ErrorMessage name="ServiceType" component="div" className="error-message" />
+                  <Field
+                    type="text"
+                    id="ServiceType"
+                    name="ServiceType"
+                    required
+                  />
+                  <ErrorMessage
+                    name="ServiceType"
+                    component="div"
+                    className="error-message"
+                  />
                 </div>
                 <div className="form-group">
                   <label htmlFor="JobDescription">Job Description:</label>
-                  <Field as="textarea" id="JobDescription" name="JobDescription" required />
-                  <ErrorMessage name="JobDescription" component="div" className="error-message" />
+                  <Field
+                    as="textarea"
+                    id="JobDescription"
+                    name="JobDescription"
+                    required
+                  />
+                  <ErrorMessage
+                    name="JobDescription"
+                    component="div"
+                    className="error-message"
+                  />
                 </div>
                 <button type="submit">Submit</button>
               </Form>

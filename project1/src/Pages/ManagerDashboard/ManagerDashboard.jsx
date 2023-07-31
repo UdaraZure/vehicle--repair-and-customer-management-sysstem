@@ -84,6 +84,8 @@ function ManagerDashboard() {
               <tr>
                 <th>Quotation ID</th>
                 <th>Job ID</th>
+                <th>Description</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -91,6 +93,7 @@ function ManagerDashboard() {
                 <tr key={quotation.QuotationID}>
                   <td>{quotation.QuotationID}</td>
                   <td>{quotation.JobID}</td>
+                  <td>{quotation.JobDescription}</td>
                   <td>
                     <Button
                       variant="primary"
@@ -110,6 +113,7 @@ function ManagerDashboard() {
               <tr>
                 <th>Quotation ID</th>
                 <th>Job ID</th>
+                <th>Description</th>
               </tr>
             </thead>
             <tbody>
@@ -120,6 +124,7 @@ function ManagerDashboard() {
                 >
                   <td>{quotation.QuotationID}</td>
                   <td>{quotation.JobID}</td>
+                  <td>{quotation.JobDescription}</td>
                 </tr>
               ))}
             </tbody>

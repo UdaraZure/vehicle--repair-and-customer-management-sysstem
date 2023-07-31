@@ -13,6 +13,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:JobID/:QuotationID", async (req, res) => {
+  try {
+    const JobID = req.params.JobID;
+    const QuotationID = req.params.QuotationID;
+    const listOfServices = await service.findAll({
+      where: {JobID: JobID, QuotationID: QuotationID}
+    });
+    res.json(listOfServices);
+  } catch (error) {
+    console.error('Error fetching services:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Create a new service
 router.post("/", async (req, res) => {
   try {
