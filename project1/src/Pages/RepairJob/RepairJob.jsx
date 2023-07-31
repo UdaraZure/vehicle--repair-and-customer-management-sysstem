@@ -6,6 +6,9 @@ import { Button, Modal, Table, Form } from "react-bootstrap";
 import Select from "react-select";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+
+
 
 function RepairJob() {
   let { JobID } = useParams();
@@ -19,6 +22,8 @@ function RepairJob() {
   const [selectedServiceType, setSelectedServiceType] = useState(null);
   const [serviceArray, setServiceArray] = useState([]);
   const [quotationCreated, setQuotationCreated] = useState(false);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     axios
@@ -56,7 +61,6 @@ function RepairJob() {
     }));
     setTableData(updatedTableData);
   }, [serviceArray]);
-  
 
   const handleModalClose = () => {
     setShowModal(false);
@@ -117,26 +121,29 @@ function RepairJob() {
       Qamount: totalAmount,
       JobDescription: jobData[0].JobDescription,
       CreationDate: new Date().toISOString().slice(0, 10),
-
-      QuotationStatus: "manager approval pending",
+      QuotationStatus: "Quotation Created",
     };
-
+  
     axios
       .post("http://localhost:3001/Quotation", newQuotation)
       .then((res) => {
-        console.log(res.data);
+        const newQuotationID = res.data.QuotationID;
+        const newQuotationStatus = res.data.QuotationStatus;
+
+        console.log(newQuotationStatus)
+         // Get the generated QuotationID
+  
         // After creating the quotation, send each service in serviceArray to the service table
         serviceArray.forEach((service) => {
           const newService = {
-            QuotationID: res.data.QuotationID, // Use the QuotationID generated for the new quotation
+            QuotationID: newQuotationID, // Use the QuotationID generated for the new quotation
             JobID: service.JobID,
             ServiceTypeID: service.ServiceTypeID,
             ServiceDescription: service.Description,
             ServicePrice: service.Amount,
+            Status: newQuotationStatus,
           };
-
-          console.log(newService);
-
+  
           axios
             .post("http://localhost:3001/Service", newService)
             .then((res) => {
@@ -146,15 +153,31 @@ function RepairJob() {
               console.log(error);
             });
         });
-
-        setShowModal(false);
-        setQuotationCreated(true);
-        toast("Quotation sent to manager for approval");
+  
+        // Update the Job table with the relevant QuotationID
+        axios
+          .put(`http://localhost:3001/Job/${JobID}`, {
+            QuotationID: newQuotationID,
+            Status: "Quotation Created",
+          })
+          .then((res) => {
+            console.log("Job updated successfully with QuotationID.");
+            setShowModal(false);
+            setQuotationCreated(true);
+            toast("Quotation sent to manager for approval");
+            
+            // Navigate to the job details page after successful quotation creation
+            
+          })
+          .catch((error) => {
+            console.log("Failed to update Job with QuotationID:", error);
+          });
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Failed to create quotation:", error);
       });
   };
+  
 
   const handleDeleteRecord = (index) => {
     const recordToDelete = tableData[index];
@@ -171,8 +194,6 @@ function RepairJob() {
       prevServiceArray.filter((service, i) => i !== index)
     );
   };
-  
-  
 
   return (
     <div>
@@ -237,24 +258,24 @@ function RepairJob() {
                       </tr>
                     </thead>
                     <tbody>
-  {tableData.map((record, index) => {
-    return (
-      <tr key={index}>
-        <td>{record.serviceType}</td>
-        <td>{record.description}</td>
-        <td>{record.amount}</td>
-        <td>
-          <Button
-            variant="danger"
-            onClick={() => handleDeleteService(index)}
-          >
-            Delete
-          </Button>
-        </td>
-      </tr>
-    );
-  })}
-</tbody>
+                      {tableData.map((record, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{record.serviceType}</td>
+                            <td>{record.description}</td>
+                            <td>{record.amount}</td>
+                            <td>
+                              <Button
+                                variant="danger"
+                                onClick={() => handleDeleteService(index)}
+                              >
+                                Delete
+                              </Button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
 
                     <tfoot>
                       <tr>

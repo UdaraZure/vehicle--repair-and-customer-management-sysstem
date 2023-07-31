@@ -98,6 +98,7 @@ export default function ClarkDashboard() {
       ...values,
       CustomerID: value, // Set the CustomerID from the value state variable
       EmployeeID: loginState.UserID,
+      Status: "New",
     };
 
     console.log(data);

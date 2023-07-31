@@ -25,9 +25,9 @@ router.get("/", async (req, res) => {
 });
 
 // Get a quotation by ID
-router.get("/:id", async (req, res) => {
+router.get("/?QuotationID", async (req, res) => {
   try {
-    const quotation = await quotation.findByPk(req.params.id);
+    const quotation = await quotation.findByPk(req.params.QuotationID);
     if (quotation) {
       res.status(200).json(quotation);
     } else {
@@ -38,6 +38,7 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+router.get("/")
 
 // Update a quotation by ID
 router.put("/:QuotationID", async (req, res) => {

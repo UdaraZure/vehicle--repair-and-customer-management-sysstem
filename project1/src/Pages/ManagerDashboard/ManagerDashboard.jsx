@@ -18,8 +18,7 @@ function ManagerDashboard() {
       try {
         const response = await axios.get("http://localhost:3001/Quotation");
         const filteredQuotations = response.data.filter(
-          (quotation) =>
-            quotation.QuotationStatus === "manager approval pending"
+          (quotation) => quotation.QuotationStatus === "Quotation Created"
         );
         setQuotations(filteredQuotations);
 
@@ -28,12 +27,12 @@ function ManagerDashboard() {
         const userID = decodedToken.UserID;
 
         const filteredAsignedQuotations = response.data.filter(
-          (quotation) => quotation.QuotationStatus === "Manager Assigned" && 
-          quotation.ManagerID === userID
+          (quotation) =>
+            quotation.QuotationStatus === "Manager Assigned" &&
+            quotation.ManagerID === userID
         );
 
         setAsignedQuotations(filteredAsignedQuotations);
-        
       } catch (error) {
         console.log(error);
       }
@@ -54,16 +53,31 @@ function ManagerDashboard() {
         {
           QuotationStatus: "Manager Assigned",
           ManagerID: userID,
-        }
-      );
+        });
+
+      await axios.put(`http://localhost:3001/Job/${quotationID}`, {
+        Status: "Manager Assigned",
+        
+      });
+
       // Update the quotations state after successful update
-      setQuotations((prevQuotations) =>
-        prevQuotations.map((quotation) =>
-          quotation.QuotationID === quotationID
-            ? { ...quotation, QuotationStatus: "Manager Assigned" }
-            : quotation
-        )
+      setQuotations(
+        (prevQuotations) =>
+          prevQuotations.map((quotation) =>
+            quotation.QuotationID === quotationID
+              ? { ...quotation, QuotationStatus: "Manager Assigned" }
+              : quotation
+          )
+
+        // setAsignedQuotations((prevQuotations) =>
+        //   prevQuotations.map((quotation) =>
+        //     quotation.QuotationID === quotationID
+        //       ? { ...quotation, Status: "Manager Assigned" }
+        //       : quotation
+        //   )
+        // )
       );
+
       console.log("Quotation updated successfully:", response.data);
     } catch (error) {
       console.log("Error updating quotation:", error);
@@ -85,7 +99,6 @@ function ManagerDashboard() {
                 <th>Quotation ID</th>
                 <th>Job ID</th>
                 <th>Description</th>
-                
               </tr>
             </thead>
             <tbody>

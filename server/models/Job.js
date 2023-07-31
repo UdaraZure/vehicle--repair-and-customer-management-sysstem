@@ -38,7 +38,6 @@ module.exports = (sequelize, DataTypes) => {
         Status: {
             type: DataTypes.STRING,
             allowNull: true, 
-            defaultValue: "New",
         },
 
         ServiceType: {

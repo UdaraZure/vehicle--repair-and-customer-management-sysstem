@@ -23,7 +23,6 @@ function JobTable({ customerID }) {
             .filter((job) => job.CustomerID === customerID)
             .map((job) => ({
               ...job,
-              QuotationStatus: "New", // Initialize QuotationStatus as "New"
             }));
 
           // Fetch and update the QuotationStatus for each job
@@ -65,7 +64,7 @@ function JobTable({ customerID }) {
               <td>{job.JobID}</td>
               <td>{job.JobDescription}</td>
               <td>{job.CustomerID}</td>
-              <td>{job.QuotationStatus}</td>
+              <td>{job.Status}</td>
             </tr>
           ))}
         </tbody>
