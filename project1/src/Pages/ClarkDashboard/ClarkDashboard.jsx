@@ -29,6 +29,8 @@ export default function ClarkDashboard() {
   const [selectedJob, setSelectedJob] = useState(null);
   const [services, setServices] = useState([]);
   const [editingServiceID, setEditingServiceID] = useState(null);
+  const [selectedJobServices, setSelectedJobServices] = useState([]);
+
 
   const [selectedService, setSelectedService] = useState(null);
 
@@ -313,6 +315,7 @@ export default function ClarkDashboard() {
   };
 
   const handleSendForApproval = async () => {
+    
 
     if(selectedJob.QuotationStatus === "Manager Rejected Once"){
       await axios.put(
