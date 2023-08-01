@@ -12,6 +12,7 @@ import Autosuggest from "react-autosuggest";
 import Select from "react-select";
 import jwtDecode from "jwt-decode";
 
+
 export default function ClarkDashboard() {
   const [employee, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -346,6 +347,17 @@ export default function ClarkDashboard() {
         }
       );
     }
+    try {
+      const response = await axios.get(`http://localhost:3001/Job/getServices/${selectedJob.QuotationID}`);
+      const services = response.data; // Assuming the response contains an array of services
+      setSelectedJobServices(services);
+
+      
+    } catch (error) {
+      // Handle error if the services fetching fails
+      console.error("Error fetching services:", error);
+    }
+
     
     
   };

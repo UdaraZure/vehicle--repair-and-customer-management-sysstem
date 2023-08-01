@@ -10,8 +10,9 @@ export default function Login() {
   const [Password, setPassword] = useState("");
   const { setLoginState } = useContext(LoginContext);
   const [loginStat, setLoginStat] = useState({
-    username: "",
+    Email: "",
     Role: "",
+    UserID:"",
     status: false,
   });
 
@@ -28,8 +29,9 @@ export default function Login() {
         } else {
           localStorage.setItem("accessToken", response.data.token);
           setLoginState({
-            username: response.data.username,
-            id: response.data.id,
+            Email: response.data.Email,
+            UserID: response.data.UserID,
+            Role: response.data.UserRole,
             status: true,
           });
         }

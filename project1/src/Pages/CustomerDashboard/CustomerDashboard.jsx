@@ -146,7 +146,7 @@ function CustomerDashboard() {
               <Nav.Link eventKey="first">Profile</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="second">Tab 2</Nav.Link>
+              <Nav.Link eventKey="second">On going Repair Jobs</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
