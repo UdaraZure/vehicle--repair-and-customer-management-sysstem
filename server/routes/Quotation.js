@@ -13,6 +13,21 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:QuotationID/Feedback1", async (req, res) => {
+  try {
+    const quotationData = await quotation.findOne({ where: { QuotationID: req.params.QuotationID } });
+    if (quotationData) {
+      await quotationData.update(req.body);
+      res.status(200).json(quotationData);
+    } else {
+      res.status(404).json({ message: "Quotation not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 // Get all quotations
 router.get("/", async (req, res) => {
   try {

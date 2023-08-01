@@ -75,3 +75,18 @@ router.put("/:JobID", async (req, res) => {
   }
 });
 
+router.put("/updateJobStatus/:QuotationID", async (req, res) => {
+  try {
+    const jobData = await Job.findOne({ where: { QuotationID: req.params.QuotationID } });
+    if (jobData) {
+      await jobData.update(req.body);
+      res.status(200).json(jobData);
+    } else {
+      res.status(404).json({ message: "Job not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+

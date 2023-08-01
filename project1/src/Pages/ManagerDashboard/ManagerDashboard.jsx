@@ -53,12 +53,15 @@ function ManagerDashboard() {
         {
           QuotationStatus: "Manager Assigned",
           ManagerID: userID,
-        });
+        }
+      );
 
-      await axios.put(`http://localhost:3001/Job/${quotationID}`, {
-        Status: "Manager Assigned",
-        
-      });
+      await axios.put(
+        `http://localhost:3001/Job/updateJobStatus/${quotationID}`,
+        {
+          Status: "Manager Assigned",
+        }
+      );
 
       // Update the quotations state after successful update
       setQuotations(
@@ -120,12 +123,12 @@ function ManagerDashboard() {
             </tbody>
           </Table>
         </Tab>
-        <Tab eventKey="profile" title="Profile">
+        <Tab eventKey="profile" title="My Repair Jobs">
           <Table striped bordered hover className="repair-table">
             <thead>
               <tr>
                 <th>Quotation ID</th>
-                <th>Job ID</th>
+                <th>Job ID </th>
                 <th>Description</th>
               </tr>
             </thead>
@@ -134,6 +137,7 @@ function ManagerDashboard() {
                 <tr
                   key={quotation.QuotationID}
                   onClick={() => setSelectedQuotation(quotation)}
+                  style={{ cursor: 'pointer' }}
                 >
                   <td>{quotation.QuotationID}</td>
                   <td>{quotation.JobID}</td>
@@ -143,8 +147,8 @@ function ManagerDashboard() {
             </tbody>
           </Table>
         </Tab>
-        <Tab eventKey="longer-tab" title="Loooonger Tab">
-          Tab content for Loooonger Tab
+        <Tab eventKey="longer-tab" title="Rejected Jobs">
+          Rejected Jobs
         </Tab>
       </Tabs>
       {selectedQuotation && (

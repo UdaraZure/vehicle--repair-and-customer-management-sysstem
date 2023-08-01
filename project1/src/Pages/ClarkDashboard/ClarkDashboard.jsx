@@ -10,6 +10,7 @@ import Modal from "react-bootstrap/Modal";
 import { RepairJobCard } from "../../components/RepairJobCard";
 import Autosuggest from "react-autosuggest";
 import Select from "react-select";
+import jwtDecode from "jwt-decode";
 
 export default function ClarkDashboard() {
   const [employee, setEmployees] = useState([]);
@@ -23,6 +24,8 @@ export default function ClarkDashboard() {
   const [customerIds, setCustomerIds] = useState([]);
   const [value, setValue] = useState("");
   const [submitValue, setSubmitValue] = useState("");
+  const [jobs, setJobs] = useState([]);
+
 
   const [loginState, setLoginState] = useState({
     username: "",
@@ -35,6 +38,31 @@ export default function ClarkDashboard() {
     value: customerId,
     label: customerId,
   }));
+
+  const accessToken = localStorage.getItem("accessToken");
+  const decodedToken = jwtDecode(accessToken);
+  const userID = decodedToken.UserID;
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        // Retrieve all job records from the database
+        const response = await axios.get("http://localhost:3001/job");
+
+        // Filter the job records based on the userID and Status values
+        const filteredJobs = response.data.filter(
+          (job) => job.EmployeeID === userID && job.Status === "Manager Rejected Once"
+        );
+
+        setJobs(filteredJobs);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchJobs();
+  }, [userID]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -170,7 +198,10 @@ export default function ClarkDashboard() {
                   <Nav.Link eventKey="first">Profile</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="second">Repair Jobs</Nav.Link>
+                  <Nav.Link eventKey="second">Create Repair Jobs</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="third">Rejected Repair Jobs</Nav.Link>
                 </Nav.Item>
               </Nav>
             </Col>
@@ -271,6 +302,28 @@ export default function ClarkDashboard() {
                       setRepairJobs={setRepairJobs}
                     />
                   </div>
+                </Tab.Pane>
+
+                <Tab.Pane eventKey="third">
+                  <table className="rejected-jobs-table">
+                  <th>Job  ID</th>
+                  <th>Customer ID</th>
+                  <th>Created by</th>
+                  <th>Job  Description</th>
+                  <th>Status</th>
+
+                <tbody >
+          {jobs.map((job) => (
+            <tr key={job.JobID}>
+              <td>{job.JobID}</td>
+              <td>{job.CustomerID}</td>
+              <td>{job.EmployeeID}</td>
+              <td>{job.JobDescription}</td>
+              <td>{job.Status}</td>
+            </tr>
+          ))}
+        </tbody>
+        </table> 
                 </Tab.Pane>
               </Tab.Content>
             </Col>

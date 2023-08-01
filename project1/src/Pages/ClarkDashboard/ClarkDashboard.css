@@ -65,4 +65,36 @@
   opacity: 1;
  }
 
+ /* Apply styles to the table */
+.rejected-jobs-table {
+  width: 80%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+/* Style table header cells */
+.rejected-jobs-table th {
+  background-color: #f2f2f2;
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+/* Style table body cells */
+.rejected-jobs-table td {
+  border: 1px solid #dddddd;
+  padding: 8px;
+  background-color: #fff;
+  
+}
+
+/* Alternating row background colors for better readability */
+.rejected-jobs-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Hover effect on rows */
+.rejected-jobs-table tr:hover {
+  background-color: #b79999;
  
+}
