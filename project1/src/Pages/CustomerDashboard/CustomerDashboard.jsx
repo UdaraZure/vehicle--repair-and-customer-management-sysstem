@@ -103,6 +103,40 @@ function CustomerDashboard() {
     setEditedDetails({ ...editedDetails, [name]: value });
   };
 
+  const handleAcceptQuotation = async() => {
+
+    await axios.put(
+      `http://localhost:3001/Quotation/${selectedJob.QuotationID}`,
+      {
+        QuotationStatus: "Approved By Customer",
+      }
+    );
+
+    await axios.put(
+      `http://localhost:3001/Job/updateJobStatus/${selectedJob.QuotationID}`,
+      {
+        Status: "Approved By Customer",
+      }
+    );
+    
+  };
+
+  const handleRejectQuotation = async() => {
+    await axios.put(
+      `http://localhost:3001/Quotation/${selectedJob.QuotationID}`,
+      {
+        QuotationStatus: "Job Terminated",
+      }
+    );
+
+    await axios.put(
+      `http://localhost:3001/Job/updateJobStatus/${selectedJob.QuotationID}`,
+      {
+        Status: "Job Terminated",
+      }
+    );
+  };
+
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="first">
       <Row>
@@ -214,9 +248,10 @@ function CustomerDashboard() {
   )}
 </Modal.Body>
 
-        <Modal.Footer>
-          <button onClick={handleModalClose}>Close</button>
-        </Modal.Footer>
+<Modal.Footer>
+  <button onClick={handleAcceptQuotation}>Accept</button>
+  <button onClick={handleRejectQuotation}>Reject</button>
+</Modal.Footer>
       </Modal>
 
     </Tab.Container>

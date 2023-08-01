@@ -25,6 +25,7 @@ export default function ClarkDashboard() {
   const [value, setValue] = useState("");
   const [submitValue, setSubmitValue] = useState("");
   const [jobs, setJobs] = useState([]);
+  const [ApprovedRepairJobs, setApprovedRepairJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [services, setServices] = useState([]);
   const [editingServiceID, setEditingServiceID] = useState(null);
@@ -124,7 +125,7 @@ export default function ClarkDashboard() {
   const userID = decodedToken.UserID;
 
   useEffect(() => {
-    const fetchJobs = async () => {
+    const fetchRejectedJobs = async () => {
       try {
         // Retrieve all job records from the database
         const response = await axios.get("http://localhost:3001/Quotation");
@@ -152,7 +153,39 @@ export default function ClarkDashboard() {
       }
     };
   
-    fetchJobs();
+    fetchRejectedJobs();
+
+    const fetchApprovedRepairJobs = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/Quotation`
+        );
+        
+        const approvedJobs = response.data.filter(
+          (quotation) =>
+            (quotation.QuotationStatus === "Customer Approved") &&
+            quotation.EmployeeID === userID
+        );
+        
+        setApprovedRepairJobs(approvedJobs);
+
+        if (approvedJobs.length > 0) {
+          const selectedJob = approvedJobs[0]; // Assuming the first job in the filtered list is the selected one
+          const serviceResponse = await axios.get(
+            `http://localhost:3001/service/${selectedJob.JobID}/${selectedJob.QuotationID}`
+          );
+          setServices(serviceResponse.data);
+        }
+        
+      } catch (error) {
+        console.log(error);
+      }
+
+      
+    };
+
+    fetchApprovedRepairJobs();
+
   }, [userID]);
   
 
@@ -330,6 +363,9 @@ export default function ClarkDashboard() {
                 <Nav.Item>
                   <Nav.Link eventKey="third">Rejected Repair Jobs</Nav.Link>
                 </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="fourth">Repair In Progress</Nav.Link>
+                </Nav.Item>
               </Nav>
             </Col>
             <Col sm={9}>
@@ -453,6 +489,28 @@ export default function ClarkDashboard() {
                     </tbody>
                   </table>
                 </Tab.Pane>
+                <Tab.Pane eventKey="fourth">
+  <table className="rejected-jobs-table">
+    <thead>
+      <tr>
+        <th>Quotation ID</th>
+        <th>Customer ID</th>
+        <th>Job Description</th>
+        <th>Quotation Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {ApprovedRepairJobs.map((job) => (
+        <tr key={job.QuotationID} onClick={() => setSelectedJob(job)}>
+          <td>{job.QuotationID}</td>
+          <td>{job.CustomerID}</td>
+          <td>{job.JobDescription}</td>
+          <td>{job.QuotationStatus}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</Tab.Pane>
               </Tab.Content>
             </Col>
           </Row>
