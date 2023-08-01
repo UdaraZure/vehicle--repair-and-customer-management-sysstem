@@ -86,6 +86,7 @@
   padding: 8px;
   background-color: #fff;
   
+  
 }
 
 /* Alternating row background colors for better readability */
@@ -96,5 +97,29 @@
 /* Hover effect on rows */
 .rejected-jobs-table tr:hover {
   background-color: #b79999;
+  cursor: pointer;
  
 }
+
+/* ClarkDashboard.css (or create a new CSS file) */
+
+.service-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.service-table th, .service-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.service-table th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.service-table td {
+  text-align: center;
+}
+

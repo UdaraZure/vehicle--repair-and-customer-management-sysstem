@@ -27,6 +27,20 @@ router.get("/:JobID/:QuotationID", async (req, res) => {
   }
 });
 
+// router.get("?JobID & QuotationID" , async (req, res) => {
+//   try {
+//     const jobID = req.params.JobID;
+//     const quotationID = req.params.QuotationID;
+//     const listOfServices = await service.findAll({
+//       where: {JobID: jobID, QuotationID: quotationID}
+//     });
+//     res.json(listOfServices);
+//   } catch (error) {
+//     console.error('Error fetching services:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
+
 // Create a new service
 router.post("/", async (req, res) => {
   try {
@@ -39,23 +53,30 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Update an service
 router.put("/:id", async (req, res) => {
   try {
     const serviceId = req.params.id;
-    const updatedServiceData = req.body;
-    const [rowsUpdated] = await Service.update(updatedServiceData, {
-      where: { id: serviceId }
+    const serviceData = req.body;
+    const Service = await service.findOne({
+      where: { id: serviceId } // Update the field name to match your database column name
     });
-    if (rowsUpdated === 0) {
-      return res.status(404).json({ error: 'Service not found' });
+    if (!Service) {
+      return res.status(404).json({ error: 'The service could not be found.' });
     }
-    res.json({ message: 'Service updated successfully' });
+    await Service.update(serviceData, {
+      where: { id: serviceId } // Update the field name to match your database column name
+    });
+    const updatedService = await service.findOne({
+      where: { id: serviceId } // Update the field name to match your database column name
+    });
+    res.json(updatedService);
   } catch (error) {
     console.error('Error updating service:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+
 
 // Delete an service
 router.delete("/:id", async (req, res) => {
@@ -73,5 +94,9 @@ router.delete("/:id", async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+ 
+  
   
 module.exports = router;
+

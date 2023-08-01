@@ -53,7 +53,28 @@ router.get("/?QuotationID", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-router.get("/")
+
+
+router.get("/getQuotations/:JobID", async (req, res) => {
+  try {
+    const JobID = req.params.JobID;
+    const Quotation = await quotation.findAll({
+      where: {
+        JobID: JobID
+      }
+
+    });
+
+    if (Quotation.length > 0) {
+      res.status(200).json("true");
+    } else {
+      res.status(404).json("false");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 // Update a quotation by ID
 router.put("/:QuotationID", async (req, res) => {

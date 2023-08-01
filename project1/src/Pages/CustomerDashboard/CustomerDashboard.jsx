@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
 import "./CustomerDashboard.css";
 import JobTable from "./JobTable"; // Import the JobTable component
+import Modal from "react-bootstrap/Modal";
 
 import axios from "axios";
 import jwt_decode from "jwt-decode";
@@ -13,6 +14,51 @@ function CustomerDashboard() {
   const [customerDetails, setCustomerDetails] = useState([]);
   const [isEditable, setIsEditable] = useState(false);
   const [editedDetails, setEditedDetails] = useState({}); // State to store edited details
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [services, setServices] = useState([]);
+  const [Qamount, setQamount] = useState();
+
+  // Function to fetch services for a specific repair job
+  const fetchServices = (jobID, quotationID) => {
+    axios
+      .get(`http://localhost:3001/Service/${jobID}/${quotationID}`)
+      .then((response) => {
+        setServices(response.data);
+        
+      })
+      .catch((error) => {
+        console.error("Error fetching services:", error);
+      });
+
+      axios
+      .get(`http://localhost:3001/Quotation/?${quotationID}`)
+      .then((response) => {
+
+        response.data.map((value, key) => {
+          setQamount(value.Qamount);
+          console.log(value.Qamount);
+        })
+
+
+        // setQamount(response.data[0].QuotationAmount);
+        // console.log(response.data);
+
+      })
+  };
+
+  // Function to handle when a "Sent To Customer" record is clicked
+  const handleJobClick = (job) => {
+    if (job.Status === "Sent To Customer") {
+      setSelectedJob(job);
+      fetchServices(job.JobID, job.QuotationID);
+    }
+  };
+
+  // Function to clear the selected job and services when the modal is closed
+  const handleModalClose = () => {
+    setSelectedJob(null);
+    setServices([]);
+  };
 
   // Function to get user ID from access token
   const accessToken = localStorage.getItem("accessToken");
@@ -131,7 +177,7 @@ function CustomerDashboard() {
                   </div>
                 </Tab.Pane>
                 <Tab.Pane eventKey="second">
-                <JobTable customerID={value.CustomerID} />
+                <JobTable customerID={value.CustomerID} handleJobClick={handleJobClick} />
 
                 </Tab.Pane>
               </Tab.Content>
@@ -139,6 +185,40 @@ function CustomerDashboard() {
           })}
         </Col>
       </Row>
+      <Modal show={selectedJob !== null} onHide={handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Services for Job ID: {selectedJob && selectedJob.JobID}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+  {services.length > 0 ? (
+    <table>
+      <thead>
+        <tr>
+          <th>Service Description</th>
+          <th>Service Price</th>
+          <th>Quotation Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {services.map((service) => (
+          <tr key={service.serviceID}>
+            <td>{service.ServiceDescription}</td>
+            <td>{service.ServicePrice}</td>
+            <td>{Qamount}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ) : (
+    <p>No services found.</p>
+  )}
+</Modal.Body>
+
+        <Modal.Footer>
+          <button onClick={handleModalClose}>Close</button>
+        </Modal.Footer>
+      </Modal>
+
     </Tab.Container>
   );
 }

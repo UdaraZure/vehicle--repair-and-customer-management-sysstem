@@ -25,7 +25,16 @@ export default function ClarkDashboard() {
   const [value, setValue] = useState("");
   const [submitValue, setSubmitValue] = useState("");
   const [jobs, setJobs] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [services, setServices] = useState([]);
+  const [editingServiceID, setEditingServiceID] = useState(null);
 
+  const [selectedService, setSelectedService] = useState(null);
+
+  const [editableService, setEditableService] = useState({
+    ServiceDescription: "",
+    ServicePrice: "",
+  });
 
   const [loginState, setLoginState] = useState({
     username: "",
@@ -39,6 +48,77 @@ export default function ClarkDashboard() {
     label: customerId,
   }));
 
+  const handleEditService = (service) => {
+    setSelectedService(service);
+    setEditingServiceID(service.id);
+    setEditableService({
+      ServiceDescription: service.ServiceDescription,
+      ServicePrice: parseFloat(service.ServicePrice), // Convert ServicePrice to a number
+    });
+  };
+
+  const handleUpdateService = async (service) => {
+    try {
+      // Make an API call to update the service in the database
+      await axios.put(`http://localhost:3001/Service/${service.id}`, {
+        ServiceDescription: editableService.ServiceDescription,
+        ServicePrice: parseFloat(editableService.ServicePrice),
+      });
+
+      // Update the services state with the updated service details
+      setServices((prevServices) =>
+        prevServices.map((prevService) =>
+          prevService.id === service.id
+            ? {
+                ...prevService,
+                ServiceDescription: editableService.ServiceDescription,
+                ServicePrice: editableService.ServicePrice,
+              }
+            : prevService
+        )
+      );
+
+      // Clear the editing state variables
+      setEditingServiceID(null);
+      setEditableService({
+        ServiceDescription: "",
+        ServicePrice: "",
+      });
+    } catch (error) {
+      console.error("Error updating service:", error);
+    }
+  };
+
+  const handleRemoveService = async (service) => {
+    try {
+      // Make an API call to remove the service from the database
+      await axios.delete(`http://localhost:3001/Service/${service.id}`);
+
+      // Update the services state by removing the deleted service
+      setServices((prevServices) =>
+        prevServices.filter((prevService) => prevService.id !== service.id)
+      );
+
+      // Clear the editing state variables
+      setEditingServiceID(null);
+      setEditableService({
+        ServiceDescription: "",
+        ServicePrice: "",
+      });
+    } catch (error) {
+      console.error("Error removing service:", error);
+    }
+  };
+
+  const handleSearch = () => {
+    // Perform any additional actions here before updating the database (if needed)
+
+    // Trigger the update for the relevant service
+    handleUpdateService(selectedService);
+
+    // Perform any additional actions here after updating the database (if needed)
+  };
+
   const accessToken = localStorage.getItem("accessToken");
   const decodedToken = jwtDecode(accessToken);
   const userID = decodedToken.UserID;
@@ -47,22 +127,34 @@ export default function ClarkDashboard() {
     const fetchJobs = async () => {
       try {
         // Retrieve all job records from the database
-        const response = await axios.get("http://localhost:3001/job");
-
+        const response = await axios.get("http://localhost:3001/Quotation");
+  
         // Filter the job records based on the userID and Status values
         const filteredJobs = response.data.filter(
-          (job) => job.EmployeeID === userID && job.Status === "Manager Rejected Once"
+          (quotation) =>
+            (quotation.QuotationStatus === "Manager Rejected Once" ||
+              quotation.QuotationStatus === "Manager Rejected Twice") &&
+            quotation.EmployeeID === userID
         );
-
+  
         setJobs(filteredJobs);
+  
+        // Fetch the service data for the selected job
+        if (filteredJobs.length > 0) {
+          const selectedJob = filteredJobs[0]; // Assuming the first job in the filtered list is the selected one
+          const serviceResponse = await axios.get(
+            `http://localhost:3001/service/${selectedJob.JobID}/${selectedJob.QuotationID}`
+          );
+          setServices(serviceResponse.data);
+        }
       } catch (error) {
         console.log(error);
       }
     };
-
+  
     fetchJobs();
   }, [userID]);
-
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -187,6 +279,41 @@ export default function ClarkDashboard() {
     setValue(suggestion);
   };
 
+  const handleSendForApproval = async () => {
+
+    if(selectedJob.QuotationStatus === "Manager Rejected Once"){
+      await axios.put(
+        `http://localhost:3001/Quotation/${selectedJob.QuotationID}`,
+        {
+          QuotationStatus: "Returned To Manager",
+        }
+      );
+  
+      await axios.put(
+        `http://localhost:3001/Job/updateJobStatus/${selectedJob.QuotationID}`,
+        {
+          Status: "Returned To Manager",
+        }
+      );
+    } else if(selectedJob.QuotationStatus === "Manager Rejected Twice"){
+      await axios.put(
+        `http://localhost:3001/Quotation/${selectedJob.QuotationID}`,
+        {
+          QuotationStatus: "Sent To Customer",
+        }
+      );
+  
+      await axios.put(
+        `http://localhost:3001/Job/updateJobStatus/${selectedJob.QuotationID}`,
+        {
+          Status: "Sent To Customer",
+        }
+      );
+    }
+    
+    
+  };
+
   return (
     <>
       <div style={{ marginTop: "100px" }}>
@@ -306,30 +433,128 @@ export default function ClarkDashboard() {
 
                 <Tab.Pane eventKey="third">
                   <table className="rejected-jobs-table">
-                  <th>Job  ID</th>
-                  <th>Customer ID</th>
-                  <th>Created by</th>
-                  <th>Job  Description</th>
-                  <th>Status</th>
+                    <th>Job ID</th>
+                    <th>Quotation ID</th>
+                    <th>Created by</th>
 
-                <tbody >
-          {jobs.map((job) => (
-            <tr key={job.JobID}>
-              <td>{job.JobID}</td>
-              <td>{job.CustomerID}</td>
-              <td>{job.EmployeeID}</td>
-              <td>{job.JobDescription}</td>
-              <td>{job.Status}</td>
-            </tr>
-          ))}
-        </tbody>
-        </table> 
+                    <th>Job Description</th>
+                    <th>Status</th>
+
+                    <tbody>
+                      {jobs.map((job) => (
+                        <tr key={job.JobID} onClick={() => setSelectedJob(job)}>
+                          <td>{job.JobID}</td>
+                          <td>{job.QuotationID}</td>
+                          <td>{job.EmployeeID}</td>
+                          <td>{job.JobDescription}</td>
+                          <td>{job.QuotationStatus}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </Tab.Pane>
               </Tab.Content>
             </Col>
           </Row>
         </Tab.Container>
       </div>
+
+      <Modal show={selectedJob !== null} onHide={() => setSelectedJob(null)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Job Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedJob && (
+            <div>
+              <p>Job ID: {selectedJob.JobID}</p>
+              <p>Quotation ID: {selectedJob.QuotationID}</p>
+              <p>Created by: {selectedJob.EmployeeID}</p>
+              <p>Job Description: {selectedJob.JobDescription}</p>
+              <p>Status: {selectedJob.QuotationStatus}</p>
+
+              {services.length > 0 && (
+                <div>
+                  <Modal.Header>
+                    <Modal.Title>Repair Quotation</Modal.Title>
+                  </Modal.Header>
+
+                  <table className="service-table">
+                    <thead>
+                      <tr>
+                        <th>Service Description</th>
+                        <th>Price</th>
+                        <th>Edit</th>
+                        <th>Remove</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {services.map((service) => (
+                        <tr key={service.id}>
+                          <td>
+                            {editingServiceID === service.id ? (
+                              <input
+                                type="text"
+                                value={editableService.ServiceDescription}
+                                onChange={(e) =>
+                                  setEditableService({
+                                    ...editableService,
+                                    ServiceDescription: e.target.value,
+                                  })
+                                }
+                              />
+                            ) : (
+                              service.ServiceDescription
+                            )}
+                          </td>
+                          <td>
+                            {editingServiceID === service.id ? (
+                              <input
+                                type="text"
+                                value={editableService.ServicePrice}
+                                onChange={(e) =>
+                                  setEditableService({
+                                    ...editableService,
+                                    ServicePrice: e.target.value,
+                                  })
+                                }
+                              />
+                            ) : (
+                              service.ServicePrice
+                            )}
+                          </td>
+                          <td>
+                            {editingServiceID === service.id ? (
+                              <button
+                                onClick={() => handleUpdateService(service)}
+                              >
+                                Update
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => handleEditService(service)}
+                              >
+                                Edit
+                              </button>
+                            )}
+                          </td>
+                          <td>
+                            <button
+                              onClick={() => handleRemoveService(service)}
+                            >
+                              Remove
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <button onClick={handleSendForApproval}>Send for Approval</button>
+                </div>
+              )}
+            </div>
+          )}
+        </Modal.Body>
+      </Modal>
 
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>

@@ -49,8 +49,14 @@ module.exports = (sequelize, DataTypes) => {
         
         QuotationStatus: {
           type: DataTypes.STRING,
-          allowNull: false,
+          allowNull: false, 
         },
+
+        RejectedTimes: {
+          type: DataTypes.STRING,
+          allowNull: true,
+        },
+
       },
       {
         hooks: {

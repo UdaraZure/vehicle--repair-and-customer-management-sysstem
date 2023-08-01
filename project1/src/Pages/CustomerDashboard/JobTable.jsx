@@ -4,7 +4,7 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 import "./JobTable.css";
 
-function JobTable({ customerID }) {
+function JobTable({ customerID , handleJobClick }) {
   const [jobData, setJobData] = useState([]);
 
   // Function to get user ID from access token
@@ -60,8 +60,8 @@ function JobTable({ customerID }) {
         </thead>
         <tbody>
           {jobData.map((job) => (
-            <tr key={job.JobID}>
-              <td>{job.JobID}</td>
+          <tr key={job.JobID} onClick={() => handleJobClick(job)}>
+          <td>{job.JobID}</td>
               <td>{job.JobDescription}</td>
               <td>{job.CustomerID}</td>
               <td>{job.Status}</td>

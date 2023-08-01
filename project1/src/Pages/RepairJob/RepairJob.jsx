@@ -21,8 +21,10 @@ function RepairJob() {
   const [serviceTypeOptions, setServiceTypeOptions] = useState([]);
   const [selectedServiceType, setSelectedServiceType] = useState(null);
   const [serviceArray, setServiceArray] = useState([]);
-  const [quotationCreated, setQuotationCreated] = useState(false);
+  const [quotationExists, setQuotationExists] = useState("false");
   const navigate = useNavigate();
+  const [quotationList, setQuotationList] = useState([]);
+  
 
 
   useEffect(() => {
@@ -61,7 +63,23 @@ function RepairJob() {
     }));
     setTableData(updatedTableData);
   }, [serviceArray]);
+  
+  useEffect(() => {
+    console.log( "sEedt"+JobID);
+    axios
+      .get(`http://localhost:3001/Quotation/getQuotations/${JobID}`)
+      .then((res) => {
+        setQuotationExists(res.data);
 
+
+        
+      
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [JobID]);
+  
   const handleModalClose = () => {
     setShowModal(false);
   };
@@ -163,7 +181,7 @@ function RepairJob() {
           .then((res) => {
             console.log("Job updated successfully with QuotationID.");
             setShowModal(false);
-            setQuotationCreated(true);
+            
             toast("Quotation sent to manager for approval");
             
             // Navigate to the job details page after successful quotation creation
@@ -209,7 +227,7 @@ function RepairJob() {
               <div>Created at: {job.JobCreationDate}</div>
               <div>Total Amount: {totalAmount}</div>
             </div>
-            {!quotationCreated && (
+            {quotationExists === "false" && (
               <button className="createQ-button" onClick={handleModalShow}>
                 <p className="createQ-button-content">Create Quotation</p>
               </button>
