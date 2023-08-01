@@ -78,12 +78,13 @@ router.put("/:id", async (req, res) => {
 
 
 
+
 // Delete an service
 router.delete("/:id", async (req, res) => {
     try {
       const serviceId = req.params.id;
-      const rowsDeleted = await Service.destroy({
-        where: { ServiceID: serviceId } // Update the field name to match your database column name
+      const rowsDeleted = await service.destroy({
+        where: { id: serviceId } // Update the field name to match your database column name
       });
       if (rowsDeleted === 0) {
         return res.status(404).json({ error: 'Service not found' });

@@ -31,6 +31,8 @@ export default function ClarkDashboard() {
   const [services, setServices] = useState([]);
   const [editingServiceID, setEditingServiceID] = useState(null);
   const [selectedJobServices, setSelectedJobServices] = useState([]);
+  const [showServiceModal, setShowServiceModal] = useState(false);
+
 
 
   const [selectedService, setSelectedService] = useState(null);
@@ -336,14 +338,14 @@ export default function ClarkDashboard() {
       await axios.put(
         `http://localhost:3001/Quotation/${selectedJob.QuotationID}`,
         {
-          QuotationStatus: "Sent To Customer",
+          QuotationStatus: "Customer Pending Approval",
         }
       );
   
       await axios.put(
         `http://localhost:3001/Job/updateJobStatus/${selectedJob.QuotationID}`,
         {
-          Status: "Sent To Customer",
+          Status: "Customer Pending Approval",
         }
       );
     }

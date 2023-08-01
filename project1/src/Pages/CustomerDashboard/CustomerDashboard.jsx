@@ -46,9 +46,9 @@ function CustomerDashboard() {
       })
   };
 
-  // Function to handle when a "Sent To Customer" record is clicked
+  // Function to handle when a "Customer Pending Approval" record is clicked
   const handleJobClick = (job) => {
-    if (job.Status === "Sent To Customer") {
+    if (job.Status === "Customer Pending Approval") {
       setSelectedJob(job);
       fetchServices(job.JobID, job.QuotationID);
     }
@@ -225,24 +225,27 @@ function CustomerDashboard() {
         </Modal.Header>
         <Modal.Body>
   {services.length > 0 ? (
-    <table>
-      <thead>
-        <tr>
-          <th>Service Description</th>
-          <th>Service Price</th>
-          <th>Quotation Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        {services.map((service) => (
-          <tr key={service.serviceID}>
-            <td>{service.ServiceDescription}</td>
-            <td>{service.ServicePrice}</td>
-            <td>{Qamount}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px", border: "1px solid #ddd", fontSize: "14px" }}>
+  <thead>
+    <tr>
+      <th style={{ backgroundColor: "#f2f2f2", border: "1px solid #ddd", padding: "10px", textAlign: "left" }}>Service Description</th>
+      <th style={{ backgroundColor: "#f2f2f2", border: "1px solid #ddd", padding: "10px", textAlign: "left" }}>Service Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {services.map((service) => (
+      <tr key={service.serviceID}>
+        <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}>{service.ServiceDescription}</td>
+        <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}>{service.ServicePrice}</td>
+      </tr>
+    ))}
+    <tr>
+      <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}><strong>Total is </strong></td>
+      <td><strong>{Qamount}</strong></td>
+    </tr>
+  </tbody>
+</table>
+
   ) : (
     <p>No services found.</p>
   )}
