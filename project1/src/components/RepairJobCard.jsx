@@ -27,6 +27,8 @@ export const RepairJobCard = ({ searchQuery ,value,}) => {
       .then((res) => {
         setRepairJobs(res.data);
         console.log(res.data);
+
+        
       })
       .catch((error) => {
         console.log(error);
@@ -44,6 +46,11 @@ export const RepairJobCard = ({ searchQuery ,value,}) => {
     repairJob.JobID.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  filteredRepairJobs.map ((value, key) => {
+    console.log(value.QuotationID);
+    localStorage.setItem("JobID", value.JobID);
+  })
+
   return (
     filteredRepairJobs.map((repairJob, index) => (
       <div className="jobcard" 
@@ -58,6 +65,9 @@ export const RepairJobCard = ({ searchQuery ,value,}) => {
             <p className="h1">{repairJob.JobID}</p>
           </div>
           <p className="p">{repairJob.JobDescription}</p>
+
+          <p>{repairJob.QuotationID}</p>
+          
         </div>
       </div>
     ))

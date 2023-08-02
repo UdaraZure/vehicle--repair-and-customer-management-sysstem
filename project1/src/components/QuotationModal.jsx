@@ -35,11 +35,11 @@ function QuotationModal({ quotation, onClose }) {
     try {
       // Update the job status in the database
       await axios.put(`http://localhost:3001/Job/${quotation.JobID}`, {
-        Status: "Manager Approved",
+        Status: "Pending Customer Approval",
       });
 
       await axios.put(`http://localhost:3001/Quotation/${quotation.QuotationID}`, {
-        QuotationStatus: "Manager Approved",
+        QuotationStatus: "Pending Customer Approval",
       });
 
       // Display a success message

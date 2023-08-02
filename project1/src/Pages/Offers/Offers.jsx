@@ -24,7 +24,7 @@ function Offers() {
 
   const validationSchema = Yup.object().shape({
     Title: Yup.string().min(5).max(50).required("You must input a title"),
-    Description: Yup.string().max(100).required("You must input a description"),
+    Description: Yup.string().max(330).required("You must input a description"),
     FromDate: Yup.date()
       .required("You must input a date")
       .min(new Date(), "From Date cannot be before today")

@@ -6,6 +6,8 @@ import Tab from "react-bootstrap/Tab";
 import "./CustomerDashboard.css";
 import JobTable from "./JobTable"; // Import the JobTable component
 import Modal from "react-bootstrap/Modal";
+import ReactPDF, { Document, Page, Text, View } from '@react-pdf/renderer';
+
 
 import axios from "axios";
 import jwt_decode from "jwt-decode";
@@ -24,31 +26,24 @@ function CustomerDashboard() {
       .get(`http://localhost:3001/Service/${jobID}/${quotationID}`)
       .then((response) => {
         setServices(response.data);
-        
       })
       .catch((error) => {
         console.error("Error fetching services:", error);
       });
-
-      axios
-      .get(`http://localhost:3001/Quotation/?${quotationID}`)
+  
+    axios
+      .get(`http://localhost:3001/Quotation/${quotationID}`)
       .then((response) => {
-
-        response.data.map((value, key) => {
-          setQamount(value.Qamount);
-          console.log(value.Qamount);
-        })
-
-
-        // setQamount(response.data[0].QuotationAmount);
-        // console.log(response.data);
-
+        setQamount(response.data.QuotationAmount);
       })
+      .catch((error) => {
+        console.error("Error fetching quotation:", error);
+      });
   };
-
-  // Function to handle when a "Customer Pending Approval" record is clicked
+  
+  // Function to handle when a "Pending Customer Approval" record is clicked
   const handleJobClick = (job) => {
-    if (job.Status === "Customer Pending Approval") {
+    if (job.Status === "Pending Customer Approval") {
       setSelectedJob(job);
       fetchServices(job.JobID, job.QuotationID);
     }
@@ -108,14 +103,14 @@ function CustomerDashboard() {
     await axios.put(
       `http://localhost:3001/Quotation/${selectedJob.QuotationID}`,
       {
-        QuotationStatus: "Approved By Customer",
+        QuotationStatus: "Repair In Progress",
       }
     );
 
     await axios.put(
       `http://localhost:3001/Job/updateJobStatus/${selectedJob.QuotationID}`,
       {
-        Status: "Approved By Customer",
+        Status: "Repair In Progress",
       }
     );
     
@@ -136,6 +131,11 @@ function CustomerDashboard() {
       }
     );
   };
+
+ 
+
+
+  
 
   return (
     <Tab.Container id="left-tabs-example" defaultActiveKey="first">
@@ -224,6 +224,36 @@ function CustomerDashboard() {
           <Modal.Title>Services for Job ID: {selectedJob && selectedJob.JobID}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+
+        <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px", border: "1px solid #ddd", fontSize: "14px" }}>
+      <tbody>
+        <tr>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}><strong>Job ID:</strong></td>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}>{selectedJob && selectedJob.JobID}</td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}><strong>Employee ID:</strong></td>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}>{selectedJob && selectedJob.EmployeeID}</td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}><strong>Customer ID:</strong></td>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}>{selectedJob && selectedJob.CustomerID}</td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}><strong>Vehicle Number:</strong></td>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}>{selectedJob && selectedJob.VehicleNumber}</td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}><strong>Service Type:</strong></td>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}>{selectedJob && selectedJob.ServiceType}</td>
+        </tr>
+        <tr>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}><strong>Job Description:</strong></td>
+          <td style={{ border: "1px solid #ddd", padding: "10px", textAlign: "left" }}>{selectedJob && selectedJob.JobDescription}</td>
+        </tr>
+      </tbody>
+    </table>
+
   {services.length > 0 ? (
     <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px", border: "1px solid #ddd", fontSize: "14px" }}>
   <thead>

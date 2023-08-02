@@ -35,15 +35,8 @@ function Employees() {
     EmpName: Yup.string().min(5).max(50).required("Must Enter the name"),
     Address: Yup.string().max(100).required("Must Enter the address"),
     TelNo: Yup.string()
-      .required("Must Enter the telephone number")
-      .test("telNo", "Invalid Telephone number format", (value) => {
-        // Custom validation function
-        if (!value) {
-          return false; // Fail validation if the value is empty
-        }
-        // Check if the TelNo starts with "07" and contains 8 other digits
-        return /^07\d{8}$/.test(value);
-      }),
+    .required("Telephone number is required")
+    .matches(/^(07\d{8}|0\d{9})$/, "Invalid Telephone number format"),
     Email: Yup.string()
       .email("Invalid email format")
       .required("Must Enter the email"),
@@ -107,6 +100,7 @@ function Employees() {
         toast.success("Employee creaated successfully!");
         console.log("success");
         resetForm();
+        window.location.reload();
         // window.location.reload(); // Refresh the page
       })
       .catch((error) => {
@@ -326,7 +320,7 @@ function Employees() {
               placeholder=""
             />
 
-            <button type="submit" className="submit-button">
+            <button type="submit" className="submit-button" >
               Submit
             </button>
             <ToastContainer position="top-center" autoClose={3000} />
@@ -409,7 +403,7 @@ function Employees() {
                   <td>
                     <button
                       onClick={() =>
-                        handleUpdate(employee.id, employees[index])
+                        handleUpdate(employee.EmployeeID, employees[index])
                       }
                     >
                       Update
@@ -417,7 +411,7 @@ function Employees() {
                   </td>
                 </tr>
               ) : (
-                <tr key={employee.id}>
+                <tr key={employee.EmployeeID}>
                   <td>{employee.EmployeeID}</td>
                   <td>{employee.Role}</td>
                   <td>{employee.EmpName}</td>

@@ -29,7 +29,7 @@ function OfferCard() {
               <p>{offer.Title}</p>
             </div>
             <div className="content1">
-              <p>{offer.Description}</p>
+              <p style={{fontSize:"20px"}}>{offer.Description}</p>
               <div className="valid-dates" style={{fontSize:"15px"}} >
                 <div>Valid from: {formatDate(offer.FromDate)}</div>
                 <div style={{ marginLeft: '10px' }}>Till: {formatDate(offer.TillDate)}</div>

@@ -14,6 +14,9 @@ import jwtDecode from "jwt-decode";
 
 
 export default function ClarkDashboard() {
+
+  
+
   const [employee, setEmployees] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const handleShowModal = () => setShowModal(true);
@@ -48,6 +51,18 @@ export default function ClarkDashboard() {
     status: false,
     UserID: "",
   });
+
+  function formatDate(dateString) {
+    if (!dateString) return ''; // Return an empty string if the dateString is not provided or is falsy
+  
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so add 1 and pad with '0' if needed
+    const day = String(date.getDate()).padStart(2, '0'); // Pad the day with '0' if needed
+  
+    return `${year}/${month}/${day}`;
+  }
+  
 
   const options = customerIds.map((customerId) => ({
     value: customerId,
@@ -116,15 +131,7 @@ export default function ClarkDashboard() {
     }
   };
 
-  const handleSearch = () => {
-    // Perform any additional actions here before updating the database (if needed)
-
-    // Trigger the update for the relevant service
-    handleUpdateService(selectedService);
-
-    // Perform any additional actions here after updating the database (if needed)
-  };
-
+ 
   const accessToken = localStorage.getItem("accessToken");
   const decodedToken = jwtDecode(accessToken);
   const userID = decodedToken.UserID;
@@ -168,7 +175,7 @@ export default function ClarkDashboard() {
         
         const approvedJobs = response.data.filter(
           (quotation) =>
-            (quotation.QuotationStatus === "Customer Approved") &&
+            (quotation.QuotationStatus === "Repair In Progress") &&
             quotation.EmployeeID === userID
         );
         
@@ -338,14 +345,14 @@ export default function ClarkDashboard() {
       await axios.put(
         `http://localhost:3001/Quotation/${selectedJob.QuotationID}`,
         {
-          QuotationStatus: "Customer Pending Approval",
+          QuotationStatus: "Pending Customer Approval",
         }
       );
   
       await axios.put(
         `http://localhost:3001/Job/updateJobStatus/${selectedJob.QuotationID}`,
         {
-          Status: "Customer Pending Approval",
+          Status: "Pending Customer Approval",
         }
       );
     }
@@ -364,6 +371,41 @@ export default function ClarkDashboard() {
     
   };
 
+  const RepairDone = async () => {
+    const jobid = localStorage.getItem("JobID");
+
+    try {
+      // Update the job status in the database
+      await axios.put(`http://localhost:3001/Job/${jobid}`, {
+        Status: "Repair Job Completed.. Come and Grab Your Vehicle..!!",
+      });
+console.log(selectedJob.QuotationID)
+      // await axios.put(`http://localhost:3001/Quotation/${selectedJob.QuotationID}`, {
+      //   QuotationStatus: "Repair Job Completed.. Come and Grab Your Vehicle..!!",
+      // });
+
+      // Display a success message
+      alert("Quotation acceptance successful.");
+      setSelectedJob(null);
+    }
+    // await axios.put(
+    //   `http://localhost:3001/Quotation/${selectedJob.QuotationID}`,
+    //   {
+    //     QuotationStatus: "Repair Job Completed.. Come and Grab Your Vehicle..!!",
+    //   }
+    // );
+
+    // await axios.put(
+    //   `http://localhost:3001/Job/updateJobStatus/${selectedJob.QuotationID}`,
+    //   {
+    //     Status: "Repair Job Completed.. Come and Grab Your Vehicle..!!",
+    //   }
+    // );   
+    catch (error) {} }
+
+    console.log(repairJobs);
+    console.log(submitValue);
+
   return (
     <>
       <div style={{ marginTop: "100px" }}>
@@ -372,16 +414,16 @@ export default function ClarkDashboard() {
             <Col sm={3}>
               <Nav variant="pills" className="flex-column">
                 <Nav.Item>
-                  <Nav.Link eventKey="first">Profile</Nav.Link>
+                  <Nav.Link eventKey="first" >Profile</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="second">Create Repair Jobs</Nav.Link>
+                  <Nav.Link eventKey="second" >Create Repair Jobs</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="third">Rejected Repair Jobs</Nav.Link>
+                  <Nav.Link eventKey="third" >Rejected Repair Jobs</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="fourth">Repair In Progress</Nav.Link>
+                  <Nav.Link eventKey="fourth" >Repair In Progress</Nav.Link>
                 </Nav.Item>
               </Nav>
             </Col>
@@ -444,8 +486,9 @@ export default function ClarkDashboard() {
                           employee && employee.NIC
                         )}
                       </div>
-                      <div>StartDate: {employee && employee.StartDate}</div>
-                      <div>Status: {employee && employee.Status}</div>
+                      <div>StartDate: {employee && formatDate(employee.StartDate)}</div>
+
+                      
                     </div>
                   </div>
                   {!editMode && (
@@ -461,19 +504,21 @@ export default function ClarkDashboard() {
                 </Tab.Pane>
 
                 <Tab.Pane eventKey="second">
-                  <div>
-                    <button onClick={handleShowModal}>Create Repair job</button>
-                  </div>
-                  <div>
-                    <div>
-                      <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        placeholder="Search by Job ID"
-                      />
-                    </div>
-                  </div>
+                <div style={{ backgroundColor: 'black', padding: '10px' }}>
+  <button onClick={handleShowModal} style={{ color: 'white', background: '#E77367 ', border: 'none', borderRadius: '5px', padding: '10px' }}>Create Repair job</button>
+</div>
+<div style={{ backgroundColor: 'black', padding: '10px' }}>
+  <div>
+    <input
+      type="text"
+      value={searchQuery}
+      onChange={handleSearchChange}
+      placeholder="Search by Job ID"
+      style={{ color: 'white', background: 'white', border: 'none', borderRadius: '5px', padding: '5px 10px' }}
+    />
+  </div>
+</div>
+
                   <div>
                     <RepairJobCard
                       searchQuery={searchQuery}
@@ -507,26 +552,30 @@ export default function ClarkDashboard() {
                   </table>
                 </Tab.Pane>
                 <Tab.Pane eventKey="fourth">
-  <table className="rejected-jobs-table">
-    <thead>
-      <tr>
-        <th>Quotation ID</th>
-        <th>Customer ID</th>
-        <th>Job Description</th>
-        <th>Quotation Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {ApprovedRepairJobs.map((job) => (
-        <tr key={job.QuotationID} onClick={() => setSelectedJob(job)}>
-          <td>{job.QuotationID}</td>
-          <td>{job.CustomerID}</td>
-          <td>{job.JobDescription}</td>
-          <td>{job.QuotationStatus}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+                <table style={{ borderCollapse: 'collapse', width: '80%', textAlign: 'left', border: '1px solid #ccc' }}>
+  <thead style={{ backgroundColor: '#f2f2f2' }}>
+    <tr>
+      <th style={{ padding: '8px', border: '1px solid #ccc' }}>Quotation ID</th>
+      <th style={{ padding: '8px', border: '1px solid #ccc' }}>Job Description</th>
+      <th style={{ padding: '8px', border: '1px solid #ccc' }}>Quotation Status</th>
+      <th></th>
+      
+
+    </tr>
+  </thead>
+  <tbody>
+    {ApprovedRepairJobs.map((job) => (
+      <tr key={job.QuotationID} style={{ backgroundColor: '#fff' }}>
+        <td style={{ padding: '8px', border: '1px solid #ccc' }}>{job.QuotationID}</td>
+        <td style={{ padding: '8px', border: '1px solid #ccc' }}>{job.JobDescription}</td>
+        <td style={{ padding: '8px', border: '1px solid #ccc' }}>{job.QuotationStatus}</td>
+        <td><button onClick={RepairDone}>Repair Process is Finished</button></td>
+        
+           </tr>
+    ))}
+  </tbody>
+</table>
+
 </Tab.Pane>
               </Tab.Content>
             </Col>
@@ -632,95 +681,108 @@ export default function ClarkDashboard() {
       </Modal>
 
       <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create Repair Job</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Formik
-            initialValues={{
-              CustomerID: "",
-              VehicleNumber: "",
-              Model: "",
-              ServiceType: "",
-              JobDescription: "",
-            }}
-            onSubmit={onSubmit}
-          >
-            {({ values, setFieldValue }) => (
-              <Form>
-                <div className="form-group">
-                  <label htmlFor="CustomerID">Customer ID:</label>
-                  <Select
-                    options={options}
-                    value={options.find((option) => option.value === value)}
-                    onChange={(selectedOption) =>
-                      setValue(selectedOption.value)
-                    }
-                    placeholder="Enter Customer ID"
-                  />
-                  <ErrorMessage
-                    name="CustomerID"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="VehicleNumber">Vehicle Number:</label>
-                  <Field
-                    type="text"
-                    id="VehicleNumber"
-                    name="VehicleNumber"
-                    required
-                  />
-                  <ErrorMessage
-                    name="VehicleNumber"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="Model">Vehicle Model:</label>
-                  <Field type="text" id="Model" name="Model" required />
-                  <ErrorMessage
-                    name="Model"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="ServiceType">Service Type:</label>
-                  <Field
-                    type="text"
-                    id="ServiceType"
-                    name="ServiceType"
-                    required
-                  />
-                  <ErrorMessage
-                    name="ServiceType"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="JobDescription">Job Description:</label>
-                  <Field
-                    as="textarea"
-                    id="JobDescription"
-                    name="JobDescription"
-                    required
-                  />
-                  <ErrorMessage
-                    name="JobDescription"
-                    component="div"
-                    className="error-message"
-                  />
-                </div>
-                <button type="submit">Submit</button>
-              </Form>
-            )}
-          </Formik>
-        </Modal.Body>
-      </Modal>
+  <Modal.Header closeButton>
+    <Modal.Title>Create Repair Job</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Formik
+      initialValues={{
+        CustomerID: "",
+        VehicleNumber: "",
+        Model: "",
+        ServiceType: "",
+        JobDescription: "",
+      }}
+      onSubmit={onSubmit}
+    >
+      {({ values, setFieldValue }) => (
+        <Form>
+          <div style={{ marginBottom: '10px' }}>
+            <label htmlFor="CustomerID" style={{ display: 'block', marginBottom: '5px' }}>Customer ID:</label>
+            <Select
+              options={options}
+              value={options.find((option) => option.value === value)}
+              onChange={(selectedOption) =>
+                setValue(selectedOption.value)
+              }
+              placeholder="Enter Customer ID"
+              style={{ width: '100%', padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+            <ErrorMessage
+              name="CustomerID"
+              component="div"
+              style={{ color: 'red', fontSize: '14px' }}
+            />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label htmlFor="VehicleNumber" style={{ display: 'block', marginBottom: '5px' }}>Vehicle Number:</label>
+            <Field
+              type="text"
+              id="VehicleNumber"
+              name="VehicleNumber"
+              required
+              style={{ width: '100%', padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+            <ErrorMessage
+              name="VehicleNumber"
+              component="div"
+              style={{ color: 'red', fontSize: '14px' }}
+            />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label htmlFor="Model" style={{ display: 'block', marginBottom: '5px' }}>Vehicle Model:</label>
+            <Field
+              type="text"
+              id="Model"
+              name="Model"
+              required
+              style={{ width: '100%', padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+            <ErrorMessage
+              name="Model"
+              component="div"
+              style={{ color: 'red', fontSize: '14px' }}
+            />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label htmlFor="ServiceType" style={{ display: 'block', marginBottom: '5px' }}>Service Type:</label>
+            <Field
+              type="text"
+              id="ServiceType"
+              name="ServiceType"
+              required
+              style={{ width: '100%', padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+            <ErrorMessage
+              name="ServiceType"
+              component="div"
+              style={{ color: 'red', fontSize: '14px' }}
+            />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label htmlFor="JobDescription" style={{ display: 'block', marginBottom: '5px' }}>Job Description:</label>
+            <Field
+              as="textarea"
+              id="JobDescription"
+              name="JobDescription"
+              required
+              style={{ width: '100%', padding: '5px', borderRadius: '4px', border: '1px solid #ccc' }}
+            />
+            <ErrorMessage
+              name="JobDescription"
+              component="div"
+              style={{ color: 'red', fontSize: '14px' }}
+            />
+          </div>
+          <button type="submit" style={{ backgroundColor: 'blue', color: 'white', padding: '10px', borderRadius: '4px', border: 'none' }}>Submit</button>
+        </Form>
+      )}
+    </Formik>
+  </Modal.Body>
+</Modal>
+
+
+      
     </>
   );
 }

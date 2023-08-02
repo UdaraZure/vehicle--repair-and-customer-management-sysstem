@@ -35,9 +35,11 @@ export default function Customer() {
         if (!value) {
           return false; // Fail validation if the value is empty
         }
-        // Check if the TelNo starts with "07" and contains 8 other digits
-        return /^07\d{8}$/.test(value);
+        
+        // Check if the TelNo is a valid Sri Lankan mobile or landline number
+        return /^(07\d{8}|0\d{9})$/.test(value);
       }),
+
     Email: Yup.string()
       .email("Invalid email format")
       .required("Must Enter the email"),
@@ -244,7 +246,7 @@ export default function Customer() {
 
             <p className="signin">
               Already have an account?{" "}
-              <a href="http://localhost:3000/Customers/login" target="_blank">
+              <a href="http://localhost:3000/login" target="_blank">
                 log in
               </a>
             </p>

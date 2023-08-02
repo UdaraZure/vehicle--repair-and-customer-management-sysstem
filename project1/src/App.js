@@ -19,6 +19,26 @@ function App() {
     status: false,
   });
 
+  const paragraphStyle = {
+    fontFamily: 'Arial, sans-serif',
+    fontSize: '20px',
+    color: '#ffff',
+    fontWeight: 'bold',
+    
+  };
+
+  const logoutButtonStyle = {
+    backgroundColor: '	#b23b3b',
+    color: 'white',
+    padding: '10px 20px',
+    border: 'none',
+    borderRadius: '10px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    marginLeft: '20px',
+  };
+
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
@@ -74,19 +94,19 @@ function App() {
                   />
                 </Nav.Link>
               </Nav>
+              <p style={paragraphStyle}>{loginState.username}</p>
               {!loginState.status ? (
                 <Nav>
                   <Nav.Link href="/login" className="Login-button" >Login</Nav.Link>
                   <Nav.Link href="/Customer" className="Register-button" >Register</Nav.Link>
                 </Nav>
               ) : (
-                <button onClick={() => {
+                <button style={logoutButtonStyle} onClick={() => {
                   Logout();
                   window.location = "/login";
                 }}>Logout</button>
-                
               )} 
-              <p>{loginState.username}</p>
+              
             </Navbar.Collapse>
           </Container>
         </Navbar>

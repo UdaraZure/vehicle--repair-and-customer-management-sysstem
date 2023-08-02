@@ -62,9 +62,9 @@ router.post("/", async (req, res) => {
 });
 
 // Update an Employee
-router.put("/:id", async (req, res) => {
+router.put("/:EmployeeID", async (req, res) => {
   try {
-    const EmployeeId = req.params.id;
+    const EmployeeId = req.params.EmployeeID;
     const updatedEmployeeData = req.body;
     const [rowsUpdated] = await Employee.update(updatedEmployeeData, {
       where: { EmployeeID: EmployeeId } // Update the field name to match your database column name

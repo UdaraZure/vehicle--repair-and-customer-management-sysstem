@@ -12,14 +12,16 @@ export default function Login() {
   const [loginStat, setLoginStat] = useState({
     Email: "",
     Role: "",
-    UserID:"",
+    UserID: "",
     status: false,
   });
 
   let navigate = useNavigate();
+  
 
   const login = () => {
     const data = { Email: Email, Password: Password };
+    
 
     axios
       .post("http://localhost:3001/User/login", data)
@@ -34,41 +36,47 @@ export default function Login() {
             Role: response.data.UserRole,
             status: true,
           });
-        }
-      })
-      .then((response) => {
-        const accessToken = localStorage.getItem("accessToken");
-        if (accessToken) {
-          axios
-            .get("http://localhost:3001/User/Authentication", {
-              headers: {
-                accessToken: accessToken,
-              },
-            })
-            .then((response) => {
-              console.log(response.data);
-              if (response.data.error) {
-                setLoginStat({ ...loginStat, status: false });
-              } else {
-                setLoginStat({
-                  username: response.data.Email,
-                  Role: response.data.UserRole,
-                  status: true,
-                });
-              }
 
-              if (response.data.Role === "Owner") {
-                navigate("/OwnerDashboard");
-              } else if (response.data.Role === "Manager") {
-                navigate("/ManagerDashboard");
-              } else if (response.data.Role === "Clark") {
-                navigate("/ClarkDashboard");
-              } else if (response.data.Role === "Customer") {
-                navigate("/CustomerDashboard");
-              } else {
-                navigate("/Login");
-              }
-            });
+          const accessToken = localStorage.getItem("accessToken");
+          if (accessToken) {
+            axios
+              .get("http://localhost:3001/User/Authentication", {
+                headers: {
+                  accessToken: accessToken,
+                },
+              })
+              .then((response) => {
+                console.log(response.data);
+                if (response.data.error) {
+                  setLoginStat({ ...loginStat, status: false });
+                  // Display an error alert here or use any other UI component to show the error message.
+                  alert("Error: " + response.data.error);
+                } else {
+                  setLoginStat({
+                    username: response.data.Email,
+                    Role: response.data.UserRole,
+                    status: true,
+                  });
+                }
+              })
+              .catch((error) => {
+                console.error('Error fetching data:', error);
+                // Display a generic error alert or any UI component for a network error.
+                alert("Error: Unable to fetch data. Please try again later.");
+              });
+
+            if (response.data.Role === "Owner") {
+              navigate("/OwnerDashboard");
+            } else if (response.data.Role === "Manager") {
+              navigate("/ManagerDashboard");
+            } else if (response.data.Role === "Clark") {
+              navigate("/ClarkDashboard");
+            } else if (response.data.Role === "Customer") {
+              navigate("/CustomerDashboard");
+            } else {
+              navigate("/Login");
+            }
+          }
         }
       })
       .catch((error) => {
