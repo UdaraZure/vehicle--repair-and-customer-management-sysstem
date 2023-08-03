@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
@@ -6,35 +6,60 @@ import Tab from "react-bootstrap/Tab";
 import "./CustomerDashboard.css";
 import JobTable from "./JobTable"; // Import the JobTable component
 import Modal from "react-bootstrap/Modal";
-import ReactPDF, { Document, Page, Text, View } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { useReactToPrint } from "react-to-print";
 
 
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
-function CustomerDashboard() {
+function CustomerDashboard() {  
   const [customerDetails, setCustomerDetails] = useState([]);
   const [isEditable, setIsEditable] = useState(false);
   const [editedDetails, setEditedDetails] = useState({}); // State to store edited details
   const [selectedJob, setSelectedJob] = useState(null);
   const [services, setServices] = useState([]);
   const [Qamount, setQamount] = useState();
+  const componentPDF = useRef();
 
+  const generatePDF = useReactToPrint({
+    content: () => componentPDF.current,
+    documentTitle: "Userdata",
+    // onAfterPrint: () => alert("Data Saved in PDF"),
+  });
+  
   // Function to fetch services for a specific repair job
   const fetchServices = (jobID, quotationID) => {
     axios
       .get(`http://localhost:3001/Service/${jobID}/${quotationID}`)
       .then((response) => {
+        
         setServices(response.data);
+
+        let qAmount = 0;
+        [(response.data)].forEach((row) => {
+      row.forEach((service) => {
+        qAmount += parseInt(service.ServicePrice, 10); // Parse string as integer
+      });
+    });
+
+   
+    setQamount(qAmount);
       })
       .catch((error) => {
         console.error("Error fetching services:", error);
       });
   
     axios
-      .get(`http://localhost:3001/Quotation/${quotationID}`)
+      .get(`http://localhost:3001/Quotation/getQuotations/${jobID}`)
       .then((response) => {
-        setQamount(response.data.QuotationAmount);
+        
+        console.log(response.data.Qamount);
+console.log(services);
+        
+
+
+        
       })
       .catch((error) => {
         console.error("Error fetching quotation:", error);
@@ -146,7 +171,7 @@ function CustomerDashboard() {
               <Nav.Link eventKey="first">Profile</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link eventKey="second">On going Repair Jobs</Nav.Link>
+              <Nav.Link eventKey="second">My Repair Jobs</Nav.Link>
             </Nav.Item>
           </Nav>
         </Col>
@@ -219,10 +244,12 @@ function CustomerDashboard() {
           })}
         </Col>
       </Row>
+      
       <Modal show={selectedJob !== null} onHide={handleModalClose}>
         <Modal.Header closeButton>
           <Modal.Title>Services for Job ID: {selectedJob && selectedJob.JobID}</Modal.Title>
         </Modal.Header>
+        <div ref={componentPDF} style={{ width: "100%" }}>
         <Modal.Body>
 
         <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "20px", border: "1px solid #ddd", fontSize: "14px" }}>
@@ -280,13 +307,16 @@ function CustomerDashboard() {
     <p>No services found.</p>
   )}
 </Modal.Body>
+</div>
 
 <Modal.Footer>
   <button onClick={handleAcceptQuotation}>Accept</button>
   <button onClick={handleRejectQuotation}>Reject</button>
+  <button onClick={generatePDF}>Generate PDF</button>
+
 </Modal.Footer>
       </Modal>
-
+      
     </Tab.Container>
   );
 }
