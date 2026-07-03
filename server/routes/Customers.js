@@ -69,7 +69,7 @@ router.delete("/:id", async (req, res) => {
     try {
       const CustomerId = req.params.id;
       const rowsDeleted = await Customer.destroy({
-        where: { CustomerID: CustomerId } // Update the field name to match your database column name
+        where: { CustomerID: CustomerId } 
       });
       if (rowsDeleted === 0) {
         return res.status(404).json({ error: 'Customer not found' });

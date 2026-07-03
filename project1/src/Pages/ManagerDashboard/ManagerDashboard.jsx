@@ -80,14 +80,6 @@ function ManagerDashboard() {
               ? { ...quotation, QuotationStatus: "Manager Assigned" }
               : quotation
           )
-
-        // setAsignedQuotations((prevQuotations) =>
-        //   prevQuotations.map((quotation) =>
-        //     quotation.QuotationID === quotationID
-        //       ? { ...quotation, Status: "Manager Assigned" }
-        //       : quotation
-        //   )
-        // )
       );
 
       console.log("Quotation updated successfully:", response.data);
